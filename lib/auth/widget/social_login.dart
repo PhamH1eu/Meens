@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:webtoon/color.dart';
+import 'package:webtoon/utilities/color.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SocialLogin extends StatefulWidget {

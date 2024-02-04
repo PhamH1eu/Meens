@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../color.dart';
+import '../utilities/color.dart';
 
 import 'firebase_auth/firebase_services.dart';
-import 'login_header.dart';
-import 'form_container_widget.dart';
-import 'social_login.dart';
-import 'error.dart';
-import 'divider.dart';
+import 'widget/login_header.dart';
+import 'widget/form_container_widget.dart';
+import 'widget/social_login.dart';
+import 'widget/error.dart';
+import 'widget/divider.dart';
 
 // ignore_for_file: prefer_const_constructors
 
