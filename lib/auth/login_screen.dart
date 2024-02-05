@@ -23,6 +23,16 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  String error = "";
+  bool isError = false;
+
+  @override
+  void initState() {
+    super.initState();
+    isError = false;
+    error = "";
+  }
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -58,7 +68,10 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 height: 10,
               ),
-              Error(),
+              Visibility(
+                visible: isError,
+                child: Error(error: error,),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
@@ -140,11 +153,20 @@ class _LoginPageState extends State<LoginPage> {
     String password = _passwordController.text.trim();
 
     if (email.isEmpty) {
-      print("Email is required");
+      error = "Email is required";
     } else if (password.isEmpty) {
-      print("Password is required");
+      error = "Password is required";
     } else {
       await _auth.signInWithEmailAndPassword(email, password);
+      error = FirebaseAuthService.errorMessage;
     }
+
+    if (error != "") {
+      setState(() {
+        isError = true;
+      });
+    }
+      print(error);
+
   }
 }
