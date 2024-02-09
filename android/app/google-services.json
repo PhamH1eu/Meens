@@ -12,7 +12,20 @@
           "package_name": "com.example.webtoon"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "928033390839-6qdggu09p8l9arjj43tu531ejf29fdio.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.webtoon",
+            "certificate_hash": "0e0debf039ccd0a87ea77d62aa338b383564c87c"
+          }
+        },
+        {
+          "client_id": "928033390839-15c8g9o0am53p9ugsgmcdae4eskrrn7j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyARnzNXRZNrPkUXooPGHiPvLYE2ZEMZzU0"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "928033390839-15c8g9o0am53p9ugsgmcdae4eskrrn7j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

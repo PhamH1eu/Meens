@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:webtoon/utilities/color.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../firebase_auth/google_services.dart';
+
 class SocialLogin extends StatefulWidget {
   const SocialLogin({super.key});
 
@@ -30,7 +32,9 @@ class _SocialLoginState extends State<SocialLogin> {
           width: 20,
         ),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            GoogleSignInProvider().signInWithGoogle();
+          },
           style: ElevatedButton.styleFrom(
             shape: CircleBorder(),
             padding: EdgeInsets.all(15),
