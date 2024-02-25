@@ -13,17 +13,19 @@ class FormContainerWidget extends StatefulWidget {
   final ValueChanged<String>? onFieldSubmitted;
   final TextInputType? inputType;
 
-  const FormContainerWidget(
-      {super.key, this.controller,
-      this.isPasswordField,
-      this.fieldKey,
-      this.hintText,
-      this.labelText,
-      this.helperText,
-      this.onSaved,
-      this.validator,
-      this.onFieldSubmitted,
-      this.inputType,});
+  const FormContainerWidget({
+    super.key,
+    this.controller,
+    this.isPasswordField,
+    this.fieldKey,
+    this.hintText,
+    this.labelText,
+    this.helperText,
+    this.onSaved,
+    this.validator,
+    this.onFieldSubmitted,
+    this.inputType,
+  });
 
   @override
   State<FormContainerWidget> createState() => _FormContainerWidgetState();
@@ -54,9 +56,12 @@ class _FormContainerWidgetState extends State<FormContainerWidget> {
           border: InputBorder.none,
           fillColor: Colors.transparent,
           hintText: widget.hintText,
-          hintStyle: const TextStyle(color: CustomColors.gray),
+          hintStyle:
+              const TextStyle(color: CustomColors.hintGray, fontSize: 15),
           prefixIcon: Icon(
-            widget.isPasswordField == true ? Icons.lock_outline: Icons.email_outlined,
+            widget.isPasswordField == true
+                ? Icons.lock_outline
+                : Icons.email_outlined,
           ),
           suffixIcon: GestureDetector(
             onTap: () {
@@ -66,7 +71,9 @@ class _FormContainerWidgetState extends State<FormContainerWidget> {
             },
             child: widget.isPasswordField == true
                 ? Icon(
-                    _obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                    _obscureText
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined,
                   )
                 : const Text(''),
           ),

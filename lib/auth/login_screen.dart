@@ -70,13 +70,17 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Visibility(
                 visible: isError,
-                child: Error(error: error,),
+                child: Error(
+                  error: error,
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/signup');
+                    },
                     child: Container(
                       height: 45,
                       width: MediaQuery.of(context).size.width / 2 - 20,
@@ -166,7 +170,5 @@ class _LoginPageState extends State<LoginPage> {
         isError = true;
       });
     }
-      print(error);
-
   }
 }

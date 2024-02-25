@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
 import 'package:webtoon/auth/login_screen.dart';
 
 import 'app.dart';
+import 'auth/signup_screen.dart';
 import 'firebase_options.dart';
 
 // ignore_for_file: prefer_const_constructors
@@ -13,7 +15,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   runApp(const MyApp());
 }
 
@@ -27,6 +28,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Hind'),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: {
+        '/login': (context) => const LoginPage(),
+        '/signup': (context) => const SignUpPage(),
+        '/app':(context) => const MyHomePage(title: 'Flutter Demo Home Page')
+  },
     );
   }
 }
