@@ -29,7 +29,7 @@ class _DividerLineState extends State<DividerLine> {
         child: Container(
             margin: const EdgeInsets.only(left: 20.0, right: 10.0),
             child: Divider(
-              color: CustomColors.lightGray,
+              color: CustomColors.gray,
               height: 9,
             )),
       ),

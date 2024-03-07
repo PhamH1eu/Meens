@@ -85,14 +85,18 @@ class _LoginPageState extends State<LoginPage> {
                       height: 45,
                       width: MediaQuery.of(context).size.width / 2 - 20,
                       decoration: BoxDecoration(
-                        color: CustomColors.gray,
+                        color: Colors.transparent,
                         borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          color: CustomColors.mainText,
+                          width: 1,
+                        ),
                       ),
                       child: Center(
                         child: Text(
                           "Sign up",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: CustomColors.green,
                             fontSize: 20,
                           ),
                         ),

@@ -26,29 +26,32 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-          color: CustomColors.white,
+          color: CustomColors.mainText,
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        title: const Text(
-          'Sign Up',
-          style: TextStyle(
-              color: CustomColors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 20),
-        ),
-        backgroundColor: CustomColors.appBar,
+        backgroundColor: Colors.transparent,
         centerTitle: true,
       ),
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.black,
+      backgroundColor: CustomColors.background,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            const Center(
+              child: Text(
+                'Sign Up',
+                style: TextStyle(
+                  color: CustomColors.mainText,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
             const Text(
               'EMAIL ADDRESS *',
               style: TextStyle(color: CustomColors.gray, fontSize: 12),
@@ -83,12 +86,6 @@ class _SignUpPageState extends State<SignUpPage> {
               '6-16 alphanumeric characters with a symbol',
               style: TextStyle(color: CustomColors.gray, fontSize: 12),
             ),
-            Visibility(
-              visible: isError,
-              child: Error(
-                error: error,
-              ),
-            ),
             const SizedBox(
               height: 20,
             ),
@@ -114,16 +111,22 @@ class _SignUpPageState extends State<SignUpPage> {
             const SizedBox(
               height: 20,
             ),
-            const Text(
-              'By signing up, I agree to the Terms of Use and Privacy Policy of WEBTOON',
-              style: TextStyle(color: CustomColors.gray, fontSize: 12),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              'WEBTOON collects and processes your email address for marketing purposes. You can easily unsubscribe at any time via the opt-out link in the marketing emails.',
-              style: TextStyle(color: CustomColors.gray, fontSize: 12),
+            // const Text(
+            //   'By signing up, I agree to the Terms of Use and Privacy Policy of WEBTOON',
+            //   style: TextStyle(color: CustomColors.gray, fontSize: 12),
+            // ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
+            // const Text(
+            //   'WEBTOON collects and processes your email address for marketing purposes. You can easily unsubscribe at any time via the opt-out link in the marketing emails.',
+            //   style: TextStyle(color: CustomColors.gray, fontSize: 12),
+            // ),
+            Visibility(
+              visible: isError,
+              child: Error(
+                error: error,
+              ),
             ),
             const SizedBox(
               height: 20,

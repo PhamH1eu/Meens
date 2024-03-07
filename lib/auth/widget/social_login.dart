@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:webtoon/utilities/color.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../firebase_auth/google_services.dart';
@@ -51,7 +50,7 @@ class _SocialLoginState extends State<SocialLogin> {
           style: ElevatedButton.styleFrom(
             shape: CircleBorder(),
             padding: EdgeInsets.all(15),
-            backgroundColor: CustomColors.green,
+            backgroundColor: Colors.greenAccent[400],
             foregroundColor: Colors.white, // <-- Button color
           ),
           child: Icon(FontAwesomeIcons.line),
@@ -64,7 +63,7 @@ class _SocialLoginState extends State<SocialLogin> {
           style: ElevatedButton.styleFrom(
             shape: CircleBorder(),
             padding: EdgeInsets.all(15),
-            backgroundColor: Colors.blue[200],
+            backgroundColor: Colors.blue[600],
             foregroundColor: Colors.white, // <-- Button color
           ),
           child: Icon(FontAwesomeIcons.twitter),

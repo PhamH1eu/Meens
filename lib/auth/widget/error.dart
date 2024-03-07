@@ -17,7 +17,7 @@ class _ErrorState extends State<Error> {
     return Column(
       children: <Widget>[
         Text(widget.error,
-            style: TextStyle(color: CustomColors.gray)),
+            style: TextStyle(color: CustomColors.mainText)),
         SizedBox(height: 10),
       ],
     );

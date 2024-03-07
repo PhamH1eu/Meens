@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webtoon/utilities/color.dart';
+import 'package:gradient_borders/gradient_borders.dart';
 
 class FormContainerWidget extends StatefulWidget {
   final TextEditingController? controller;
@@ -39,11 +40,20 @@ class _FormContainerWidgetState extends State<FormContainerWidget> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: CustomColors.deepGray,
-        borderRadius: BorderRadius.circular(5),
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(10),
+        // border: Border.all(
+        //   color: CustomColors.mainText,
+        //   width: 1,
+        // ),
+        border: GradientBoxBorder(
+          gradient: LinearGradient(
+              colors: [Colors.pink.shade300, Colors.purple.shade300, Colors.blue.shade400]),
+          width: 2,
+        ),
       ),
       child: TextFormField(
-        style: const TextStyle(color: CustomColors.gray),
+        style: const TextStyle(color: CustomColors.mainText),
         controller: widget.controller,
         keyboardType: widget.inputType,
         key: widget.fieldKey,
@@ -56,8 +66,7 @@ class _FormContainerWidgetState extends State<FormContainerWidget> {
           border: InputBorder.none,
           fillColor: Colors.transparent,
           hintText: widget.hintText,
-          hintStyle:
-              const TextStyle(color: CustomColors.hintGray, fontSize: 15),
+          hintStyle: const TextStyle(color: CustomColors.gray, fontSize: 15),
           prefixIcon: Icon(
             widget.isPasswordField == true
                 ? Icons.lock_outline

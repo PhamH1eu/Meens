@@ -20,7 +20,7 @@ class _LoginHeaderState extends State<LoginHeader> {
           width: MediaQuery.of(context).size.width / 2 - 20,
           child: Text('Sign up or log in to enjoy free comics.',
               style: TextStyle(
-                color: CustomColors.white,
+                color: CustomColors.mainText,
                 fontSize: 16,
               )),
         ),
