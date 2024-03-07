@@ -46,9 +46,9 @@ class _FormContainerWidgetState extends State<FormContainerWidget> {
         //   color: CustomColors.mainText,
         //   width: 1,
         // ),
-        border: GradientBoxBorder(
+        border: const GradientBoxBorder(
           gradient: LinearGradient(
-              colors: [Colors.pink.shade300, Colors.purple.shade300, Colors.blue.shade400]),
+              colors: [Color(0xffFC1B7C), Color(0xff714CF4), Color(0xff0084F3)]),
           width: 2,
         ),
       ),
