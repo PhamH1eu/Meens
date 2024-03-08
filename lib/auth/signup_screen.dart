@@ -47,15 +47,19 @@ class _SignUpPageState extends State<SignUpPage> {
               child: Text(
                 'Sign Up',
                 style: TextStyle(
-                  color: CustomColors.mainText,
-                  fontSize: 30,
-                  fontWeight: CustomColors.bold,
-                ),
+                    color: CustomColors.mainText,
+                    fontSize: 30,
+                    fontWeight: CustomColors.bold,
+                    fontFamily: 'Gilroy'),
               ),
             ),
             const Text(
               'EMAIL ADDRESS *',
-              style: TextStyle(color: CustomColors.gray, fontSize: 12, fontWeight: CustomColors.medium),
+              style: TextStyle(
+                  color: CustomColors.gray,
+                  fontSize: 12,
+                  fontWeight: CustomColors.medium,
+                  fontFamily: 'Gilroy'),
             ),
             const SizedBox(
               height: 10,
@@ -70,7 +74,11 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             const Text(
               'PASSWORD *',
-              style: TextStyle(color: CustomColors.gray, fontSize: 12, fontWeight: CustomColors.medium),
+              style: TextStyle(
+                  color: CustomColors.gray,
+                  fontSize: 12,
+                  fontWeight: CustomColors.medium,
+                  fontFamily: 'Gilroy'),
             ),
             const SizedBox(
               height: 10,
@@ -85,14 +93,22 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             const Text(
               '6-16 alphanumeric characters with a symbol',
-              style: TextStyle(color: CustomColors.gray, fontSize: 12, fontWeight: CustomColors.regular),
+              style: TextStyle(
+                  color: CustomColors.gray,
+                  fontSize: 12,
+                  fontWeight: CustomColors.regular,
+                  fontFamily: 'Gilroy'),
             ),
             const SizedBox(
               height: 20,
             ),
             const Text(
               'NICKNAME *',
-              style: TextStyle(color: CustomColors.gray, fontSize: 12, fontWeight: CustomColors.medium),
+              style: TextStyle(
+                  color: CustomColors.gray,
+                  fontSize: 12,
+                  fontWeight: CustomColors.medium,
+                  fontFamily: 'Gilroy'),
             ),
             const SizedBox(
               height: 10,
@@ -107,7 +123,11 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             const Text(
               'Max 20 characters',
-              style: TextStyle(color: CustomColors.gray, fontSize: 12, fontWeight: CustomColors.regular),
+              style: TextStyle(
+                  color: CustomColors.gray,
+                  fontSize: 12,
+                  fontWeight: CustomColors.regular,
+                  fontFamily: 'Gilroy'),
             ),
             const SizedBox(
               height: 20,
@@ -145,10 +165,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: Text(
                     "Sign up NOW",
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: CustomColors.regular,
-                    ),
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: CustomColors.regular,
+                        fontFamily: 'Gilroy'),
                   ),
                 ),
               ),

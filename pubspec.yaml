@@ -66,13 +66,19 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   fonts:
-    - family: Hind
+    - family: Gilroy
       fonts:
-        - asset: assets/fonts/Hind-Bold.ttf
-        - asset: assets/fonts/Hind-Light.ttf
-        - asset: assets/fonts/Hind-Medium.ttf
-        - asset: assets/fonts/Hind-Regular.ttf
-        - asset: assets/fonts/Hind-SemiBold.ttf
+        - asset: assets/fonts/Gilroy-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Gilroy-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Gilroy-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Gilroy-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Gilroy-ExtraBold.ttf
+          weight: 900
+
   uses-material-design: true
   assets:
     - assets/banner.gif

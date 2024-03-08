@@ -28,7 +28,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'Hind',
         pageTransitionsTheme: PageTransitionsTheme(builders: {
           TargetPlatform.android:
               PageTransition(type: PageTransitionType.rightToLeft, child: this)

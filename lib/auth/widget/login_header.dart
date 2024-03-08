@@ -22,6 +22,8 @@ class _LoginHeaderState extends State<LoginHeader> {
               style: TextStyle(
                 color: CustomColors.mainText,
                 fontSize: 16,
+                fontWeight: CustomColors.regular,
+                fontFamily: 'Gilroy'
               )),
         ),
         Image.asset(
@@ -32,3 +34,5 @@ class _LoginHeaderState extends State<LoginHeader> {
     );
   }
 }
+
+//gilroy

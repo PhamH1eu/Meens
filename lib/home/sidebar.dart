@@ -18,8 +18,16 @@ class _SidebarState extends State<Sidebar> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: const Text("Wolhaiksong"),
-            accountEmail: const Text("deptraicojsai@gmail.com"),
+            accountName: const Text("Wolhaiksong",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Gilroy',
+                    fontWeight: CustomColors.semiBold)),
+            accountEmail: const Text("deptraicojsai@gmail.com",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Gilroy',
+                    fontWeight: CustomColors.regular)),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.asset('assets/user.jpg'),
@@ -39,8 +47,10 @@ class _SidebarState extends State<Sidebar> {
               padding: EdgeInsets.only(left: 15.0),
               child: Text('Profile',
                   style: TextStyle(
-                      color: CustomColors.mainText,
-                      fontWeight: CustomColors.medium)),
+                    color: CustomColors.mainText,
+                    fontWeight: CustomColors.semiBold,
+                    fontFamily: 'Gilroy',
+                  )),
             ),
             onTap: () {
               Navigator.pop(context);
@@ -55,8 +65,10 @@ class _SidebarState extends State<Sidebar> {
               padding: EdgeInsets.all(15.0),
               child: Text('Liked Songs',
                   style: TextStyle(
-                      color: CustomColors.mainText,
-                      fontWeight: CustomColors.medium)),
+                    color: CustomColors.mainText,
+                    fontWeight: CustomColors.semiBold,
+                    fontFamily: 'Gilroy',
+                  )),
             ),
             onTap: () {
               Navigator.pop(context);
@@ -71,8 +83,10 @@ class _SidebarState extends State<Sidebar> {
               padding: EdgeInsets.all(15.0),
               child: Text('Language',
                   style: TextStyle(
-                      color: CustomColors.mainText,
-                      fontWeight: CustomColors.medium)),
+                    color: CustomColors.mainText,
+                    fontWeight: CustomColors.semiBold,
+                    fontFamily: 'Gilroy',
+                  )),
             ),
             onTap: () {
               Navigator.pop(context);
@@ -87,8 +101,10 @@ class _SidebarState extends State<Sidebar> {
               padding: EdgeInsets.all(15.0),
               child: Text('Contact us',
                   style: TextStyle(
-                      color: CustomColors.mainText,
-                      fontWeight: CustomColors.medium)),
+                    color: CustomColors.mainText,
+                    fontWeight: CustomColors.semiBold,
+                    fontFamily: 'Gilroy',
+                  )),
             ),
             onTap: () {
               Navigator.pop(context);
@@ -103,8 +119,10 @@ class _SidebarState extends State<Sidebar> {
               padding: EdgeInsets.all(15.0),
               child: Text('FAQs',
                   style: TextStyle(
-                      color: CustomColors.mainText,
-                      fontWeight: CustomColors.medium)),
+                    color: CustomColors.mainText,
+                    fontWeight: CustomColors.semiBold,
+                    fontFamily: 'Gilroy',
+                  )),
             ),
             onTap: () {
               Navigator.pop(context);
@@ -119,8 +137,10 @@ class _SidebarState extends State<Sidebar> {
               padding: EdgeInsets.all(15.0),
               child: Text('Settings',
                   style: TextStyle(
-                      color: CustomColors.mainText,
-                      fontWeight: CustomColors.medium)),
+                    color: CustomColors.mainText,
+                    fontWeight: CustomColors.semiBold,
+                    fontFamily: 'Gilroy',
+                  )),
             ),
             onTap: () {
               Navigator.pop(context);
@@ -135,8 +155,10 @@ class _SidebarState extends State<Sidebar> {
               padding: EdgeInsets.all(15.0),
               child: Text('Dark mode',
                   style: TextStyle(
-                      color: CustomColors.mainText,
-                      fontWeight: CustomColors.medium)),
+                    color: CustomColors.mainText,
+                    fontWeight: CustomColors.semiBold,
+                    fontFamily: 'Gilroy',
+                  )),
             ),
             onTap: () {
               Navigator.pop(context);

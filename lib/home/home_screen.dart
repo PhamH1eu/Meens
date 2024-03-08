@@ -11,7 +11,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  var scaffoldKey = GlobalKey<ScaffoldState>();
+    var scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
       key: scaffoldKey,
       drawer: const Sidebar(),
@@ -46,9 +46,10 @@ class Home extends StatelessWidget {
             const Text(
               'Recommended for you',
               style: TextStyle(
-                  fontWeight: CustomColors.bold,
+                  fontWeight: CustomColors.extraBold,
                   color: CustomColors.mainText,
-                  fontSize: 25),
+                  fontSize: 25,
+                  fontFamily: 'Gilroy'),
             ),
             const SizedBox(height: 20),
             SizedBox(
@@ -70,11 +71,12 @@ class Home extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const Text(
-              'My Playlist',
+              'My playlist',
               style: TextStyle(
-                  fontWeight: CustomColors.bold,
+                  fontWeight: CustomColors.extraBold,
                   color: CustomColors.mainText,
-                  fontSize: 25),
+                  fontSize: 25,
+                  fontFamily: 'Gilroy'),
             ),
             const SizedBox(height: 15),
             SizedBox(

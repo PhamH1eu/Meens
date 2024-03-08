@@ -23,7 +23,11 @@ class _DividerLineState extends State<DividerLine> {
       ),
       Text(
         "OR Login with",
-        style: TextStyle(fontSize: 15, color: CustomColors.gray),
+        style: TextStyle(
+            fontSize: 15,
+            color: CustomColors.gray,
+            fontFamily: 'Gilroy',
+            fontWeight: CustomColors.regular),
       ),
       Expanded(
         child: Container(
