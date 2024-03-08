@@ -53,7 +53,7 @@ class _FormContainerWidgetState extends State<FormContainerWidget> {
         ),
       ),
       child: TextFormField(
-        style: const TextStyle(color: CustomColors.mainText),
+        style: const TextStyle(color: CustomColors.mainText, fontSize: 15, fontWeight: CustomColors.regular),
         controller: widget.controller,
         keyboardType: widget.inputType,
         key: widget.fieldKey,
@@ -66,7 +66,7 @@ class _FormContainerWidgetState extends State<FormContainerWidget> {
           border: InputBorder.none,
           fillColor: Colors.transparent,
           hintText: widget.hintText,
-          hintStyle: const TextStyle(color: CustomColors.gray, fontSize: 15),
+          hintStyle: const TextStyle(color: CustomColors.gray, fontSize: 15, fontWeight: CustomColors.regular),
           prefixIcon: Icon(
             widget.isPasswordField == true
                 ? Icons.lock_outline

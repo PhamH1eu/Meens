@@ -43,6 +43,7 @@ dependencies:
   flutter_native_splash: ^2.3.10
   flutter_launcher_icons: ^0.13.1
   gradient_borders: ^1.0.0
+  page_transition: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +78,8 @@ flutter:
     - assets/banner.gif
     - assets/logo.png
     - assets/icon.png
+    - assets/user.jpg
+    - assets/wallpaper.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

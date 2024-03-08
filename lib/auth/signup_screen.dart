@@ -6,7 +6,9 @@ import 'widget/form_container_widget.dart';
 import 'widget/error.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+  const SignUpPage({super.key, required this.title});
+
+  final String title;
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -32,7 +34,6 @@ class _SignUpPageState extends State<SignUpPage> {
           },
         ),
         backgroundColor: Colors.transparent,
-        centerTitle: true,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: CustomColors.background,
@@ -48,13 +49,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 style: TextStyle(
                   color: CustomColors.mainText,
                   fontSize: 30,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: CustomColors.bold,
                 ),
               ),
             ),
             const Text(
               'EMAIL ADDRESS *',
-              style: TextStyle(color: CustomColors.gray, fontSize: 12),
+              style: TextStyle(color: CustomColors.gray, fontSize: 12, fontWeight: CustomColors.medium),
             ),
             const SizedBox(
               height: 10,
@@ -69,7 +70,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             const Text(
               'PASSWORD *',
-              style: TextStyle(color: CustomColors.gray, fontSize: 12),
+              style: TextStyle(color: CustomColors.gray, fontSize: 12, fontWeight: CustomColors.medium),
             ),
             const SizedBox(
               height: 10,
@@ -84,14 +85,14 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             const Text(
               '6-16 alphanumeric characters with a symbol',
-              style: TextStyle(color: CustomColors.gray, fontSize: 12),
+              style: TextStyle(color: CustomColors.gray, fontSize: 12, fontWeight: CustomColors.regular),
             ),
             const SizedBox(
               height: 20,
             ),
             const Text(
               'NICKNAME *',
-              style: TextStyle(color: CustomColors.gray, fontSize: 12),
+              style: TextStyle(color: CustomColors.gray, fontSize: 12, fontWeight: CustomColors.medium),
             ),
             const SizedBox(
               height: 10,
@@ -106,7 +107,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             const Text(
               'Max 20 characters',
-              style: TextStyle(color: CustomColors.gray, fontSize: 12),
+              style: TextStyle(color: CustomColors.gray, fontSize: 12, fontWeight: CustomColors.regular),
             ),
             const SizedBox(
               height: 20,
@@ -146,6 +147,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
+                      fontWeight: CustomColors.regular,
                     ),
                   ),
                 ),

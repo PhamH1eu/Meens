@@ -8,6 +8,7 @@ import 'widget/social_login.dart';
 import 'widget/error.dart';
 import 'widget/divider.dart';
 
+
 // ignore_for_file: prefer_const_constructors
 
 class LoginPage extends StatefulWidget {
@@ -79,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed('/signup');
+                      Navigator.of(context).pushNamed('/signup', arguments: "Sign Up");
                     },
                     child: Container(
                       height: 45,
@@ -98,6 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(
                             color: CustomColors.green,
                             fontSize: 20,
+                            fontWeight: CustomColors.regular,
                           ),
                         ),
                       ),
@@ -121,6 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
+                            fontWeight: CustomColors.regular,
                           ),
                         ),
                       ),
@@ -138,6 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(
                     color: CustomColors.gray,
                     fontSize: 12,
+                    fontWeight: CustomColors.regular,
                   ),
                 ),
               ),

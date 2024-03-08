@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 import 'package:webtoon/auth/login_screen.dart';
+import 'package:webtoon/home/home_screen.dart';
 
-import 'app.dart';
 import 'auth/signup_screen.dart';
 import 'firebase_options.dart';
 
@@ -26,21 +27,49 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Hind'),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-      routes: {
-        '/login': (context) => const LoginPage(),
-        '/signup': (context) => const SignUpPage(),
-        '/app':(context) => const MyHomePage(title: 'Flutter Demo Home Page')
-  },
+      theme: ThemeData(
+        fontFamily: 'Hind',
+        pageTransitionsTheme: PageTransitionsTheme(builders: {
+          TargetPlatform.android:
+              PageTransition(type: PageTransitionType.rightToLeft, child: this)
+                  .matchingBuilder,
+        }),
+      ),
+      home: MyHomePage(),
+      onGenerateRoute: (settings) {
+        final args = settings.arguments;
+        switch (settings.name) {
+          case '/login':
+            return PageTransition(
+              child: LoginPage(),
+              type: PageTransitionType.theme,
+              settings: settings,
+              reverseDuration: Duration(seconds: 1),
+            );
+          case '/signup':
+            return PageTransition(
+              child: SignUpPage(title: args as String),
+              type: PageTransitionType.theme,
+              settings: settings,
+              reverseDuration: Duration(seconds: 1),
+            );
+          case '/app':
+            return PageTransition(
+              child: MyHomePage(),
+              type: PageTransitionType.theme,
+              settings: settings,
+              reverseDuration: Duration(seconds: 1),
+            );
+          default:
+            return null;
+        }
+      },
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -54,8 +83,9 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return LoginPage();
+        } else {
+          return Home();
         }
-        return App();
       },
     );
   }
