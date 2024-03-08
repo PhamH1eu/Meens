@@ -2,9 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:webtoon/home/widgets/song_info.dart';
+import 'package:webtoon/model/playlist.dart';
+import 'package:webtoon/model/song.dart';
 
 import '../utilities/color.dart';
 import './sidebar.dart';
+import 'widgets/playlist_info.dart';
+
+Song song = Song(title: "Whatever It Takes", artist: "IMAGINE DRAGONS", artWork: "assets/artwork.jpg");
+Playlist  playlist = Playlist(title: "Evolve", artwork: "assets/album.jpg");
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -13,6 +20,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     var scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
+      backgroundColor: CustomColors.background,
       key: scaffoldKey,
       drawer: const Sidebar(),
       appBar: AppBar(
@@ -60,18 +68,12 @@ class Home extends StatelessWidget {
                 },
                 itemCount: 5,
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => Container(
-                  width: 200,
-                  decoration: BoxDecoration(
-                    color: CustomColors.mainText,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
+                itemBuilder: (context, index) => SongInfo(song: song),
               ),
             ),
             const SizedBox(height: 20),
             const Text(
-              'My playlist',
+              'My Playlist',
               style: TextStyle(
                   fontWeight: CustomColors.extraBold,
                   color: CustomColors.mainText,
@@ -87,13 +89,7 @@ class Home extends StatelessWidget {
                 },
                 itemCount: 4,
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => Container(
-                  width: 200,
-                  decoration: BoxDecoration(
-                    color: CustomColors.mainText,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
+                itemBuilder: (context, index) => PlaylistInfo(playlist: playlist),
               ),
             ),
             const SizedBox(height: 15),

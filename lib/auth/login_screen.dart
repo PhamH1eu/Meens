@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import '../utilities/color.dart';
 
 import 'firebase_auth/firebase_services.dart';
-import 'widget/login_header.dart';
-import 'widget/form_container_widget.dart';
-import 'widget/social_login.dart';
-import 'widget/error.dart';
-import 'widget/divider.dart';
+import 'widgets/login_header.dart';
+import 'widgets/form_container_widget.dart';
+import 'widgets/social_login.dart';
+import 'widgets/error.dart';
+import 'widgets/divider.dart';
 
 // ignore_for_file: prefer_const_constructors
 

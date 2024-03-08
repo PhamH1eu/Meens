@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../utilities/color.dart';
 import 'firebase_auth/firebase_services.dart';
-import 'widget/form_container_widget.dart';
-import 'widget/error.dart';
+import 'widgets/form_container_widget.dart';
+import 'widgets/error.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key, required this.title});
