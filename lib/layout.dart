@@ -7,7 +7,6 @@ import 'package:webtoon/miniplayer/mini.dart';
 
 import 'home/sidebar.dart';
 import 'setting/setting_screen.dart';
-import 'utilities/color.dart';
 import 'utilities/provider.dart';
 
 Set<Widget> _pages = {
@@ -42,7 +41,7 @@ class LayoutState extends ConsumerState<Layout> {
               leading: Builder(builder: (context) {
                 return IconButton(
                   icon: const Icon(FontAwesomeIcons.bars),
-                  color: CustomColors.mainText,
+                  color: Theme.of(context).primaryColor,
                   onPressed: () {
                     Scaffold.of(context).openDrawer();
                   },
@@ -53,7 +52,7 @@ class LayoutState extends ConsumerState<Layout> {
                   padding: const EdgeInsets.only(right: 20),
                   child: IconButton(
                     icon: const Icon(FontAwesomeIcons.magnifyingGlass),
-                    color: CustomColors.mainText,
+                    color: Theme.of(context).primaryColor,
                     onPressed: () {},
                   ),
                 ),
@@ -61,7 +60,7 @@ class LayoutState extends ConsumerState<Layout> {
               backgroundColor: Colors.transparent,
             )
           : null,
-      backgroundColor: CustomColors.background,
+      // backgroundColor: CustomColors.background,
       body: Stack(children: <Widget>[
         _pages.elementAt(tab),
         const MiniPlayer(),

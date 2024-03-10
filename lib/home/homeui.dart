@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../model/playlist.dart';
 import '../model/song.dart';
-import '../utilities/color.dart';
+import '../utilities/fonts.dart';
 import 'widgets/playlist_info.dart';
 import 'widgets/song_info.dart';
 
@@ -23,7 +23,7 @@ class _HomeUIState extends State<HomeUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColors.background,
+      // backgroundColor: CustomColors.background,
       body: Padding(
         padding: const EdgeInsets.only(right: 20.0, left: 20.0),
         child: Column(
@@ -31,11 +31,11 @@ class _HomeUIState extends State<HomeUI> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 20),
-            const Text(
+            Text(
               'Recommended for you',
               style: TextStyle(
                   fontWeight: CustomColors.extraBold,
-                  color: CustomColors.mainText,
+                  color: Theme.of(context).primaryColor,
                   fontSize: 25,
                   fontFamily: 'Gilroy'),
             ),
@@ -52,11 +52,11 @@ class _HomeUIState extends State<HomeUI> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
+            Text(
               'My Playlist',
               style: TextStyle(
                   fontWeight: CustomColors.extraBold,
-                  color: CustomColors.mainText,
+                  color: Theme.of(context).primaryColor,
                   fontSize: 25,
                   fontFamily: 'Gilroy'),
             ),

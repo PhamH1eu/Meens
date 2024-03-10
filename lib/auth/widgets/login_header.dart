@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:webtoon/utilities/color.dart';
+import 'package:webtoon/utilities/fonts.dart';
 
 class LoginHeader extends StatefulWidget {
   const LoginHeader({super.key});
@@ -20,7 +20,7 @@ class _LoginHeaderState extends State<LoginHeader> {
           width: MediaQuery.of(context).size.width / 2 - 20,
           child: Text('Sign up or log in to enjoy free comics.',
               style: TextStyle(
-                color: CustomColors.mainText,
+                color: Theme.of(context).primaryColor,
                 fontSize: 16,
                 fontWeight: CustomColors.regular,
                 fontFamily: 'Gilroy'

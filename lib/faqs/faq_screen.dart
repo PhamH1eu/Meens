@@ -15,7 +15,7 @@ class FAQ extends StatelessWidget {
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                ref.watch(countProvider.notifier).state = 0;
+                ref.read(countProvider.notifier).state = 0;
               },
             ),
             title: const Text('FAQ'),

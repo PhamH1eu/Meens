@@ -2,17 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class CustomColors {
-  //color
-  static const Color gray = Color.fromRGBO(137, 150, 184, 1);
-  static const Color mainText = Color.fromRGBO(9, 17, 39, 1);
-  static const Color green = Color.fromRGBO(7, 95, 227, 1);
-  static const Color background = Color.fromRGBO(247, 250, 255, 1);
+  ThemeData lightTheme = ThemeData.light().copyWith(
+    primaryColor: const Color.fromRGBO(9, 17, 39, 1),
+    secondaryHeaderColor: const Color.fromRGBO(137, 150, 184, 1),
+    scaffoldBackgroundColor: const Color.fromRGBO(247, 250, 255, 1),
+    appBarTheme: const AppBarTheme(
+        backgroundColor: Color.fromRGBO(247, 250, 255, 1),
+        iconTheme: IconThemeData(color: Color.fromRGBO(9, 17, 39, 1))),
+  );
 
-  // dark mode
-  // static const Color background = Color.fromRGBO(9, 18, 39, 1);
-  // static const Color gray = Color.fromRGBO(120, 120, 120, 1);
-  // static const Color mainText = Color.fromRGBO(234, 240, 255, 1);
-  // static const Color green = Color.fromRGBO(7, 95, 227, 1);
+  ThemeData darkTheme = ThemeData.dark().copyWith(
+    primaryColor: const Color.fromRGBO(234, 240, 255, 1),
+    secondaryHeaderColor: const Color.fromRGBO(165, 192, 255, 0.7),
+    scaffoldBackgroundColor: const Color.fromRGBO(9, 18, 39, 1),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color.fromRGBO(9, 18, 39, 1),
+      iconTheme: IconThemeData(color: Color.fromRGBO(234, 240, 255, 1)),
+    ),
+  );
 
   //font
   static const FontWeight regular = FontWeight.w400;

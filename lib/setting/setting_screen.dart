@@ -31,7 +31,6 @@ class Setting extends StatelessWidget {
   }
 }
 
-
 Future signOut() async {
   await FirebaseAuth.instance.signOut();
   await GoogleSignIn().signOut();

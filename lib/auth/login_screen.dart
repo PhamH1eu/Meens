@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utilities/color.dart';
+import '../utilities/fonts.dart';
 
 import 'firebase_auth/firebase_services.dart';
 import 'widgets/login_header.dart';
@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: CustomColors.background,
+      // backgroundColor: CustomColors.background,
       body: Padding(
         padding: EdgeInsets.all(14.0),
         child: Center(
@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(
-                          color: CustomColors.mainText,
+                          color: Theme.of(context).primaryColor,
                           width: 1,
                         ),
                       ),
@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           "Sign up",
                           style: TextStyle(
-                              color: CustomColors.green,
+                              color: Color.fromRGBO(7, 95, 227, 1),
                               fontSize: 20,
                               fontWeight: CustomColors.regular,
                               fontFamily: 'Gilroy'),
@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 45,
                       width: MediaQuery.of(context).size.width / 2 - 20,
                       decoration: BoxDecoration(
-                        color: CustomColors.green,
+                        color: Color.fromRGBO(7, 95, 227, 1),
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Center(
@@ -140,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Text(
                   "Forgot Password?",
                   style: TextStyle(
-                      color: CustomColors.gray,
+                      color: Theme.of(context).secondaryHeaderColor,
                       fontSize: 12,
                       fontWeight: CustomColors.regular,
                       fontFamily: 'Gilroy'),

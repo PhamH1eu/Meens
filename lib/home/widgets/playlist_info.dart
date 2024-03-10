@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:webtoon/utilities/color.dart';
+import 'package:webtoon/utilities/fonts.dart';
 
 import '../../model/playlist.dart';
 
@@ -51,9 +51,9 @@ class _PlaylistInfoState extends State<PlaylistInfo> {
         const SizedBox(height: 10),
         Text(
           widget.playlist.title,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: CustomColors.semiBold,
-            color: CustomColors.mainText,
+            color: Theme.of(context).primaryColor,
             fontFamily: 'Gilroy',
             fontSize: 14,
           ),

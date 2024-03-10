@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:webtoon/utilities/color.dart';
+import 'package:webtoon/utilities/fonts.dart';
 
 import '../../model/song.dart';
 
@@ -50,9 +50,9 @@ class _SongInfoState extends State<SongInfo> {
         const SizedBox(height: 10),
         Text(
           widget.song.title,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: CustomColors.semiBold,
-            color: CustomColors.mainText,
+            color: Theme.of(context).primaryColor,
             fontFamily: 'Gilroy',
             fontSize: 14,
           ),
@@ -60,8 +60,8 @@ class _SongInfoState extends State<SongInfo> {
         const SizedBox(height: 5),
         Text(
           widget.song.artist,
-          style: const TextStyle(
-            color: CustomColors.gray,
+          style: TextStyle(
+            color: Theme.of(context).secondaryHeaderColor,
             fontFamily: 'Gilroy',
             fontSize: 10,
           ),

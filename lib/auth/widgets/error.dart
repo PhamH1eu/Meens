@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:webtoon/utilities/color.dart';
 
 class Error extends StatefulWidget {
   const Error({super.key, required this.error});
@@ -18,7 +17,7 @@ class _ErrorState extends State<Error> {
       children: <Widget>[
         Text(widget.error,
             style:
-                TextStyle(color: CustomColors.mainText, fontFamily: 'Gilroy')),
+                TextStyle(color: Theme.of(context).primaryColor, fontFamily: 'Gilroy')),
         SizedBox(height: 10),
       ],
     );

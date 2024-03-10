@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utilities/color.dart';
+import '../utilities/fonts.dart';
 import 'firebase_auth/firebase_services.dart';
 import 'widgets/form_container_widget.dart';
 import 'widgets/error.dart';
@@ -28,7 +28,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-          color: CustomColors.mainText,
+          color: Theme.of(context).primaryColor,
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -36,27 +36,27 @@ class _SignUpPageState extends State<SignUpPage> {
         backgroundColor: Colors.transparent,
       ),
       resizeToAvoidBottomInset: false,
-      backgroundColor: CustomColors.background,
+      // backgroundColor: CustomColors.background,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Center(
+            Center(
               child: Text(
                 'Sign Up',
                 style: TextStyle(
-                    color: CustomColors.mainText,
+                    color: Theme.of(context).primaryColor,
                     fontSize: 30,
                     fontWeight: CustomColors.bold,
                     fontFamily: 'Gilroy'),
               ),
             ),
-            const Text(
+            Text(
               'EMAIL ADDRESS *',
               style: TextStyle(
-                  color: CustomColors.gray,
+                  color: Theme.of(context).secondaryHeaderColor,
                   fontSize: 12,
                   fontWeight: CustomColors.medium,
                   fontFamily: 'Gilroy'),
@@ -72,10 +72,10 @@ class _SignUpPageState extends State<SignUpPage> {
             const SizedBox(
               height: 20,
             ),
-            const Text(
+            Text(
               'PASSWORD *',
               style: TextStyle(
-                  color: CustomColors.gray,
+                  color: Theme.of(context).secondaryHeaderColor,
                   fontSize: 12,
                   fontWeight: CustomColors.medium,
                   fontFamily: 'Gilroy'),
@@ -91,10 +91,10 @@ class _SignUpPageState extends State<SignUpPage> {
             const SizedBox(
               height: 10,
             ),
-            const Text(
+            Text(
               '6-16 alphanumeric characters with a symbol',
               style: TextStyle(
-                  color: CustomColors.gray,
+                  color: Theme.of(context).secondaryHeaderColor,
                   fontSize: 12,
                   fontWeight: CustomColors.regular,
                   fontFamily: 'Gilroy'),
@@ -102,10 +102,10 @@ class _SignUpPageState extends State<SignUpPage> {
             const SizedBox(
               height: 20,
             ),
-            const Text(
+            Text(
               'NICKNAME *',
               style: TextStyle(
-                  color: CustomColors.gray,
+                  color: Theme.of(context).secondaryHeaderColor,
                   fontSize: 12,
                   fontWeight: CustomColors.medium,
                   fontFamily: 'Gilroy'),
@@ -121,10 +121,10 @@ class _SignUpPageState extends State<SignUpPage> {
             const SizedBox(
               height: 10,
             ),
-            const Text(
+            Text(
               'Max 20 characters',
               style: TextStyle(
-                  color: CustomColors.gray,
+                  color: Theme.of(context).secondaryHeaderColor,
                   fontSize: 12,
                   fontWeight: CustomColors.regular,
                   fontFamily: 'Gilroy'),
@@ -134,14 +134,14 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             // const Text(
             //   'By signing up, I agree to the Terms of Use and Privacy Policy of WEBTOON',
-            //   style: TextStyle(color: CustomColors.gray, fontSize: 12),
+            //   style: TextStyle(color: Theme.of(context).secondaryHeaderColor, fontSize: 12),
             // ),
             // const SizedBox(
             //   height: 20,
             // ),
             // const Text(
             //   'WEBTOON collects and processes your email address for marketing purposes. You can easily unsubscribe at any time via the opt-out link in the marketing emails.',
-            //   style: TextStyle(color: CustomColors.gray, fontSize: 12),
+            //   style: TextStyle(color: Theme.of(context).secondaryHeaderColor, fontSize: 12),
             // ),
             Visibility(
               visible: isError,
@@ -158,7 +158,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 45,
                 width: MediaQuery.of(context).size.width - 20,
                 decoration: BoxDecoration(
-                  color: CustomColors.green,
+                  color: const Color.fromRGBO(7, 95, 227, 1),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: const Center(

@@ -6,9 +6,11 @@ import 'package:page_transition/page_transition.dart';
 
 import 'package:webtoon/auth/login_screen.dart';
 import 'package:webtoon/layout.dart';
+import 'package:webtoon/utilities/fonts.dart';
 
 import 'auth/signup_screen.dart';
 import 'firebase_options.dart';
+import 'utilities/provider.dart';
 
 
 void main() async {
@@ -21,21 +23,17 @@ void main() async {
 
 
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var darkMode = ref.watch(darkModeProvider);
+    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        pageTransitionsTheme: PageTransitionsTheme(builders: {
-          TargetPlatform.android:
-              PageTransition(type: PageTransitionType.rightToLeft, child: this)
-                  .matchingBuilder,
-        }),
-      ),
+      theme: darkMode ? CustomColors().darkTheme : CustomColors().lightTheme,
       home: const MyHomePage(),
       onGenerateRoute: (settings) {
         final args = settings.arguments;
@@ -43,21 +41,21 @@ class MyApp extends StatelessWidget {
           case '/login':
             return PageTransition(
               child: const LoginPage(),
-              type: PageTransitionType.theme,
+              type: PageTransitionType.rightToLeft,
               settings: settings,
               reverseDuration: const Duration(seconds: 1),
             );
           case '/signup':
             return PageTransition(
               child: SignUpPage(title: args as String),
-              type: PageTransitionType.theme,
+              type: PageTransitionType.rightToLeft,
               settings: settings,
               reverseDuration: const Duration(seconds: 1),
             );
           case '/app':
             return PageTransition(
               child: const MyHomePage(),
-              type: PageTransitionType.theme,
+              type: PageTransitionType.rightToLeft,
               settings: settings,
               reverseDuration: const Duration(seconds: 1),
             );
@@ -86,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
         if (!snapshot.hasData) {
           return const LoginPage();
         } else {
-          return Layout();
+          return const Layout();
         }
       },
     );
