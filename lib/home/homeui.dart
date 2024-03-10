@@ -1,49 +1,29 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:webtoon/home/widgets/song_info.dart';
-import 'package:webtoon/model/playlist.dart';
-import 'package:webtoon/model/song.dart';
 
+import '../model/playlist.dart';
+import '../model/song.dart';
 import '../utilities/color.dart';
-import './sidebar.dart';
 import 'widgets/playlist_info.dart';
+import 'widgets/song_info.dart';
 
-Song song = Song(title: "Whatever It Takes", artist: "IMAGINE DRAGONS", artWork: "assets/artwork.jpg");
-Playlist  playlist = Playlist(title: "Evolve", artwork: "assets/album.jpg");
+Song song = Song(
+    title: "Whatever It Takes",
+    artist: "IMAGINE DRAGONS",
+    artWork: "assets/artwork.jpg");
+Playlist playlist = Playlist(title: "Evolve", artwork: "assets/album.jpg");
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class HomeUI extends StatefulWidget {
+  const HomeUI({super.key});
 
   @override
+  State<HomeUI> createState() => _HomeUIState();
+}
+
+class _HomeUIState extends State<HomeUI> {
+  @override
   Widget build(BuildContext context) {
-    var scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
       backgroundColor: CustomColors.background,
-      key: scaffoldKey,
-      drawer: const Sidebar(),
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(FontAwesomeIcons.bars),
-          color: CustomColors.mainText,
-          onPressed: () {
-            scaffoldKey.currentState?.openDrawer();
-          },
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: IconButton(
-              icon: const Icon(FontAwesomeIcons.magnifyingGlass),
-              color: CustomColors.mainText,
-              onPressed: () {},
-            ),
-          ),
-        ],
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-      ),
       body: Padding(
         padding: const EdgeInsets.only(right: 20.0, left: 20.0),
         child: Column(
@@ -89,22 +69,13 @@ class Home extends StatelessWidget {
                 },
                 itemCount: 4,
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => PlaylistInfo(playlist: playlist),
+                itemBuilder: (context, index) =>
+                    PlaylistInfo(playlist: playlist),
               ),
-            ),
-            const SizedBox(height: 15),
-            IconButton(
-              icon: const Icon(FontAwesomeIcons.arrowRightFromBracket),
-              onPressed: signOut,
             ),
           ],
         ),
       ),
     );
-  }
-
-  Future signOut() async {
-    await FirebaseAuth.instance.signOut();
-    await GoogleSignIn().signOut();
   }
 }

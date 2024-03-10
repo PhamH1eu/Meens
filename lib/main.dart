@@ -1,23 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'package:webtoon/auth/login_screen.dart';
-import 'package:webtoon/home/home_screen.dart';
+import 'package:webtoon/layout.dart';
 
 import 'auth/signup_screen.dart';
 import 'firebase_options.dart';
 
-// ignore_for_file: prefer_const_constructors
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -34,30 +36,30 @@ class MyApp extends StatelessWidget {
                   .matchingBuilder,
         }),
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
       onGenerateRoute: (settings) {
         final args = settings.arguments;
         switch (settings.name) {
           case '/login':
             return PageTransition(
-              child: LoginPage(),
+              child: const LoginPage(),
               type: PageTransitionType.theme,
               settings: settings,
-              reverseDuration: Duration(seconds: 1),
+              reverseDuration: const Duration(seconds: 1),
             );
           case '/signup':
             return PageTransition(
               child: SignUpPage(title: args as String),
               type: PageTransitionType.theme,
               settings: settings,
-              reverseDuration: Duration(seconds: 1),
+              reverseDuration: const Duration(seconds: 1),
             );
           case '/app':
             return PageTransition(
-              child: MyHomePage(),
+              child: const MyHomePage(),
               type: PageTransitionType.theme,
               settings: settings,
-              reverseDuration: Duration(seconds: 1),
+              reverseDuration: const Duration(seconds: 1),
             );
           default:
             return null;
@@ -75,15 +77,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return LoginPage();
+          return const LoginPage();
         } else {
-          return Home();
+          return Layout();
         }
       },
     );

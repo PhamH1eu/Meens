@@ -1,9 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class CustomColors {
+  //color
   static const Color gray = Color.fromRGBO(137, 150, 184, 1);
   static const Color mainText = Color.fromRGBO(9, 17, 39, 1);
   static const Color green = Color.fromRGBO(7, 95, 227, 1);
@@ -15,12 +14,14 @@ class CustomColors {
   // static const Color mainText = Color.fromRGBO(234, 240, 255, 1);
   // static const Color green = Color.fromRGBO(7, 95, 227, 1);
 
+  //font
   static const FontWeight regular = FontWeight.w400;
   static const FontWeight medium = FontWeight.w500;
   static const FontWeight semiBold = FontWeight.w600;
   static const FontWeight bold = FontWeight.w700;
   static const FontWeight extraBold = FontWeight.w900;
 
+  //get dominant color
   static Future<Color> generatePaletteColor(url) async {
     final PaletteGenerator paletteGenerator =
         await PaletteGenerator.fromImageProvider(
@@ -29,6 +30,7 @@ class CustomColors {
     return paletteGenerator.paletteColors[0].color;
   }
 
+  //glow effect under image
   static Widget glowEffect(glowColor) {
     return Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
