@@ -47,6 +47,7 @@ dependencies:
   palette_generator: ^0.3.3+3
   miniplayer: ^1.0.1
   flutter_riverpod: ^2.4.10
+  tinycolor2: ^3.0.1
 
 dev_dependencies:
   flutter_test:

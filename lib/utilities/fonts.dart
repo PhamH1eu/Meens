@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:tinycolor2/tinycolor2.dart';
 
 class CustomColors {
   ThemeData lightTheme = ThemeData.light().copyWith(
@@ -34,11 +35,14 @@ class CustomColors {
         await PaletteGenerator.fromImageProvider(
       AssetImage(url),
     );
+    print(paletteGenerator.paletteColors[0].color);
     return paletteGenerator.paletteColors[0].color;
   }
 
   //glow effect under image
   static Widget glowEffect(glowColor) {
+    final TinyColor glow = TinyColor.fromColor(glowColor).lighten(20);
+
     return Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
         child: Container(
@@ -46,9 +50,10 @@ class CustomColors {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: glowColor,
+                color: glow.color,
                 blurRadius: 30,
-                offset: const Offset(0, 2), // changes position of shadow
+                spreadRadius: 10,
+                offset: const Offset(0, 1), // changes position of shadow
               ),
             ],
           ),
