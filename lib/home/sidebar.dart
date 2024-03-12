@@ -12,7 +12,7 @@ class Sidebar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var darkMode = ref.read(darkModeProvider);
     return Drawer(
-        // backgroundColor: CustomColors.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         child: ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
@@ -163,7 +163,6 @@ class Sidebar extends ConsumerWidget {
             ),
             onTap: () {
               ref.read(darkModeProvider.notifier).toggle();
-              Navigator.pop(context);
             }),
       ],
     ));

@@ -2,7 +2,7 @@ class Playlist {
   final String artwork;
   final String title;
 
-  Playlist({
+  const Playlist({
     required this.title,
     required this.artwork,
   });

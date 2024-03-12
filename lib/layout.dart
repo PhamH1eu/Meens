@@ -23,17 +23,19 @@ class Layout extends ConsumerStatefulWidget {
 }
 
 class LayoutState extends ConsumerState<Layout> {
-
   bool isHome = true;
 
   @override
   Widget build(BuildContext context) {
     final tab = ref.watch(countProvider);
-    if (tab != 0) {
-      isHome = false;
-    } else {
-      isHome = true;
-    }
+    ref.listen(countProvider, (previous, next) {
+      if (next == 0) {
+        isHome = true;
+      } else {
+        isHome = false;
+      }
+    });
+
     return Scaffold(
       drawer: const Sidebar(),
       appBar: isHome

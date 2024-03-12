@@ -17,7 +17,7 @@ class Setting extends StatelessWidget {
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                ref.read(countProvider.notifier).state = 0;
+                ref.invalidate(countProvider);
               },
             ),
             title: const Text('Settings'),

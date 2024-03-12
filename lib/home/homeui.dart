@@ -6,24 +6,19 @@ import '../utilities/fonts.dart';
 import 'widgets/playlist_info.dart';
 import 'widgets/song_info.dart';
 
-Song song = Song(
+const Song song = Song(
     title: "Whatever It Takes",
     artist: "IMAGINE DRAGONS",
     artWork: "assets/artwork.jpg");
-Playlist playlist = Playlist(title: "Evolve", artwork: "assets/album.jpg");
+const Playlist playlist =
+    Playlist(title: "Evolve", artwork: "assets/album.jpg");
 
-class HomeUI extends StatefulWidget {
+class HomeUI extends StatelessWidget {
   const HomeUI({super.key});
 
   @override
-  State<HomeUI> createState() => _HomeUIState();
-}
-
-class _HomeUIState extends State<HomeUI> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: CustomColors.background,
       body: Padding(
         padding: const EdgeInsets.only(right: 20.0, left: 20.0),
         child: Column(
@@ -48,7 +43,7 @@ class _HomeUIState extends State<HomeUI> {
                 },
                 itemCount: 5,
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => SongInfo(song: song),
+                itemBuilder: (context, index) => const SongInfo(song: song),
               ),
             ),
             const SizedBox(height: 20),
@@ -70,7 +65,7 @@ class _HomeUIState extends State<HomeUI> {
                 itemCount: 4,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) =>
-                    PlaylistInfo(playlist: playlist),
+                    const PlaylistInfo(playlist: playlist),
               ),
             ),
           ],

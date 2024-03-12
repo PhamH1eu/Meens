@@ -3,18 +3,22 @@ import 'package:palette_generator/palette_generator.dart';
 import 'package:tinycolor2/tinycolor2.dart';
 
 class CustomColors {
-  ThemeData lightTheme = ThemeData.light().copyWith(
+  ThemeData lightTheme = ThemeData(
+    fontFamily: 'Gilroy',
     primaryColor: const Color.fromRGBO(9, 17, 39, 1),
     secondaryHeaderColor: const Color.fromRGBO(137, 150, 184, 1),
+    focusColor: const Color.fromARGB(255, 240, 242, 246),
     scaffoldBackgroundColor: const Color.fromRGBO(247, 250, 255, 1),
     appBarTheme: const AppBarTheme(
         backgroundColor: Color.fromRGBO(247, 250, 255, 1),
         iconTheme: IconThemeData(color: Color.fromRGBO(9, 17, 39, 1))),
   );
 
-  ThemeData darkTheme = ThemeData.dark().copyWith(
+  ThemeData darkTheme = ThemeData(
+    fontFamily: 'Gilroy',
     primaryColor: const Color.fromRGBO(234, 240, 255, 1),
     secondaryHeaderColor: const Color.fromRGBO(165, 192, 255, 0.7),
+    focusColor: const Color.fromARGB(255, 11, 25, 49),
     scaffoldBackgroundColor: const Color.fromRGBO(9, 18, 39, 1),
     appBarTheme: const AppBarTheme(
       backgroundColor: Color.fromRGBO(9, 18, 39, 1),
@@ -35,7 +39,6 @@ class CustomColors {
         await PaletteGenerator.fromImageProvider(
       AssetImage(url),
     );
-    print(paletteGenerator.paletteColors[0].color);
     return paletteGenerator.paletteColors[0].color;
   }
 

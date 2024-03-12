@@ -3,7 +3,7 @@ class Song {
   final String artist;
   final String artWork;
 
-  Song({
+  const Song({
     required this.title,
     required this.artist,
     required this.artWork,

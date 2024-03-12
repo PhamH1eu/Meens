@@ -33,6 +33,7 @@ class MyApp extends ConsumerWidget {
     
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      
       theme: darkMode ? CustomColors().darkTheme : CustomColors().lightTheme,
       home: const MyHomePage(),
       onGenerateRoute: (settings) {

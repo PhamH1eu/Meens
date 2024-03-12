@@ -14,18 +14,18 @@ class PlaylistInfo extends StatefulWidget {
 
 class _PlaylistInfoState extends State<PlaylistInfo> {
   Color glowColor = Colors.black;
+
   @override
   void initState() {
     super.initState();
-    CustomColors.generatePaletteColor(widget.playlist.artwork).then((value) {
-      if (mounted) {
-        setState(() {
-          glowColor = value;
-        });
-      }
-    });
+    // CustomColors.generatePaletteColor(widget.playlist.artwork).then((value) {
+    //   if (mounted) {
+    //     setState(() {
+    //       glowColor = value;
+    //     });
+    //   }
+    // });
   }
-  
 
   @override
   Widget build(BuildContext context) {
