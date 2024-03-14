@@ -14,7 +14,7 @@ class SongInfo extends StatefulWidget {
 
 class _SongInfoState extends State<SongInfo> {
   Color glowColor = Colors.black;
-  
+
   @override
   void initState() {
     super.initState();

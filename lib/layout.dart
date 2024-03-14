@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:webtoon/faqs/faq_screen.dart';
 import 'package:webtoon/home/homeui.dart';
-import 'package:webtoon/miniplayer/mini.dart';
+import 'package:webtoon/miniplayer/mini_player.dart';
 
 import 'home/sidebar.dart';
+import 'riverpod/tab.dart';
 import 'setting/setting_screen.dart';
-import 'utilities/provider.dart';
 
 Set<Widget> _pages = {
   const HomeUI(),
@@ -62,7 +62,6 @@ class LayoutState extends ConsumerState<Layout> {
               backgroundColor: Colors.transparent,
             )
           : null,
-      // backgroundColor: CustomColors.background,
       body: Stack(children: <Widget>[
         _pages.elementAt(tab),
         const MiniPlayer(),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webtoon/utilities/fonts.dart';
 
-import '../utilities/provider.dart';
+import '../riverpod/tab.dart';
 
 class FAQ extends StatelessWidget {
   const FAQ({super.key});
@@ -28,6 +28,7 @@ class FAQ extends StatelessWidget {
             centerTitle: true,
           ),
           body: Container(
+            padding: const EdgeInsets.only(bottom: 70),
             color: Theme.of(context).focusColor,
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -387,7 +388,7 @@ class FAQ extends StatelessWidget {
                     ),
                     children: [
                       Text(
-                        "sii",
+                        "Yes, Meens allows you downloading or caching music at your devices. In order to play music, you must have a working internet connection first in order to download",
                         style: TextStyle(color: Theme.of(context).primaryColor),
                       )
                     ],

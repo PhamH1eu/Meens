@@ -54,7 +54,7 @@ class CustomColors {
             boxShadow: [
               BoxShadow(
                 color: glow.color,
-                blurRadius: 30,
+                blurRadius: 20,
                 spreadRadius: 10,
                 offset: const Offset(0, 1), // changes position of shadow
               ),

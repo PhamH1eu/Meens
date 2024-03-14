@@ -13,6 +13,8 @@ const Song song = Song(
 const Playlist playlist =
     Playlist(title: "Evolve", artwork: "assets/album.jpg");
 
+//App is lagging because async run when HomeUI rebuilt => reinsert ListView.builder => reinsert Widget
+
 class HomeUI extends StatelessWidget {
   const HomeUI({super.key});
 
