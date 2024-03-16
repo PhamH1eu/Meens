@@ -15,8 +15,9 @@ class MiniPlayer extends ConsumerWidget {
 
     return GestureDetector(
       child: Align(
-        alignment: Alignment.bottomCenter,
-        child: SizedBox(
+        alignment: const AlignmentDirectional(0, 1),
+        child: Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
           height: 80,
           child: Column(
             children: [
@@ -24,7 +25,7 @@ class MiniPlayer extends ConsumerWidget {
                   stream: PositionData.positionDataStream(audioPlayer),
                   builder: (context, snapshot) {
                     final positionData = snapshot.data;
-
+      
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: ProgressBar(
