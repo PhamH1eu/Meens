@@ -4,8 +4,6 @@ import 'package:webtoon/likedsong/widgets/like_song.dart';
 import 'package:webtoon/utilities/fonts.dart';
 
 import '../home/homeui.dart';
-import '../home/widgets/song_info.dart';
-import '../model/song.dart';
 import '../riverpod/tab.dart';
 
 List<String> images = [
@@ -57,7 +55,7 @@ class LikedSong extends StatelessWidget {
                 const SizedBox(height: 20),
                  Expanded(
                     child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 4.0,
                         mainAxisSpacing: 8.0,

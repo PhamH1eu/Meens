@@ -12,7 +12,7 @@ class Control extends StatelessWidget {
       children: [
         IconButton(
           color: Theme.of(context).primaryColor,
-          icon: const Icon(Icons.skip_previous),
+          icon: const Icon(Icons.skip_previous_outlined),
           iconSize: size,
           onPressed: audioPlayer.seekToPrevious,
         ),
@@ -28,21 +28,21 @@ class Control extends StatelessWidget {
             } else if (playing != true) {
               return IconButton(
                 color: Theme.of(context).primaryColor,
-                icon: const Icon(Icons.play_arrow),
+                icon: const Icon(Icons.play_arrow_outlined),
                 iconSize: size,
                 onPressed: audioPlayer.play,
               );
             } else if (processingState != ProcessingState.completed) {
               return IconButton(
                 color: Theme.of(context).primaryColor,
-                icon: const Icon(Icons.pause),
+                icon: const Icon(Icons.pause_outlined),
                 iconSize: size,
                 onPressed: audioPlayer.pause,
               );
             } else {
               return IconButton(
                 color: Theme.of(context).primaryColor,
-                icon: const Icon(Icons.replay),
+                icon: const Icon(Icons.replay_outlined),
                 iconSize: size,
                 onPressed: () => audioPlayer.seek(Duration.zero, index: 0),
               );
@@ -51,7 +51,7 @@ class Control extends StatelessWidget {
         ),
         IconButton(
           color: Theme.of(context).primaryColor,
-          icon: const Icon(Icons.skip_next),
+          icon: const Icon(Icons.skip_next_outlined),
           iconSize: size,
           onPressed: audioPlayer.seekToNext,
         ),

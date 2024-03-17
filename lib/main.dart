@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:webtoon/auth/login_screen.dart';
 import 'package:webtoon/layout.dart';
 import 'package:webtoon/miniplayer/play_screen.dart';
+import 'package:webtoon/onboard/onboard_screen.dart';
 import 'package:webtoon/utilities/fonts.dart';
 
 import 'auth/signup_screen.dart';
@@ -24,11 +26,14 @@ Future<void> main() async {
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
   );
-  runApp(const ProviderScope(child: MyApp()));
+  final prefs = await SharedPreferences.getInstance();
+  final isFirstTime = prefs.getBool('isFirstTime') ?? true;
+  runApp(ProviderScope(child: MyApp(isFirstTime: isFirstTime)));
 }
 
 class MyApp extends ConsumerWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.isFirstTime});
+  final bool isFirstTime;
 
   // This widget is the root of your application.
   @override
@@ -38,7 +43,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: darkMode ? CustomColors().darkTheme : CustomColors().lightTheme,
-      home: const MyHomePage(),
+      home: MyHomePage(isFirstTime: isFirstTime),
       onGenerateRoute: (settings) {
         final args = settings.arguments;
         switch (settings.name) {
@@ -56,19 +61,19 @@ class MyApp extends ConsumerWidget {
               settings: settings,
               reverseDuration: const Duration(seconds: 1),
             );
-          case '/app':
+          case '/home':
             return PageTransition(
-              child: const MyHomePage(),
+              child: const Layout(),
               type: PageTransitionType.rightToLeft,
               settings: settings,
-              reverseDuration: const Duration(seconds: 1),
+              reverseDuration: const Duration(milliseconds: 500),
             );
           case '/play':
             return PageTransition(
               child: const PlayingScreen(),
-              type: PageTransitionType.rightToLeft,
+              type: PageTransitionType.bottomToTop,
               settings: settings,
-              reverseDuration: const Duration(seconds: 1),
+              reverseDuration: const Duration(milliseconds: 500),
             );
           default:
             return null;
@@ -79,7 +84,9 @@ class MyApp extends ConsumerWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({super.key, required this.isFirstTime});
+  final bool isFirstTime;
+
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -94,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
         if (!snapshot.hasData) {
           return const LoginPage();
         } else {
-          return const Layout();
+          return widget.isFirstTime ? const OnboardScreen() : const Layout();
         }
       },
     );

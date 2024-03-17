@@ -1,10 +1,7 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:volume_control/volume_control.dart';
-import 'package:volume_controller/volume_controller.dart';
+// import 'package:volume_controller/volume_controller.dart';
 import '../riverpod/song_provider.dart';
 import 'widgets/control_button.dart';
 import 'widgets/progress_bar.dart';
@@ -27,16 +24,16 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
   void initState() {
     super.initState();
     // Listen to system volume change
-    VolumeController().listener((volume) {
-      setState(() => volumeLevel = volume);
-    });
+    // VolumeController().listener((volume) {
+    //   setState(() => volumeLevel = volume);
+    // });
 
-    VolumeController().getVolume().then((volume) => volumeLevel = volume);
+    // VolumeController().getVolume().then((volume) => volumeLevel = volume);
   }
 
   @override
   void dispose() {
-    VolumeController().removeListener();
+    // VolumeController().removeListener();
     super.dispose();
   }
 
@@ -46,8 +43,10 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {},
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: const Text('Now Playing'),
         centerTitle: true,
@@ -62,7 +61,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
               child: Image.asset('assets/artwork.jpg')),
           const SizedBox(height: 20),
           Stack(children: <Widget>[
-            Center(
+            const Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -107,7 +106,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
               IconButton(
                 icon: Icon(
                   Icons.repeat,
-                  color: isRepeat ? Color.fromARGB(255, 124, 200, 10) : null,
+                  color: isRepeat ? const Color.fromARGB(255, 124, 200, 10) : null,
                 ),
                 onPressed: () {
                   setState(() {
@@ -119,7 +118,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
               IconButton(
                 icon: Icon(
                   Icons.shuffle,
-                  color: isShuffle ? Color.fromARGB(255, 124, 200, 10) : null,
+                  color: isShuffle ? const Color.fromARGB(255, 124, 200, 10) : null,
                 ),
                 onPressed: () {
                   setState(() {
@@ -131,8 +130,8 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
               const Spacer(),
               IconButton(
                 icon: volumeLevel > 0.5
-                    ? Icon(Icons.volume_up)
-                    : Icon(Icons.volume_down),
+                    ? const Icon(Icons.volume_up)
+                    : const Icon(Icons.volume_down),
                 onPressed: () {
                   setState(() {
                     showVolumeControl = !showVolumeControl;
@@ -147,7 +146,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                   onChanged: (double value) {
                     setState(() {
                       volumeLevel = value;
-                      VolumeController().setVolume(volumeLevel);
+                      // VolumeController().setVolume(volumeLevel);
                     });
                     value = volumeLevel;
                   },
@@ -179,31 +178,10 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
           ),
           const SizedBox(height: 40),
           Padding(
-              padding: EdgeInsets.symmetric(horizontal: 80),
+              padding: const EdgeInsets.symmetric(horizontal: 80),
               child: Control(audioPlayer: audioPlayer, size: 60)),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     IconButton(
-          //       icon: Icon(Icons.skip_previous),
-          //       onPressed: () {},
-          //     ),
-          //     IconButton(
-          //       icon: Icon(Icons.play_arrow),
-          //       onPressed: () {},
-          //     ),
-          //     IconButton(
-          //       icon: Icon(Icons.skip_next),
-          //       onPressed: () {},
-          //     ),
-          //   ],
-          // ),
         ],
       ),
     );
   }
-
-  // void _adjustVolume(double volumeLevel) async {
-  //   await VolumeControl.setVolume(volumeLevel);
-  // }
 }

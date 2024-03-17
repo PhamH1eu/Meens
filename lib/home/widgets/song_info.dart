@@ -33,8 +33,8 @@ class _SongInfoState extends State<SongInfo> {
       // crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         SizedBox(
-          height: 150,
-          width: 150,
+          height: 180,
+          width: 180,
           child: Stack(children: [
             CustomColors.glowEffect(glowColor),
             Container(

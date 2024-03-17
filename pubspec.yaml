@@ -54,6 +54,8 @@ dependencies:
   just_audio_background: ^0.0.1-beta.11
   riverpod_lint: ^2.3.10
   riverpod_annotation: ^2.3.5
+  smooth_page_indicator: ^1.1.0
+  shared_preferences: ^2.2.2
   volume_controller: ^2.0.7
 
 dev_dependencies:
@@ -104,6 +106,10 @@ flutter:
     - assets/audios/TTL.mp3
     - assets/audios/vokichcuaem.mp3
     - assets/audios/anhdaungo.mp3
+    - assets/playlist.gif
+    - assets/intro.png
+    - assets/personal.png
+    - assets/genres/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
