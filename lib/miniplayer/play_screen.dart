@@ -1,7 +1,10 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:volume_control/volume_control.dart';
+import 'package:volume_controller/volume_controller.dart';
 import '../riverpod/song_provider.dart';
 import 'widgets/control_button.dart';
 import 'widgets/progress_bar.dart';
@@ -14,14 +17,144 @@ class PlayingScreen extends ConsumerStatefulWidget {
 }
 
 class PlayingScreenState extends ConsumerState<PlayingScreen> {
+  bool isFavorite = false;
+  bool isRepeat = false;
+  bool isShuffle = false;
+  bool showVolumeControl = false;
+  double volumeLevel = 0.5;
 
+  @override
+  void initState() {
+    super.initState();
+    // Listen to system volume change
+    VolumeController().listener((volume) {
+      setState(() => volumeLevel = volume);
+    });
+
+    VolumeController().getVolume().then((volume) => volumeLevel = volume);
+  }
+
+  @override
+  void dispose() {
+    VolumeController().removeListener();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final audioPlayer = ref.watch(audioHandlerProvider);
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {},
+        ),
+        title: const Text('Now Playing'),
+        centerTitle: true,
+      ),
       body: Column(
-        children: <Widget>[
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+              height: 263.54,
+              width: 263.54,
+              child: Image.asset('assets/artwork.jpg')),
+          const SizedBox(height: 20),
+          Stack(children: <Widget>[
+            Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Song Title',
+                      style: TextStyle(
+                          fontSize: 16, color: Color.fromARGB(95, 0, 0, 0)),
+                    ),
+                    Text(
+                      'Artist Name',
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 62, 85, 149)),
+                    ),
+                  ]),
+            ),
+            Container(
+              alignment: Alignment.centerRight,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.favorite,
+                      color: isFavorite ? Colors.red : null,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isFavorite = !isFavorite;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ]),
+
+          const SizedBox(height: 60),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.repeat,
+                  color: isRepeat ? Color.fromARGB(255, 124, 200, 10) : null,
+                ),
+                onPressed: () {
+                  setState(() {
+                    isRepeat = !isRepeat;
+                    isShuffle = false;
+                  });
+                },
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.shuffle,
+                  color: isShuffle ? Color.fromARGB(255, 124, 200, 10) : null,
+                ),
+                onPressed: () {
+                  setState(() {
+                    isShuffle = !isShuffle;
+                    isRepeat = false;
+                  });
+                },
+              ),
+              const Spacer(),
+              IconButton(
+                icon: volumeLevel > 0.5
+                    ? Icon(Icons.volume_up)
+                    : Icon(Icons.volume_down),
+                onPressed: () {
+                  setState(() {
+                    showVolumeControl = !showVolumeControl;
+                  });
+                },
+              ),
+              if (showVolumeControl)
+                Slider(
+                  value: volumeLevel,
+                  min: 0.0,
+                  max: 1.0,
+                  onChanged: (double value) {
+                    setState(() {
+                      volumeLevel = value;
+                      VolumeController().setVolume(volumeLevel);
+                    });
+                    value = volumeLevel;
+                  },
+                ),
+            ],
+          ),
+          const SizedBox(height: 10),
           StreamBuilder<PositionData>(
             stream: PositionData.positionDataStream(audioPlayer),
             builder: (context, snapshot) {
@@ -44,9 +177,33 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
               );
             },
           ),
-          Control(audioPlayer: audioPlayer, size: 64.0,),
+          const SizedBox(height: 40),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 80),
+              child: Control(audioPlayer: audioPlayer, size: 60)),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     IconButton(
+          //       icon: Icon(Icons.skip_previous),
+          //       onPressed: () {},
+          //     ),
+          //     IconButton(
+          //       icon: Icon(Icons.play_arrow),
+          //       onPressed: () {},
+          //     ),
+          //     IconButton(
+          //       icon: Icon(Icons.skip_next),
+          //       onPressed: () {},
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );
   }
+
+  // void _adjustVolume(double volumeLevel) async {
+  //   await VolumeControl.setVolume(volumeLevel);
+  // }
 }
