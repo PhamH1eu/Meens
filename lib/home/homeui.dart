@@ -20,8 +20,8 @@ class HomeUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
+    return SingleChildScrollView(
+      child: Padding(
         padding: const EdgeInsets.only(right: 20.0, left: 20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

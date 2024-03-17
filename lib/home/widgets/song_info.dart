@@ -30,11 +30,11 @@ class _SongInfoState extends State<SongInfo> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      // crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         SizedBox(
-          height: 180,
-          width: 180,
+          height: 150,
+          width: 150,
           child: Stack(children: [
             CustomColors.glowEffect(glowColor),
             Container(

@@ -71,6 +71,7 @@ class Sidebar extends ConsumerWidget {
                 )),
           ),
           onTap: () {
+            ref.read(countProvider.notifier).state = 3;
             Navigator.pop(context);
           },
         ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:webtoon/faqs/faq_screen.dart';
 import 'package:webtoon/home/homeui.dart';
+import 'package:webtoon/likedsong/likedsong.dart';
 import 'package:webtoon/miniplayer/mini_player.dart';
 
 import 'home/sidebar.dart';
@@ -13,6 +14,7 @@ Set<Widget> _pages = {
   const HomeUI(),
   const FAQ(),
   const Setting(),
+  const LikedSong(),
 };
 
 class Layout extends ConsumerStatefulWidget {
