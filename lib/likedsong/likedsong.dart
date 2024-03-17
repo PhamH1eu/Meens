@@ -57,8 +57,8 @@ class LikedSong extends StatelessWidget {
                     child: GridView.builder(
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        crossAxisSpacing: 4.0,
-                        mainAxisSpacing: 8.0,
+                        childAspectRatio: MediaQuery.of(context).size.width /
+                            (MediaQuery.of(context).size.height / 1.65),
                       ),
                       itemCount: 10,
                       itemBuilder: (BuildContext context, int index){
@@ -68,7 +68,7 @@ class LikedSong extends StatelessWidget {
                   ),
 
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 50),
               ],
             ),
           ),
