@@ -33,8 +33,8 @@ class _LikeSongInfoState extends State<LikeSongInfo> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         SizedBox(
-          height: 130,
-          width: 130,
+          height: 140,
+          width: 140,
           child: Stack(children: [
             CustomColors.glowEffect(glowColor),
             Container(
@@ -48,23 +48,23 @@ class _LikeSongInfoState extends State<LikeSongInfo> {
             ),
           ]),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 9),
         Text(
           widget.song.title,
           style: TextStyle(
             fontWeight: CustomColors.semiBold,
             color: Theme.of(context).primaryColor,
             fontFamily: 'Gilroy',
-            fontSize: 14,
+            fontSize: 12,
           ),
         ),
-        const SizedBox(height: 5),
+        const SizedBox(height: 4),
         Text(
           widget.song.artist,
           style: TextStyle(
             color: Theme.of(context).secondaryHeaderColor,
             fontFamily: 'Gilroy',
-            fontSize: 10,
+            fontSize: 8,
           ),
         ),
       ],
