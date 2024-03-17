@@ -28,7 +28,31 @@ class AudioHandler extends Notifier<AudioPlayer> {
           title: "Title",
           artist: "Artist",
           // artUri: Uri.parse("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"),
-        ))
+        )),
+    AudioSource.asset('assets/audios/Stay.mp3',
+        tag: const MediaItem(
+          id: '1',
+          album: "Album",
+          title: "Title",
+          artist: "Artist",
+          // artUri: Uri.parse("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"),
+        )),
+    AudioSource.asset('assets/audios/HONGKONG1.mp3',
+        tag: const MediaItem(
+          id: '1',
+          album: "Album",
+          title: "Title",
+          artist: "Artist",
+          // artUri: Uri.parse("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"),
+        )),
+    AudioSource.asset('assets/audios/SOLDOUT.mp3',
+        tag: const MediaItem(
+          id: '1',
+          album: "Album",
+          title: "Title",
+          artist: "Artist",
+          // artUri: Uri.parse("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"),
+        )),
     // AudioSource.uri(Uri.parse('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'), tag: MediaItem(
     //   id: '1',
     //   album: "Album",
