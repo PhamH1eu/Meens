@@ -79,7 +79,7 @@ class _GenresPageState extends State<GenresPage> {
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 18,
                     ),
                   ),
                   const Spacer(),
@@ -88,7 +88,7 @@ class _GenresPageState extends State<GenresPage> {
                       selectGenres(e);
                     },
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(30, 30),
+                      minimumSize: const Size(28, 28),
                       elevation: 0,
                       side: const BorderSide(
                         color: Colors.white, // <-- Border color
@@ -102,7 +102,7 @@ class _GenresPageState extends State<GenresPage> {
                     ),
                     child: Icon(
                       selectedGenres.contains(e) ? Icons.check : null,
-                      size: 20,
+                      size: 18,
                     ),
                   ),
                 ],

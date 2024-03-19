@@ -98,15 +98,26 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
               ),
             ),
           ]),
-
           const SizedBox(height: 60),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               IconButton(
+                icon: volumeLevel > 0.5
+                    ? const Icon(Icons.volume_up)
+                    : const Icon(Icons.volume_down),
+                onPressed: () {
+                  setState(() {
+                    showVolumeControl = !showVolumeControl;
+                  });
+                },
+              ),
+              const Spacer(),
+              IconButton(
                 icon: Icon(
                   Icons.repeat,
-                  color: isRepeat ? const Color.fromARGB(255, 124, 200, 10) : null,
+                  color:
+                      isRepeat ? const Color.fromARGB(255, 124, 200, 10) : null,
                 ),
                 onPressed: () {
                   setState(() {
@@ -118,23 +129,14 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
               IconButton(
                 icon: Icon(
                   Icons.shuffle,
-                  color: isShuffle ? const Color.fromARGB(255, 124, 200, 10) : null,
+                  color: isShuffle
+                      ? const Color.fromARGB(255, 124, 200, 10)
+                      : null,
                 ),
                 onPressed: () {
                   setState(() {
                     isShuffle = !isShuffle;
                     isRepeat = false;
-                  });
-                },
-              ),
-              const Spacer(),
-              IconButton(
-                icon: volumeLevel > 0.5
-                    ? const Icon(Icons.volume_up)
-                    : const Icon(Icons.volume_down),
-                onPressed: () {
-                  setState(() {
-                    showVolumeControl = !showVolumeControl;
                   });
                 },
               ),
@@ -178,7 +180,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
           ),
           const SizedBox(height: 40),
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 80),
+              padding: const EdgeInsets.symmetric(horizontal: 65),
               child: Control(audioPlayer: audioPlayer, size: 60)),
         ],
       ),

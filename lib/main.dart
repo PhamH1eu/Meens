@@ -10,10 +10,12 @@ import 'package:webtoon/auth/login_screen.dart';
 import 'package:webtoon/layout.dart';
 import 'package:webtoon/miniplayer/play_screen.dart';
 import 'package:webtoon/onboard/onboard_screen.dart';
+import 'package:webtoon/recognition/shazam.dart';
 import 'package:webtoon/utilities/fonts.dart';
 
 import 'auth/signup_screen.dart';
 import 'firebase_options.dart';
+import 'recognition/result.dart';
 import 'riverpod/theme.dart';
 
 Future<void> main() async {
@@ -66,14 +68,28 @@ class MyApp extends ConsumerWidget {
               child: const Layout(),
               type: PageTransitionType.rightToLeft,
               settings: settings,
-              reverseDuration: const Duration(milliseconds: 500),
+              reverseDuration: const Duration(milliseconds: 250),
             );
           case '/play':
             return PageTransition(
               child: const PlayingScreen(),
               type: PageTransitionType.bottomToTop,
               settings: settings,
-              reverseDuration: const Duration(milliseconds: 500),
+              reverseDuration: const Duration(milliseconds: 250),
+            );
+          case '/recog':
+            return PageTransition(
+              child: const Shazam(),
+              type: PageTransitionType.rightToLeft,
+              settings: settings,
+              reverseDuration: const Duration(milliseconds: 250),
+            );
+          case '/result':
+            return PageTransition(
+              child: const ShazamResult(),
+              type: PageTransitionType.fade,
+              settings: settings,
+              reverseDuration: const Duration(milliseconds: 250),
             );
           default:
             return null;
