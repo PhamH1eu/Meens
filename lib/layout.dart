@@ -16,7 +16,7 @@ Set<Widget> _pages = {
   const FAQ(),
   const Setting(),
   const LikedSong(),
-  const ArtistProfile()
+  const ArtistProfile(),
 };
 
 class Layout extends ConsumerStatefulWidget {

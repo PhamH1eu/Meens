@@ -60,6 +60,8 @@ dependencies:
   avatar_glow: ^3.0.1
   flutter_animate: ^4.5.0
   sliding_up_panel: ^2.0.0+1
+  flutter_sound: ^9.2.13
+  permission_handler: ^11.3.0
 
 dev_dependencies:
   flutter_test:
