@@ -5,6 +5,7 @@ import 'package:webtoon/faqs/faq_screen.dart';
 import 'package:webtoon/home/homeui.dart';
 import 'package:webtoon/likedsong/likedsong.dart';
 import 'package:webtoon/miniplayer/mini_player.dart';
+import 'package:webtoon/profile/profiles.dart';
 
 import 'home/sidebar.dart';
 import 'riverpod/tab.dart';
@@ -15,6 +16,7 @@ Set<Widget> _pages = {
   const FAQ(),
   const Setting(),
   const LikedSong(),
+  const ArtistProfile()
 };
 
 class Layout extends ConsumerStatefulWidget {
