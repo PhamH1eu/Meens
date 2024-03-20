@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:webtoon/recognition/recent.dart';
+
+import '../model/post_song_api.dart';
 
 class Shazam extends StatefulWidget {
   const Shazam({super.key});
@@ -12,6 +18,48 @@ class Shazam extends StatefulWidget {
 
 class _MyWidgetState extends State<Shazam> {
   bool isListening = false;
+  final recorder = FlutterSoundRecorder();
+  bool isRecorderReady = false;
+  String audioPath = '';
+
+  @override
+  void initState() {
+    initRecorder();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    recorder.closeRecorder();
+    super.dispose();
+  }
+
+  Future<void> start() async {
+    if (!isRecorderReady) {
+      return;
+    }
+    await recorder.startRecorder(toFile: 'audio');
+  }
+
+  Future stop() async {
+    if (!isRecorderReady) {
+      return;
+    }
+    final path = await recorder.stopRecorder();
+    final audioFile = File(path!);
+  }
+
+  Future<void> initRecorder() async {
+    final status = await Permission.microphone.request();
+
+    if (status != PermissionStatus.granted) {
+      throw RecordingPermissionException('Microphone permission not granted');
+    }
+
+    await recorder.openRecorder();
+    isRecorderReady = true;
+    recorder.setSubscriptionDuration(const Duration(milliseconds: 500));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +95,18 @@ class _MyWidgetState extends State<Shazam> {
                   glowRadiusFactor: 0.5,
                   glowColor: const Color.fromRGBO(247, 250, 255, 1),
                   child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isListening = !isListening;
-                      });
+                    onTap: () async {
+                      if (recorder.isRecording) {
+                        await stop();
+                        setState(() {
+                          isListening = false;
+                        });
+                      } else {
+                        await start();
+                        setState(() {
+                          isListening = true;
+                        });
+                      }
                     },
                     child: Container(
                       height: 200,
@@ -66,12 +122,12 @@ class _MyWidgetState extends State<Shazam> {
                     ),
                   )),
               IconButton(
-                  onPressed: () => Navigator.of(context).pushNamed('/result'),
-                  icon: const Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
-                    size: 40,
-                  ))
+                onPressed: () {
+                  // Navigator.pushNamed(context, '/result');
+                  RecipeApi.getRecipe();
+                },
+                icon: const Icon(Icons.close, color: Colors.white),
+              ),
             ],
           ),
         ),

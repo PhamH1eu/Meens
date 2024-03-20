@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:webtoon/utilities/fonts.dart';
 
 import '../../../model/song.dart';
 
@@ -41,14 +40,14 @@ class _SongOfArtistState extends State<SongOfArtist> {
               child: Text(
                 widget.song.title,
                 textAlign: TextAlign.left,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w300,
                   color: Colors.white,
                 ),
               ),
             ),
-            Spacer(),
+            const Spacer(),
           // Nút tùy chọn
           IconButton(
             onPressed: () {
