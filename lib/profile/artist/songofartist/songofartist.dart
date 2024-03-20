@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:webtoon/utilities/fonts.dart';
 
-import '../../model/song.dart';
+import '../../../model/song.dart';
+
+
 
 class SongOfArtist extends StatefulWidget {
   const SongOfArtist({super.key, required this.song});

@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:webtoon/profile/songofartist/songofartist.dart';
+import 'package:webtoon/profile/artist/songofartist/songofartist.dart';
+
 
 import 'package:webtoon/utilities/fonts.dart';
 
-import '../home/homeui.dart';
-import '../riverpod/tab.dart';
+import '../../home/homeui.dart';
+import '../../riverpod/tab.dart';
 
 class ArtistProfile extends StatelessWidget {
   const ArtistProfile({super.key});
@@ -100,13 +101,19 @@ class ArtistProfile extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  'All song',
-                  style: TextStyle(
-                      fontWeight: CustomColors.extraBold,
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontFamily: 'Gilroy'),
+                Padding(
+                  padding: const EdgeInsets.only(left:20),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: const Text(
+                      'All song',
+                      style: TextStyle(
+                          fontWeight: CustomColors.extraBold,
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontFamily: 'Gilroy'),
+                    ),
+                  ),
                 ),
                 Flexible(
                   child: ListView.builder(
