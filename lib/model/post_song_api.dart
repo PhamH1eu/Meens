@@ -18,9 +18,9 @@ Future<File> getImageFileFromAssets(String path) async {
   return file;
 }
 
-class RecipeApi {
-  static Future<List<ResultSong>> getRecipe() async {
-    File audioFile = await getImageFileFromAssets('audios/TTL.mp3');
+class SongApi {
+  static Future<List<ResultSong>> getRecipe(File file) async {
+    // File audioFile = await getImageFileFromAssets('audios/TTL.mp3');
 
     var uri = Uri.https(
         'shazam-song-recognition-api.p.rapidapi.com', '/recognize/file');
@@ -31,7 +31,7 @@ class RecipeApi {
         "x-rapidapi-key": "5c62c82941msh30d4e5fb73bb29cp13da0djsn3f6ff0029bba",
         "x-rapidapi-host": "shazam-song-recognition-api.p.rapidapi.com",
       },
-      body: await audioFile.readAsBytes(),
+      body: await file.readAsBytes(),
     );
     log(response.body);
     Map data = jsonDecode(response.body);
@@ -40,3 +40,4 @@ class RecipeApi {
     return ResultSong.recipesFromSnapshot(temp);
   }
 }
+

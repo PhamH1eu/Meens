@@ -6,7 +6,7 @@ class ResultSong {
   factory ResultSong.fromJson(dynamic json) {
     return ResultSong(
         name: json['title'] as String,
-        images: json['images']['background'] as String,
+        images: json['images']['coverart'] as String,
         artist: json['subtitle'] as String);
   }
   static List<ResultSong> recipesFromSnapshot(List snapshot) {

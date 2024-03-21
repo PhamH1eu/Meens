@@ -5,7 +5,6 @@ import 'package:webtoon/faqs/faq_screen.dart';
 import 'package:webtoon/home/homeui.dart';
 import 'package:webtoon/likedsong/likedsong.dart';
 import 'package:webtoon/miniplayer/mini_player.dart';
-import 'package:webtoon/profile/artist/profileOfArtist.dart';
 import 'package:webtoon/profile/personal/profileOfPersonal.dart';
 
 import 'home/sidebar.dart';

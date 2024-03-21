@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:webtoon/model/song_recognized.dart';
 
 class ShazamResult extends StatelessWidget {
-  const ShazamResult({super.key});
+  const ShazamResult({super.key, required this.resultSong});
+
+  final ResultSong resultSong;
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +47,9 @@ class ShazamResult extends StatelessWidget {
         body: Stack(
           children: [
             Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/shazam.jpg'),
+                  image: NetworkImage(resultSong.images),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -59,7 +62,7 @@ class ShazamResult extends StatelessWidget {
                   colors: [Colors.black, Colors.black54, Colors.transparent],
                 ),
               ),
-              alignment: const Alignment(0, 0.75),
+              alignment: const Alignment(-0.9, 0.75),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,9 +76,9 @@ class ShazamResult extends StatelessWidget {
                             end: Offset(0, 0),
                             duration: Duration(milliseconds: 400)),
                       ],
-                      child: const Text(
-                        'Atlantis (Extra Sped Up Version)',
-                        style: TextStyle(
+                      child: Text(
+                        resultSong.name,
+                        style: const TextStyle(
                             color: Color.fromRGBO(234, 240, 255, 1),
                             fontSize: 27,
                             fontWeight: FontWeight.bold),
@@ -94,9 +97,9 @@ class ShazamResult extends StatelessWidget {
                             ),
                             duration: Duration(milliseconds: 500)),
                       ],
-                      child: const Text(
-                        'Seafret',
-                        style: TextStyle(
+                      child: Text(
+                        resultSong.artist,
+                        style: const TextStyle(
                             color: Color.fromRGBO(234, 240, 255, 1),
                             fontSize: 20),
                       ),
