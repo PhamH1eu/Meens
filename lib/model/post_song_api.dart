@@ -28,7 +28,7 @@ class RecipeApi {
       uri,
       headers: {
         "content-type": "application/octet-stream",
-        "x-rapidapi-key": "5c62c82941msh30d4e5fb73bb29cp13da0djsn3f6ff0029bba",
+        "x-rapidapi-key": "add your own api key here",
         "x-rapidapi-host": "shazam-song-recognition-api.p.rapidapi.com",
       },
       body: await audioFile.readAsBytes(),
