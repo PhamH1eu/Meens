@@ -1,27 +1,21 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:webtoon/recognition/shazam.dart';
+
+import '../model/song_recognized.dart';
 
 class Recent extends StatefulWidget {
-  const Recent({super.key});
+  const Recent({super.key, required this.resultSong});
+
+  final HashSet<ResultSong> resultSong;
 
   @override
   State<Recent> createState() => _RecentState();
 }
 
 class _RecentState extends State<Recent> {
-  List<String> imagePath = [
-    'assets/genres/indie.jpg',
-    'assets/genres/pop.jpg',
-    'assets/genres/edm.jpg',
-    'assets/genres/country.jpg',
-    'assets/genres/classic.jpg',
-    'assets/genres/remix.jpg',
-    'assets/genres/rap.jpg',
-    'assets/genres/jazz.jpg',
-    'assets/genres/rock.jpg',
-    'assets/genres/disco.jpg',
-  ];
-
-  GridTile buildGridTile(String e) {
+  GridTile buildGridTile(ResultSong e) {
     return GridTile(
       child: Container(
         decoration: BoxDecoration(
@@ -38,14 +32,14 @@ class _RecentState extends State<Recent> {
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10)),
                     image: DecorationImage(
-                        image: AssetImage(e), fit: BoxFit.fitHeight),
+                        image: NetworkImage(e.images), fit: BoxFit.fitHeight),
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10, top: 10),
                 child: Text(
-                  e.split('/').last.split('.').first,
+                  e.name,
                   style: const TextStyle(
                     color: Color.fromRGBO(9, 17, 39, 1),
                     fontWeight: FontWeight.bold,
@@ -53,11 +47,11 @@ class _RecentState extends State<Recent> {
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 10, bottom: 10),
+              Padding(
+                padding: const EdgeInsets.only(left: 10, bottom: 10),
                 child: Text(
-                  "Ikimonogakari",
-                  style: TextStyle(
+                  e.artist,
+                  style: const TextStyle(
                     color: Color.fromRGBO(9, 17, 39, 1),
                     fontSize: 12,
                   ),
@@ -82,7 +76,7 @@ class _RecentState extends State<Recent> {
       child: Column(
         children: [
           const Text(
-            "Recent songs",
+            "Recent found songs",
             style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -96,7 +90,7 @@ class _RecentState extends State<Recent> {
               crossAxisCount: 2,
               mainAxisSpacing: 20,
               crossAxisSpacing: 10,
-              children: imagePath.map((String e) {
+              children: resultSong.map((ResultSong e) {
                 return buildGridTile(e);
               }).toList(),
             ),

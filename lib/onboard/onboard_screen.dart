@@ -62,7 +62,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                         onPressed: () async {
                           final prefs = await SharedPreferences.getInstance();
                           prefs.setBool('isFirstTime', false);
-                          if (mounted) Navigator.pushNamed(context, '/home');
+                          if (context.mounted) Navigator.pushNamed(context, '/home');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue[500],

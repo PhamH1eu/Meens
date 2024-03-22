@@ -153,7 +153,7 @@ class _SignUpPageState extends State<SignUpPage> {
               height: 20,
             ),
             GestureDetector(
-              onTap: _signUp,
+              onTap: () => _signUp(context),
               child: Container(
                 height: 45,
                 width: MediaQuery.of(context).size.width - 20,
@@ -179,7 +179,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  void _signUp() async {
+  void _signUp(BuildContext context) async {
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
 
