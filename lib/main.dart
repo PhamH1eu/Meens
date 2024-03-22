@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webtoon/auth/login_screen.dart';
 import 'package:webtoon/layout.dart';
 import 'package:webtoon/miniplayer/play_screen.dart';
+import 'package:webtoon/model/song_recognized.dart';
 import 'package:webtoon/onboard/onboard_screen.dart';
 import 'package:webtoon/recognition/shazam.dart';
 import 'package:webtoon/utilities/fonts.dart';
@@ -86,7 +87,7 @@ class MyApp extends ConsumerWidget {
             );
           case '/result':
             return PageTransition(
-              child: const ShazamResult(),
+              child: ShazamResult(resultSong: args as ResultSong,),
               type: PageTransitionType.fade,
               settings: settings,
               reverseDuration: const Duration(milliseconds: 250),
