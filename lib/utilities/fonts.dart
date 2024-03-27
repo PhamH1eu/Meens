@@ -46,7 +46,7 @@ class CustomColors {
 
   //glow effect under image
   static Widget glowEffect(glowColor) {
-    final TinyColor glow = TinyColor.fromColor(glowColor).lighten(20);
+    final TinyColor glow = TinyColor.fromColor(glowColor).lighten(25);
 
     return Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
@@ -56,8 +56,8 @@ class CustomColors {
             boxShadow: [
               BoxShadow(
                 color: glow.color,
-                blurRadius: 20,
-                spreadRadius: 10,
+                blurRadius: 15,
+                spreadRadius: 5,
                 offset: const Offset(0, 1), // changes position of shadow
               ),
             ],

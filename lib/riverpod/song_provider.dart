@@ -1,74 +1,67 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:webtoon/model/song.dart';
+
+List<Song> playlist = [
+  const Song(
+    title: 'TTL - Listen 2',
+    artist: 'T-ARA',
+    artWork: 'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
+    url: 'assets/audios/TTL.mp3',
+  ),
+  const Song(
+    title: 'Vo kich cua em',
+    artist: 'Huong Ly',
+    artWork: 'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
+    url: 'assets/audios/vokichcuaem.mp3',
+  ),
+  const Song(
+    title: 'Stay',
+    artist: 'Kid',
+    artWork: 'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
+    url: 'assets/audios/Stay.mp3',
+  ),
+  const Song(
+    title: 'Sold Out',
+    artist: 'Malenia',
+    artWork: 'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
+    url: 'assets/audios/SOLDOUT.mp3',
+  ),
+  const Song(
+    title: 'HONGKONG1',
+    artist: 'Miquella',
+    artWork: 'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
+    url: 'assets/audios/HONGKONG1.mp3',
+  ),
+  const Song(
+    title: 'Anh Dau Ngo',
+    artist: 'Marika',
+    artWork: 'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
+    url: 'assets/audios/anhdaungo.mp3',
+  ),
+  const Song(
+    title: 'Mascara',
+    artist: 'Godwyn',
+    artWork: 'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
+    url: 'assets/audios/Mascara Lung Linh.mp3',
+  ),
+];
 
 class AudioHandler extends Notifier<AudioPlayer> {
   //data for testing purpose, will refactor later
-  final _playlist = ConcatenatingAudioSource(children: [
-    AudioSource.asset('assets/audios/TTL.mp3',
-        tag: const MediaItem(
-          id: '1',
-          album: "Album",
-          title: "Title",
-          artist: "Artist",
-          // artUri: Uri.parse("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"),
-        )),
-    AudioSource.asset('assets/audios/vokichcuaem.mp3',
-        tag: const MediaItem(
-          id: '1',
-          album: "Album",
-          title: "Title",
-          artist: "Artist",
-          // artUri: Uri.parse("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"),
-        )),
-    AudioSource.asset('assets/audios/Stay.mp3',
-        tag: const MediaItem(
-          id: '1',
-          album: "Album",
-          title: "Title",
-          artist: "Artist",
-          // artUri: Uri.parse("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"),
-        )),
-    AudioSource.asset('assets/audios/SOLDOUT.mp3',
-        tag: const MediaItem(
-          id: '1',
-          album: "Album",
-          title: "Title",
-          artist: "Artist",
-          // artUri: Uri.parse("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"),
-        )),
-    AudioSource.asset('assets/audios/HONGKONG1.mp3',
-        tag: const MediaItem(
-          id: '1',
-          album: "Album",
-          title: "Title",
-          artist: "Artist",
-          // artUri: Uri.parse("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"),
-        )),
-    AudioSource.asset('assets/audios/anhdaungo.mp3',
-        tag: const MediaItem(
-          id: '1',
-          album: "Album",
-          title: "Title",
-          artist: "Artist",
-          // artUri: Uri.parse("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"),
-        )),
-    AudioSource.asset('assets/audios/Mascara Lung Linh.mp3',
-        tag: const MediaItem(
-          id: '1',
-          album: "Album",
-          title: "Title",
-          artist: "Artist",
-          // artUri: Uri.parse("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"),
-        )),
-    // AudioSource.uri(Uri.parse('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'), tag: MediaItem(
-    //   id: '1',
-    //   album: "Album",
-    //   title: "Title",
-    //   artist: "Artist",
-    //   artUri: Uri.parse("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"),
-    // )),
-  ]);
+  final _playlist = ConcatenatingAudioSource(
+    children: playlist
+        .map((song) => AudioSource.asset(song.url,
+            tag: MediaItem(
+              id: song.url,
+              artist: song.artist,
+              title: song.title,
+              artUri: Uri.parse(song.artWork),
+            )))
+        .toList(),
+  );
+  
 
   @override
   AudioPlayer build() {
@@ -78,61 +71,57 @@ class AudioHandler extends Notifier<AudioPlayer> {
     return audioPlayer;
   }
 
-  void setSource(String url) {
-    state.setAudioSource(AudioSource.uri(Uri.parse(url)));
-  }
+  //unavailable methods???
 
-  void play() {
-    state.play();
-  }
+  // void setSource(String url) {
+  //   state.setAudioSource(AudioSource.uri(Uri.parse(url)));
+  // }
 
-  void pause() {
-    state.pause();
-  }
+  // void play() {
+  //   state.play();
+  // }
 
-  void stop() {
-    state.stop();
-  }
+  // void pause() {
+  //   state.pause();
+  // }
 
-  void seek(Duration position) {
-    state.seek(position);
-  }
+  // void stop() {
+  //   state.stop();
+  // }
 
-  void seekToPrevious() {
-    state.seekToPrevious();
-  }
+  // void seek(Duration position) {
+  //   state.seek(position);
+  // }
 
-  void seekToNext() {
-    state.seekToNext();
-  }
+  // void seekToPrevious() {
+  //   state.seekToPrevious();
+  // }
 
-  void dispose() {
-    state.dispose();
-  }
+  // void seekToNext() {
+  //   state.seekToNext();
+  // }
 
-  void setLoopMode(LoopMode loopMode) {
-    state.setLoopMode(loopMode);
-  }
+  // void seekToIndex(int index) {
+  //   state.seek(Duration.zero, index: index);
+  // }
 
-  void setShuffleModeEnabled(bool enabled) {
-    state.setShuffleModeEnabled(enabled);
-  }
+  // void dispose() {
+  //   state.dispose();
+  // }
 
-  void setAudioSource(AudioSource source) {
-    state.setAudioSource(source);
-  }
+  // void setLoopMode(LoopMode loopMode) {
+  //   state.setLoopMode(loopMode);
+  // }
+
+  // void setShuffleModeEnabled(bool enabled) {
+  //   state.setShuffleModeEnabled(enabled);
+  // }
+
+  // void setAudioSource(AudioSource source) {
+  //   state.setAudioSource(source);
+  // }
 }
 
 final audioHandlerProvider = NotifierProvider<AudioHandler, AudioPlayer>(() {
   return AudioHandler();
 });
-
-
-// final progressProvider = StreamProvider<PositionData>((ref) =>
-//     Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
-//       audioPlayer.positionStream,
-//       audioPlayer.bufferedPositionStream,
-//       audioPlayer.durationStream,
-//       (position, bufferedPosition, duration) =>
-//           PositionData(position, bufferedPosition, duration ?? Duration.zero),
-//     ));

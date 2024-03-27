@@ -1,4 +1,5 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webtoon/miniplayer/widgets/progress_bar.dart';
@@ -59,6 +60,7 @@ class MiniPlayer extends ConsumerWidget {
                       Control(
                         audioPlayer: audioPlayer,
                         size: 30.0,
+                        carouselController: CarouselController(),
                       )
                     ],
                   ),

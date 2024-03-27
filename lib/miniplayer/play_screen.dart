@@ -1,6 +1,7 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 // import 'package:volume_controller/volume_controller.dart';
 import '../riverpod/song_provider.dart';
 import 'widgets/control_button.dart';
@@ -9,6 +10,8 @@ import 'widgets/progress_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 final List<String> imgList = [
+  'https://c.saavncdn.com/137/Whatever-It-Takes-The-Meaning--English-2018-20180607173109-500x500.jpg',
+  'https://c.saavncdn.com/137/Whatever-It-Takes-The-Meaning--English-2018-20180607173109-500x500.jpg',
   'https://c.saavncdn.com/137/Whatever-It-Takes-The-Meaning--English-2018-20180607173109-500x500.jpg',
   'https://c.saavncdn.com/137/Whatever-It-Takes-The-Meaning--English-2018-20180607173109-500x500.jpg',
   'https://c.saavncdn.com/137/Whatever-It-Takes-The-Meaning--English-2018-20180607173109-500x500.jpg',
@@ -30,6 +33,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
   bool showVolumeControl = false;
   double volumeLevel = 0.5;
 
+  CarouselController carouselController = CarouselController();
   @override
   void initState() {
     super.initState();
@@ -58,7 +62,12 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
             Navigator.pop(context);
           },
         ),
-        title: const Text('Now Playing'),
+        title: Text(
+          'Now Playing',
+          style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: Column(
@@ -71,7 +80,12 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
               enlargeCenterPage: true,
               enlargeStrategy: CenterPageEnlargeStrategy.zoom,
               enableInfiniteScroll: false,
+              initialPage: 0,
+              onPageChanged: (index, reason) {
+                audioPlayer.seek(Duration.zero, index: index);
+              },
             ),
+            carouselController: carouselController,
             items: imgList
                 .map((item) => Container(
                       margin: const EdgeInsets.all(10.0),
@@ -89,34 +103,37 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                     ))
                 .toList(),
           ),
-          const SizedBox(height: 20),
           Stack(children: <Widget>[
-            const Center(
+            Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
                       'Song Title',
                       style: TextStyle(
-                          fontSize: 16, color: Color.fromARGB(95, 0, 0, 0)),
+                          fontSize: 20, color: Theme.of(context).primaryColor),
                     ),
                     Text(
                       'Artist Name',
                       style: TextStyle(
-                          fontSize: 14,
-                          color: Color.fromARGB(255, 62, 85, 149)),
+                          fontSize: 16,
+                          color: Theme.of(context).secondaryHeaderColor),
                     ),
                   ]),
             ),
             Container(
               alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   IconButton(
                     icon: Icon(
-                      Icons.favorite,
-                      color: isFavorite ? Colors.red : null,
+                      Icons.favorite_outline,
+                      size: 30,
+                      color: isFavorite
+                          ? Colors.red
+                          : Theme.of(context).secondaryHeaderColor,
                     ),
                     onPressed: () {
                       setState(() {
@@ -129,80 +146,90 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
             ),
           ]),
           const SizedBox(height: 30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              IconButton(
-                icon: volumeLevel > 0.5
-                    ? const Icon(Icons.volume_up)
-                    : const Icon(Icons.volume_down),
-                onPressed: () {
-                  setState(() {
-                    showVolumeControl = !showVolumeControl;
-                  });
-                },
-              ),
-              const Spacer(),
-              IconButton(
-                icon: Icon(
-                  Icons.repeat,
-                  color:
-                      isRepeat ? const Color.fromARGB(255, 124, 200, 10) : null,
-                ),
-                onPressed: () {
-                  setState(() {
-                    isRepeat = !isRepeat;
-                    isShuffle = false;
-                  });
-                },
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.shuffle,
-                  color: isShuffle
-                      ? const Color.fromARGB(255, 124, 200, 10)
-                      : null,
-                ),
-                onPressed: () {
-                  setState(() {
-                    isShuffle = !isShuffle;
-                    isRepeat = false;
-                  });
-                },
-              ),
-              if (showVolumeControl)
-                Slider(
-                  value: volumeLevel,
-                  min: 0.0,
-                  max: 1.0,
-                  onChanged: (double value) {
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                IconButton(
+                  icon: volumeLevel > 0.5
+                      ? const Icon(Icons.volume_up)
+                      : const Icon(Icons.volume_down),
+                  color: const Color.fromRGBO(137, 150, 184, 1),
+                  iconSize: 30,
+                  onPressed: () {
                     setState(() {
-                      volumeLevel = value;
-                      // VolumeController().setVolume(volumeLevel);
+                      showVolumeControl = !showVolumeControl;
                     });
-                    value = volumeLevel;
                   },
                 ),
-            ],
+                if (showVolumeControl)
+                  Slider(
+                    value: volumeLevel,
+                    activeColor: Theme.of(context).secondaryHeaderColor,
+                    min: 0.0,
+                    max: 1.0,
+                    onChanged: (double value) {
+                      setState(() {
+                        volumeLevel = value;
+                        // VolumeController().setVolume(volumeLevel);
+                      });
+                      value = volumeLevel;
+                    },
+                  ),
+                const Spacer(),
+                IconButton(
+                  icon: Icon(
+                    Icons.repeat,
+                    color: isRepeat
+                        ? const Color.fromARGB(255, 124, 200, 10)
+                        : const Color.fromRGBO(137, 150, 184, 1),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      isRepeat = !isRepeat;
+                      isShuffle = false;
+                    });
+                  },
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.shuffle,
+                    size: 30,
+                    color: isShuffle
+                        ? const Color.fromARGB(255, 124, 200, 10)
+                        : const Color.fromRGBO(137, 150, 184, 1),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      isShuffle = !isShuffle;
+                      isRepeat = false;
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 40),
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(20.0),
             child: StreamBuilder<PositionData>(
               stream: PositionData.positionDataStream(audioPlayer),
               builder: (context, snapshot) {
                 final positionData = snapshot.data;
                 return ProgressBar(
                   barHeight: 5,
-                  baseBarColor: Colors.black,
-                  bufferedBarColor: Theme.of(context).secondaryHeaderColor,
+                  baseBarColor: Theme.of(context).secondaryHeaderColor,
+                  bufferedBarColor: Theme.of(context).hintColor,
                   progressBarColor: Theme.of(context).primaryColor,
                   thumbColor: Theme.of(context).primaryColor,
                   timeLabelTextStyle: TextStyle(
                     color: Theme.of(context).primaryColor,
-                    fontSize: 15.0,
+                    fontFamily: 'Gilroy',
+                    fontSize: 16.0,
                   ),
                   timeLabelLocation: TimeLabelLocation.above,
+                  timeLabelPadding: 15,
                   progress: positionData?.position ?? Duration.zero,
                   buffered: positionData?.bufferedPosition ?? Duration.zero,
                   total: positionData?.duration ?? Duration.zero,
@@ -212,7 +239,10 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          Control(audioPlayer: audioPlayer, size: 60),
+          Control(
+              audioPlayer: audioPlayer,
+              size: 60,
+              carouselController: carouselController),
         ],
       ),
     );

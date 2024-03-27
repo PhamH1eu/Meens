@@ -1,10 +1,12 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 class Control extends StatelessWidget {
-  const Control({super.key, required this.audioPlayer, required this.size});
+  const Control({super.key, required this.audioPlayer, required this.size, required this.carouselController});
   final AudioPlayer audioPlayer;
   final double size;
+  final CarouselController carouselController;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,10 @@ class Control extends StatelessWidget {
           color: Theme.of(context).primaryColor,
           icon: const Icon(Icons.skip_previous_outlined),
           iconSize: size,
-          onPressed: audioPlayer.seekToPrevious,
+          onPressed: () {
+            carouselController.previousPage();
+            audioPlayer.seekToPrevious();
+          },
         ),
         StreamBuilder<PlayerState>(
           stream: audioPlayer.playerStateStream,
@@ -54,7 +59,10 @@ class Control extends StatelessWidget {
           color: Theme.of(context).primaryColor,
           icon: const Icon(Icons.skip_next_outlined),
           iconSize: size,
-          onPressed: audioPlayer.seekToNext,
+          onPressed: () {
+            carouselController.nextPage();
+            audioPlayer.seekToNext();
+          },
         ),
       ],
     );
