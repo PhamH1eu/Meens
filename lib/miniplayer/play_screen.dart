@@ -6,6 +6,16 @@ import '../riverpod/song_provider.dart';
 import 'widgets/control_button.dart';
 import 'widgets/progress_bar.dart';
 
+import 'package:carousel_slider/carousel_slider.dart';
+
+final List<String> imgList = [
+  'https://c.saavncdn.com/137/Whatever-It-Takes-The-Meaning--English-2018-20180607173109-500x500.jpg',
+  'https://c.saavncdn.com/137/Whatever-It-Takes-The-Meaning--English-2018-20180607173109-500x500.jpg',
+  'https://c.saavncdn.com/137/Whatever-It-Takes-The-Meaning--English-2018-20180607173109-500x500.jpg',
+  'https://c.saavncdn.com/137/Whatever-It-Takes-The-Meaning--English-2018-20180607173109-500x500.jpg',
+  'https://c.saavncdn.com/137/Whatever-It-Takes-The-Meaning--English-2018-20180607173109-500x500.jpg',
+];
+
 class PlayingScreen extends ConsumerStatefulWidget {
   const PlayingScreen({super.key});
 
@@ -53,12 +63,32 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-              height: 263.54,
-              width: 263.54,
-              child: Image.asset('assets/artwork.jpg')),
+          CarouselSlider(
+            options: CarouselOptions(
+              height: MediaQuery.of(context).size.height * 0.4,
+              viewportFraction: 0.7,
+              enlargeCenterPage: true,
+              enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+              enableInfiniteScroll: false,
+            ),
+            items: imgList
+                .map((item) => Container(
+                      margin: const EdgeInsets.all(10.0),
+                      child: ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10.0)),
+                          child: Stack(
+                            children: <Widget>[
+                              Image.network(
+                                item,
+                                fit: BoxFit.fill,
+                              ),
+                            ],
+                          )),
+                    ))
+                .toList(),
+          ),
           const SizedBox(height: 20),
           Stack(children: <Widget>[
             const Center(
@@ -98,7 +128,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
               ),
             ),
           ]),
-          const SizedBox(height: 60),
+          const SizedBox(height: 30),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -155,33 +185,34 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                 ),
             ],
           ),
-          const SizedBox(height: 10),
-          StreamBuilder<PositionData>(
-            stream: PositionData.positionDataStream(audioPlayer),
-            builder: (context, snapshot) {
-              final positionData = snapshot.data;
-              return ProgressBar(
-                barHeight: 5,
-                baseBarColor: Colors.black,
-                bufferedBarColor: Theme.of(context).secondaryHeaderColor,
-                progressBarColor: Theme.of(context).primaryColor,
-                thumbColor: Theme.of(context).primaryColor,
-                timeLabelTextStyle: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 12.0,
-                ),
-                timeLabelLocation: TimeLabelLocation.sides,
-                progress: positionData?.position ?? Duration.zero,
-                buffered: positionData?.bufferedPosition ?? Duration.zero,
-                total: positionData?.duration ?? Duration.zero,
-                onSeek: audioPlayer.seek,
-              );
-            },
-          ),
           const SizedBox(height: 40),
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 65),
-              child: Control(audioPlayer: audioPlayer, size: 60)),
+            padding: const EdgeInsets.all(15.0),
+            child: StreamBuilder<PositionData>(
+              stream: PositionData.positionDataStream(audioPlayer),
+              builder: (context, snapshot) {
+                final positionData = snapshot.data;
+                return ProgressBar(
+                  barHeight: 5,
+                  baseBarColor: Colors.black,
+                  bufferedBarColor: Theme.of(context).secondaryHeaderColor,
+                  progressBarColor: Theme.of(context).primaryColor,
+                  thumbColor: Theme.of(context).primaryColor,
+                  timeLabelTextStyle: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 15.0,
+                  ),
+                  timeLabelLocation: TimeLabelLocation.above,
+                  progress: positionData?.position ?? Duration.zero,
+                  buffered: positionData?.bufferedPosition ?? Duration.zero,
+                  total: positionData?.duration ?? Duration.zero,
+                  onSeek: audioPlayer.seek,
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 20),
+          Control(audioPlayer: audioPlayer, size: 60),
         ],
       ),
     );

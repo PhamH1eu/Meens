@@ -9,6 +9,7 @@ class Control extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
           color: Theme.of(context).primaryColor,
