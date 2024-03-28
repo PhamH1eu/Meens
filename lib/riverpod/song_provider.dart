@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -7,121 +10,122 @@ List<Song> playlist = [
   const Song(
     title: 'TTL - Listen 2',
     artist: 'T-ARA',
-    artWork: 'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
-    url: 'assets/audios/TTL.mp3',
+    imageUrl:
+        'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
+    songPath: 'assets/audios/TTL.mp3',
   ),
   const Song(
     title: 'Vo kich cua em',
     artist: 'Huong Ly',
-    artWork: 'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
-    url: 'assets/audios/vokichcuaem.mp3',
+    imageUrl:
+        'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
+    songPath: 'assets/audios/vokichcuaem.mp3',
   ),
   const Song(
     title: 'Stay',
     artist: 'Kid',
-    artWork: 'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
-    url: 'assets/audios/Stay.mp3',
+    imageUrl:
+        'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
+    songPath: 'assets/audios/Stay.mp3',
   ),
   const Song(
     title: 'Sold Out',
     artist: 'Malenia',
-    artWork: 'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
-    url: 'assets/audios/SOLDOUT.mp3',
+    imageUrl:
+        'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
+    songPath: 'assets/audios/SOLDOUT.mp3',
   ),
   const Song(
     title: 'HONGKONG1',
     artist: 'Miquella',
-    artWork: 'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
-    url: 'assets/audios/HONGKONG1.mp3',
+    imageUrl:
+        'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
+    songPath: 'assets/audios/HONGKONG1.mp3',
   ),
   const Song(
     title: 'Anh Dau Ngo',
     artist: 'Marika',
-    artWork: 'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
-    url: 'assets/audios/anhdaungo.mp3',
+    imageUrl:
+        'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
+    songPath: 'assets/audios/anhdaungo.mp3',
   ),
   const Song(
     title: 'Mascara',
     artist: 'Godwyn',
-    artWork: 'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
-    url: 'assets/audios/Mascara Lung Linh.mp3',
+    imageUrl:
+        'https://assetsio.gnwcdn.com/elden-ring-ranni.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp',
+    songPath: 'assets/audios/Mascara Lung Linh.mp3',
   ),
 ];
 
-class AudioHandler extends Notifier<AudioPlayer> {
-  //data for testing purpose, will refactor later
-  final _playlist = ConcatenatingAudioSource(
-    children: playlist
-        .map((song) => AudioSource.asset(song.url,
-            tag: MediaItem(
-              id: song.url,
-              artist: song.artist,
-              title: song.title,
-              artUri: Uri.parse(song.artWork),
-            )))
-        .toList(),
-  );
-  
+final _playlist = ConcatenatingAudioSource(
+  useLazyPreparation: true,
+  children: playlist
+      .map((song) => AudioSource.asset(song.songPath!,
+          tag: MediaItem(
+            id: song.songPath!,
+            artist: song.artist,
+            title: song.title,
+            // artUri: Uri.parse(song.imageUrl),
+          )))
+      .toList(),
+);
 
-  @override
-  AudioPlayer build() {
-    AudioPlayer audioPlayer = AudioPlayer();
+class AudioHandlers extends ChangeNotifier {
+  //data for testing purpose, will refactor later
+  final AudioPlayer audioPlayer = AudioPlayer();
+
+  AudioHandlers() {
     audioPlayer.setAudioSource(_playlist);
     audioPlayer.setLoopMode(LoopMode.all);
-    return audioPlayer;
   }
 
-  //unavailable methods???
+  Song get currentSong {
+    return playlist[audioPlayer.currentIndex ?? 0];
+  }
 
-  // void setSource(String url) {
-  //   state.setAudioSource(AudioSource.uri(Uri.parse(url)));
-  // }
+  void next() {
+    if (audioPlayer.hasNext) {
+      audioPlayer.seekToNext();
+    }
+    notifyListeners();
+  }
 
-  // void play() {
-  //   state.play();
-  // }
+  void back() {
+    if (audioPlayer.hasPrevious) {
+      audioPlayer.seekToPrevious();
+    }
+    notifyListeners();
+  }
 
-  // void pause() {
-  //   state.pause();
-  // }
+  Future<void> changeTo(int index) async {
+    await audioPlayer.seek(Duration.zero, index: index);
+    log("changeTo index: ${audioPlayer.currentIndex}");
+    notifyListeners();
+  }
 
-  // void stop() {
-  //   state.stop();
-  // }
+  //Haven't used those functions yet
+  bool setShuffleMode() {
+    audioPlayer.setShuffleModeEnabled(!audioPlayer.shuffleModeEnabled);
+    notifyListeners();
+    return audioPlayer.shuffleModeEnabled;
+  }
 
-  // void seek(Duration position) {
-  //   state.seek(position);
-  // }
+  bool setLoopMode() {
+    //Todo: Add LoopMode.one
+    audioPlayer.setLoopMode(audioPlayer.loopMode == LoopMode.all
+        ? LoopMode.off
+        : LoopMode.all);
+    notifyListeners();
+    return audioPlayer.loopMode == LoopMode.all;
+  }
 
-  // void seekToPrevious() {
-  //   state.seekToPrevious();
-  // }
-
-  // void seekToNext() {
-  //   state.seekToNext();
-  // }
-
-  // void seekToIndex(int index) {
-  //   state.seek(Duration.zero, index: index);
-  // }
-
-  // void dispose() {
-  //   state.dispose();
-  // }
-
-  // void setLoopMode(LoopMode loopMode) {
-  //   state.setLoopMode(loopMode);
-  // }
-
-  // void setShuffleModeEnabled(bool enabled) {
-  //   state.setShuffleModeEnabled(enabled);
-  // }
-
-  // void setAudioSource(AudioSource source) {
-  //   state.setAudioSource(source);
-  // }
+  void setVolume() {
+    audioPlayer.setVolume(audioPlayer.volume == 1.0 ? 0.0 : 1.0);
+    notifyListeners();
+  }
 }
 
-final audioHandlerProvider = NotifierProvider<AudioHandler, AudioPlayer>(() {
-  return AudioHandler();
+final audioHandlerProvider = ChangeNotifierProvider<AudioHandlers>((ref) {
+  return AudioHandlers();
 });

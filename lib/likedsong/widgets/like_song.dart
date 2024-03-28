@@ -18,7 +18,7 @@ class _LikeSongInfoState extends State<LikeSongInfo> {
   @override
   void initState() {
     super.initState();
-    // CustomColors.generatePaletteColor(widget.song.artWork).then((value) {
+    // CustomColors.generatePaletteColor(widget.song.imageUrl).then((value) {
     //   if (mounted) {
     //     setState(() {
     //       glowColor = value;
@@ -41,7 +41,7 @@ class _LikeSongInfoState extends State<LikeSongInfo> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                  image: AssetImage(widget.song.artWork),
+                  image: AssetImage(widget.song.imageUrl),
                   fit: BoxFit.cover,
                 ),
               ),

@@ -30,7 +30,7 @@ class _SongOfArtistState extends State<SongOfArtist> {
         children: [
           // Ảnh
           Image.asset(
-            widget.song.artWork,
+            widget.song.imageUrl,
             width: 40,
             height: 40,
           ),

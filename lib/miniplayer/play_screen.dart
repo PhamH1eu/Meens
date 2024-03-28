@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,6 +36,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
   double volumeLevel = 0.5;
 
   CarouselController carouselController = CarouselController();
+
   @override
   void initState() {
     super.initState();
@@ -53,7 +56,8 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final audioPlayer = ref.watch(audioHandlerProvider);
+    final audioHandlers = ref.watch(audioHandlerProvider);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -80,9 +84,11 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
               enlargeCenterPage: true,
               enlargeStrategy: CenterPageEnlargeStrategy.zoom,
               enableInfiniteScroll: false,
-              initialPage: 0,
+              initialPage: audioHandlers.audioPlayer.currentIndex ?? 0,
               onPageChanged: (index, reason) {
-                audioPlayer.seek(Duration.zero, index: index);
+                reason = CarouselPageChangedReason.manual;
+                audioHandlers.changeTo(index);
+                log("this swipe index: $index");
               },
             ),
             carouselController: carouselController,
@@ -109,12 +115,12 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'Song Title',
+                      audioHandlers.currentSong.title,
                       style: TextStyle(
                           fontSize: 20, color: Theme.of(context).primaryColor),
                     ),
                     Text(
-                      'Artist Name',
+                      audioHandlers.currentSong.artist,
                       style: TextStyle(
                           fontSize: 16,
                           color: Theme.of(context).secondaryHeaderColor),
@@ -214,7 +220,8 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: StreamBuilder<PositionData>(
-              stream: PositionData.positionDataStream(audioPlayer),
+              stream:
+                  PositionData.positionDataStream(audioHandlers.audioPlayer),
               builder: (context, snapshot) {
                 final positionData = snapshot.data;
                 return ProgressBar(
@@ -233,16 +240,13 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                   progress: positionData?.position ?? Duration.zero,
                   buffered: positionData?.bufferedPosition ?? Duration.zero,
                   total: positionData?.duration ?? Duration.zero,
-                  onSeek: audioPlayer.seek,
+                  onSeek: audioHandlers.audioPlayer.seek,
                 );
               },
             ),
           ),
           const SizedBox(height: 20),
-          Control(
-              audioPlayer: audioPlayer,
-              size: 60,
-              carouselController: carouselController),
+          Control(size: 60, carouselController: carouselController),
         ],
       ),
     );

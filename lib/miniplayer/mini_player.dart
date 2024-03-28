@@ -12,8 +12,7 @@ class MiniPlayer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final audioPlayer = ref.watch(audioHandlerProvider);
-
+    final audioHandlers = ref.watch(audioHandlerProvider);
     return GestureDetector(
       child: Align(
         alignment: const AlignmentDirectional(0, 1),
@@ -35,16 +34,17 @@ class MiniPlayer extends ConsumerWidget {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 15.0),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  'The Weeknd',
+                                  ref.watch(audioHandlerProvider.notifier).currentSong.title,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Theme.of(context).primaryColor,
                                       fontSize: 18),
                                 ),
                                 Text(
-                                  'Blinding Lights',
+                                  ref.watch(audioHandlerProvider.notifier).currentSong.artist,
                                   style: TextStyle(
                                       fontWeight: FontWeight.normal,
                                       color: Theme.of(context)
@@ -58,7 +58,6 @@ class MiniPlayer extends ConsumerWidget {
                       ),
                       const Spacer(),
                       Control(
-                        audioPlayer: audioPlayer,
                         size: 30.0,
                         carouselController: CarouselController(),
                       )
@@ -67,7 +66,7 @@ class MiniPlayer extends ConsumerWidget {
                 ),
               ),
               StreamBuilder<PositionData>(
-                  stream: PositionData.positionDataStream(audioPlayer),
+                  stream: PositionData.positionDataStream(audioHandlers.audioPlayer),
                   builder: (context, snapshot) {
                     final positionData = snapshot.data;
 
@@ -84,7 +83,7 @@ class MiniPlayer extends ConsumerWidget {
                       progress: positionData?.position ?? Duration.zero,
                       buffered: positionData?.bufferedPosition ?? Duration.zero,
                       total: positionData?.duration ?? Duration.zero,
-                      onSeek: audioPlayer.seek,
+                      onSeek: audioHandlers.audioPlayer.seek,
                     );
                   }),
             ],
