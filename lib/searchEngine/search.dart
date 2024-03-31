@@ -64,7 +64,7 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         title: Container(
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 122, 120, 120),
+            color: Color.fromARGB(255, 192, 188, 188),
             borderRadius: BorderRadius.circular(10),
           ),
           child: TextField(
@@ -87,7 +87,7 @@ class _SearchScreenState extends State<SearchScreen> {
         elevation: 0,
       ),
       body: searchResult.isNotEmpty
-          ? ListView.builder(
+          ? ListView.separated(
               itemCount: searchResult.length,
               itemBuilder: (context, index) {
                 final song = searchResult[index];
@@ -131,12 +131,13 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                       Container(
                       height: 60,
-                      color: Color.fromARGB(255, 217, 18, 18), // Màu nền trắng cho khoảng cách giữa các kết quả
+                      color: Color.fromARGB(255, 217, 18, 18),
                     ),
                     ],
                   ),
                 );
               },
+              separatorBuilder: (context, index) { return Divider(color:  Colors.white,height: 5,); },
             )
           : Center(
               child: searchText.isEmpty
@@ -146,17 +147,3 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 }
-
-// class SearchScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Search'),
-//       ),
-//       body: Center(
-//         child: Text('Search Screen'),
-//       ),
-//     );
-//   }
-// }
