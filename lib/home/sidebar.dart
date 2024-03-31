@@ -16,10 +16,12 @@ class Sidebar extends ConsumerWidget {
     return Drawer(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         child: ListView(
+
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(
               accountName: const Text("Wolhaiksong",
+
                   style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Gilroy',
@@ -55,6 +57,7 @@ class Sidebar extends ConsumerWidget {
                     )),
               ),
               onTap: () {
+                ref.read(countProvider.notifier).state = 4;
                 Navigator.pop(context);
               },
             ),
@@ -77,29 +80,6 @@ class Sidebar extends ConsumerWidget {
                 Navigator.pop(context);
               },
             ),
-
-            // download song
-            ListTile(
-                leading: Icon(
-                  FontAwesomeIcons.music,
-                  color: Theme.of(context).secondaryHeaderColor,
-                ),
-                title: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Text(
-                    'Library',
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: CustomColors.semiBold,
-                      fontFamily: 'Gilroy',
-                    ),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => Library()));
-                }
-            ),
             ListTile(
               leading: Icon(
                 FontAwesomeIcons.earthAsia,
@@ -120,12 +100,12 @@ class Sidebar extends ConsumerWidget {
             ),
             ListTile(
               leading: Icon(
-                FontAwesomeIcons.message,
+                FontAwesomeIcons.napster,
                 color: Theme.of(context).secondaryHeaderColor,
               ),
               title: Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: Text('Contact us',
+                child: Text('Recognize Music',
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: CustomColors.semiBold,
@@ -134,6 +114,7 @@ class Sidebar extends ConsumerWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.pushNamed(context, '/recog');
               },
             ),
             ListTile(

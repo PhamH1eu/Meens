@@ -8,6 +8,7 @@ class CustomColors {
     primaryColor: const Color.fromRGBO(9, 17, 39, 1),
     secondaryHeaderColor: const Color.fromRGBO(137, 150, 184, 1),
     focusColor: const Color.fromARGB(255, 240, 242, 246),
+    hintColor: const Color.fromRGBO(9, 18, 39, 0.15),
     scaffoldBackgroundColor: const Color.fromRGBO(247, 250, 255, 1),
     appBarTheme: const AppBarTheme(
         backgroundColor: Color.fromRGBO(247, 250, 255, 1),
@@ -19,6 +20,7 @@ class CustomColors {
     primaryColor: const Color.fromRGBO(234, 240, 255, 1),
     secondaryHeaderColor: const Color.fromRGBO(165, 192, 255, 0.7),
     focusColor: const Color.fromARGB(255, 11, 25, 49),
+    hintColor: const Color.fromRGBO(255, 255, 255, 0.31),
     scaffoldBackgroundColor: const Color.fromRGBO(9, 18, 39, 1),
     appBarTheme: const AppBarTheme(
       backgroundColor: Color.fromRGBO(9, 18, 39, 1),
@@ -44,7 +46,7 @@ class CustomColors {
 
   //glow effect under image
   static Widget glowEffect(glowColor) {
-    final TinyColor glow = TinyColor.fromColor(glowColor).lighten(20);
+    final TinyColor glow = TinyColor.fromColor(glowColor).lighten(25);
 
     return Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
@@ -54,8 +56,8 @@ class CustomColors {
             boxShadow: [
               BoxShadow(
                 color: glow.color,
-                blurRadius: 20,
-                spreadRadius: 10,
+                blurRadius: 15,
+                spreadRadius: 5,
                 offset: const Offset(0, 1), // changes position of shadow
               ),
             ],

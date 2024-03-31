@@ -18,7 +18,7 @@ class _SongInfoState extends State<SongInfo> {
   @override
   void initState() {
     super.initState();
-    // CustomColors.generatePaletteColor(widget.song.artWork).then((value) {
+    // CustomColors.generatePaletteColor(widget.song.imageUrl).then((value) {
     //   if (mounted) {
     //     setState(() {
     //       glowColor = value;
@@ -33,15 +33,15 @@ class _SongInfoState extends State<SongInfo> {
       // crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         SizedBox(
-          height: 150,
-          width: 150,
+          height: 180,
+          width: 180,
           child: Stack(children: [
             CustomColors.glowEffect(glowColor),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                  image: AssetImage(widget.song.artWork),
+                  image: AssetImage(widget.song.imageUrl),
                   fit: BoxFit.cover,
                 ),
               ),

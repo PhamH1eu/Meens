@@ -18,7 +18,7 @@ class _LikeSongInfoState extends State<LikeSongInfo> {
   @override
   void initState() {
     super.initState();
-    // CustomColors.generatePaletteColor(widget.song.artWork).then((value) {
+    // CustomColors.generatePaletteColor(widget.song.imageUrl).then((value) {
     //   if (mounted) {
     //     setState(() {
     //       glowColor = value;
@@ -33,38 +33,38 @@ class _LikeSongInfoState extends State<LikeSongInfo> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         SizedBox(
-          height: 130,
-          width: 130,
+          height: 140,
+          width: 140,
           child: Stack(children: [
             CustomColors.glowEffect(glowColor),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                  image: AssetImage(widget.song.artWork),
+                  image: AssetImage(widget.song.imageUrl),
                   fit: BoxFit.cover,
                 ),
               ),
             ),
           ]),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 9),
         Text(
           widget.song.title,
           style: TextStyle(
             fontWeight: CustomColors.semiBold,
             color: Theme.of(context).primaryColor,
             fontFamily: 'Gilroy',
-            fontSize: 14,
+            fontSize: 12,
           ),
         ),
-        const SizedBox(height: 5),
+        const SizedBox(height: 4),
         Text(
           widget.song.artist,
           style: TextStyle(
             color: Theme.of(context).secondaryHeaderColor,
             fontFamily: 'Gilroy',
-            fontSize: 10,
+            fontSize: 8,
           ),
         ),
       ],
