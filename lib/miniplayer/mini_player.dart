@@ -37,14 +37,20 @@ class MiniPlayer extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  ref.watch(audioHandlerProvider.notifier).currentSong.title,
+                                  ref
+                                      .watch(audioHandlerProvider.notifier)
+                                      .currentSong
+                                      .title,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Theme.of(context).primaryColor,
                                       fontSize: 18),
                                 ),
                                 Text(
-                                  ref.watch(audioHandlerProvider.notifier).currentSong.artist,
+                                  ref
+                                      .watch(audioHandlerProvider.notifier)
+                                      .currentSong
+                                      .artist,
                                   style: TextStyle(
                                       fontWeight: FontWeight.normal,
                                       color: Theme.of(context)
@@ -66,10 +72,18 @@ class MiniPlayer extends ConsumerWidget {
                 ),
               ),
               StreamBuilder<PositionData>(
-                  stream: PositionData.positionDataStream(audioHandlers.audioPlayer),
+                  stream: PositionData.positionDataStream(
+                      audioHandlers.audioPlayer),
                   builder: (context, snapshot) {
                     final positionData = snapshot.data;
-
+                    if (positionData != null &&
+                        audioHandlers.audioPlayer.duration != null) {
+                      if (positionData.position >
+                          audioHandlers.audioPlayer.duration! -
+                              const Duration(milliseconds: 500)) {
+                        audioHandlers.next();
+                      }
+                    }
                     return ProgressBar(
                       barHeight: 5,
                       baseBarColor: const Color.fromRGBO(202, 202, 202, 1),

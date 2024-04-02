@@ -32,7 +32,7 @@ class LayoutState extends ConsumerState<Layout> {
 
   void _openSearchScreen(BuildContext context) {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => SearchScreen()),
+      MaterialPageRoute(builder: (context) => const SearchScreen()),
     );
   }
 

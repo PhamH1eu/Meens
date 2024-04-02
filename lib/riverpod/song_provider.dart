@@ -84,16 +84,16 @@ class AudioHandlers extends ChangeNotifier {
     return playlist[audioPlayer.currentIndex ?? 0];
   }
 
-  void next() {
+  Future<void> next() async {
     if (audioPlayer.hasNext) {
-      audioPlayer.seekToNext();
+      await audioPlayer.seekToNext();
     }
     notifyListeners();
   }
 
-  void back() {
+  Future<void> back() async {
     if (audioPlayer.hasPrevious) {
-      audioPlayer.seekToPrevious();
+      await audioPlayer.seekToPrevious();
     }
     notifyListeners();
   }

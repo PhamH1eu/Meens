@@ -64,17 +64,17 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         title: Container(
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 122, 120, 120),
+            color: const Color.fromARGB(255, 122, 120, 120),
             borderRadius: BorderRadius.circular(10),
           ),
           child: TextField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Search for songs...',
               hintStyle: TextStyle(color: Colors.white),
               border: InputBorder.none,
               contentPadding: EdgeInsets.all(10),
             ),
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
             onChanged: (value) {
               setState(() {
                 searchText = value;
@@ -83,7 +83,7 @@ class _SearchScreenState extends State<SearchScreen> {
             },
           ),
         ),
-        backgroundColor: Color.fromARGB(0, 19, 18, 18),
+        backgroundColor: const Color.fromARGB(0, 19, 18, 18),
         elevation: 0,
       ),
       body: searchResult.isNotEmpty
@@ -92,7 +92,7 @@ class _SearchScreenState extends State<SearchScreen> {
               itemBuilder: (context, index) {
                 final song = searchResult[index];
                 return Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   color: Colors.black,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,13 +108,13 @@ class _SearchScreenState extends State<SearchScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             song.title,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -122,7 +122,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           ),
                           Text(
                             song.artist,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                             ),
@@ -131,7 +131,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                       Container(
                       height: 60,
-                      color: Color.fromARGB(255, 217, 18, 18), // Màu nền trắng cho khoảng cách giữa các kết quả
+                      color: const Color.fromARGB(255, 217, 18, 18), // Màu nền trắng cho khoảng cách giữa các kết quả
                     ),
                     ],
                   ),
@@ -140,7 +140,7 @@ class _SearchScreenState extends State<SearchScreen> {
             )
           : Center(
               child: searchText.isEmpty
-                  ? Text('Start typing to search...')
+                  ? const Text('Start typing to search...')
                   : Text('No results found for "$searchText"'),
             ),
     );

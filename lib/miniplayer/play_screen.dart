@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -57,7 +55,6 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
   @override
   Widget build(BuildContext context) {
     final audioHandlers = ref.watch(audioHandlerProvider);
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -86,9 +83,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
               enableInfiniteScroll: false,
               initialPage: audioHandlers.audioPlayer.currentIndex ?? 0,
               onPageChanged: (index, reason) {
-                reason = CarouselPageChangedReason.manual;
                 audioHandlers.changeTo(index);
-                log("this swipe index: $index");
               },
             ),
             carouselController: carouselController,
@@ -224,6 +219,14 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                   PositionData.positionDataStream(audioHandlers.audioPlayer),
               builder: (context, snapshot) {
                 final positionData = snapshot.data;
+                if (positionData != null &&
+                    audioHandlers.audioPlayer.duration != null) {
+                  if (positionData.position >
+                      audioHandlers.audioPlayer.duration! -
+                          const Duration(milliseconds: 500)) {
+                    carouselController.nextPage();
+                  }
+                }
                 return ProgressBar(
                   barHeight: 5,
                   baseBarColor: Theme.of(context).secondaryHeaderColor,
