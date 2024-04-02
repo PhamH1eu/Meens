@@ -9,7 +9,9 @@ import 'widgets/song_info.dart';
 const Song song = Song(
     title: "Whatever It Takes",
     artist: "IMAGINE DRAGONS",
-    artWork: "assets/artwork.jpg");
+    imageUrl: "assets/artwork.jpg",
+    songPath: 'assets/audios/TTL.mp3'
+    );
 const Playlist playlist =
     Playlist(title: "Evolve", artwork: "assets/album.jpg");
 

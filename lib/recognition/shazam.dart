@@ -45,7 +45,9 @@ class _MyWidgetState extends State<Shazam> {
       setState(() {
         resultSong.add(song[0]);
       });
-      if(context.mounted) Navigator.pushNamed(context, '/result', arguments: song[0]);
+      if (context.mounted) {
+        Navigator.pushNamed(context, '/result', arguments: song[0]);
+      }
       notFound = false;
     } catch (e) {
       setState(() {
@@ -146,7 +148,9 @@ class _MyWidgetState extends State<Shazam> {
             topLeft: Radius.circular(24.0),
             topRight: Radius.circular(24.0),
           ),
-          panel: Recent(resultSong: resultSong,),
+          panel: Recent(
+            resultSong: resultSong,
+          ),
         ),
       ]),
     );

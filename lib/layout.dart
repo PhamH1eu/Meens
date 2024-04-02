@@ -6,6 +6,7 @@ import 'package:webtoon/home/homeui.dart';
 import 'package:webtoon/likedsong/likedsong.dart';
 import 'package:webtoon/miniplayer/mini_player.dart';
 import 'package:webtoon/profile/personal/profileOfPersonal.dart';
+import 'package:webtoon/searchEngine/search.dart';
 
 import 'home/sidebar.dart';
 import 'riverpod/tab.dart';
@@ -28,6 +29,12 @@ class Layout extends ConsumerStatefulWidget {
 
 class LayoutState extends ConsumerState<Layout> {
   bool isHome = true;
+
+  void _openSearchScreen(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => SearchScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +66,9 @@ class LayoutState extends ConsumerState<Layout> {
                   child: IconButton(
                     icon: const Icon(FontAwesomeIcons.magnifyingGlass),
                     color: Theme.of(context).primaryColor,
-                    onPressed: () {},
+                    onPressed: () {
+                      _openSearchScreen(context);
+                    },
                   ),
                 ),
               ],
