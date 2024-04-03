@@ -1,7 +1,6 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webtoon/screen/miniplayer/widgets/progress_bar.dart';
 
@@ -51,7 +50,7 @@ class MiniPlayer extends ConsumerWidget {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Theme.of(context).primaryColor,
-                                        fontSize: 18),
+                                        fontSize: 16),
                                   ),
                                   Text(
                                     ref
@@ -62,7 +61,7 @@ class MiniPlayer extends ConsumerWidget {
                                         fontWeight: FontWeight.normal,
                                         color: Theme.of(context)
                                             .secondaryHeaderColor,
-                                        fontSize: 13),
+                                        fontSize: 12),
                                   ),
                                 ],
                               ),
