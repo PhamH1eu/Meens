@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:webtoon/faqs/faq_screen.dart';
-import 'package:webtoon/home/homeui.dart';
-import 'package:webtoon/likedsong/likedsong.dart';
-import 'package:webtoon/miniplayer/mini_player.dart';
-import 'package:webtoon/profile/personal/profileOfPersonal.dart';
-import 'package:webtoon/searchEngine/search.dart';
+import 'package:webtoon/screen/faqs/faq_screen.dart';
+import 'package:webtoon/screen/home/homeui.dart';
+import 'package:webtoon/screen/likedsong/likedsong.dart';
+import 'package:webtoon/screen/miniplayer/mini_player.dart';
+import 'package:webtoon/screen/profile/personal/profileOfPersonal.dart';
+import 'package:webtoon/screen/searchEngine/search.dart';
 
-import 'home/sidebar.dart';
+import 'screen/home/sidebar.dart';
 import 'riverpod/tab.dart';
-import 'setting/setting_screen.dart';
+import 'screen/setting/setting_screen.dart';
 
 Set<Widget> _pages = {
   const HomeUI(),
@@ -32,7 +32,7 @@ class LayoutState extends ConsumerState<Layout> {
 
   void _openSearchScreen(BuildContext context) {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => SearchScreen()),
+      MaterialPageRoute(builder: (context) => const SearchScreen()),
     );
   }
 
