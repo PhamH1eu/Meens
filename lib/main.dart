@@ -6,17 +6,17 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:webtoon/auth/login_screen.dart';
+import 'package:webtoon/screen/auth/login_screen.dart';
 import 'package:webtoon/layout.dart';
-import 'package:webtoon/miniplayer/play_screen.dart';
+import 'package:webtoon/screen/miniplayer/play_screen.dart';
 import 'package:webtoon/model/song_recognized.dart';
-import 'package:webtoon/onboard/onboard_screen.dart';
-import 'package:webtoon/recognition/shazam.dart';
+import 'package:webtoon/screen/onboard/onboard_screen.dart';
+import 'package:webtoon/screen/recognition/shazam.dart';
 import 'package:webtoon/utilities/fonts.dart';
 
-import 'auth/signup_screen.dart';
+import 'screen/auth/signup_screen.dart';
 import 'firebase_options.dart';
-import 'recognition/result.dart';
+import 'screen/recognition/result.dart';
 import 'riverpod/theme.dart';
 
 Future<void> main() async {
