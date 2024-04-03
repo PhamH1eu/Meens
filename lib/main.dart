@@ -71,6 +71,13 @@ class MyApp extends ConsumerWidget {
               settings: settings,
               reverseDuration: const Duration(milliseconds: 250),
             );
+          case '/app':
+            return PageTransition(
+              child: MyHomePage(isFirstTime: isFirstTime,),
+              type: PageTransitionType.rightToLeft,
+              settings: settings,
+              reverseDuration: const Duration(milliseconds: 250),
+            );
           case '/play':
             return PageTransition(
               child: const PlayingScreen(),

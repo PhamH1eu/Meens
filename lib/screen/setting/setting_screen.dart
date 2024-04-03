@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:webtoon/riverpod/song_provider.dart';
 
 import '../../riverpod/tab.dart';
 
@@ -22,8 +25,14 @@ class Setting extends StatelessWidget {
             ),
             title: const Text('Settings'),
           ),
-          body: const Center(
-            child: IconButton(onPressed: signOut, icon: Icon(Icons.logout)),
+          body: Center(
+            child: IconButton(
+                onPressed: () {
+                  signOut(context);
+                  ref.invalidate(countProvider);
+                  ref.read(audioHandlerProvider.notifier).clear();
+                },
+                icon: const Icon(Icons.logout)),
           ),
         );
       },
@@ -31,7 +40,12 @@ class Setting extends StatelessWidget {
   }
 }
 
-Future signOut() async {
-  await FirebaseAuth.instance.signOut();
-  await GoogleSignIn().signOut();
+Future signOut(BuildContext context) async {
+  try {
+    await FirebaseAuth.instance.signOut();
+    await GoogleSignIn().disconnect();
+  } on Exception catch (e) {
+    log(e.toString());
+    if (context.mounted) Navigator.of(context).pushNamed('/login');
+  }
 }
