@@ -35,7 +35,8 @@ class MiniPlayer extends ConsumerWidget {
                                 const EdgeInsets.symmetric(horizontal: 15.0),
                             child: ConstrainedBox(
                               constraints: BoxConstraints(
-                                maxWidth: MediaQuery.of(context).size.width * 0.35,
+                                maxWidth:
+                                    MediaQuery.of(context).size.width * 0.35,
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,8 +84,9 @@ class MiniPlayer extends ConsumerWidget {
                       audioHandlers.audioPlayer),
                   builder: (context, snapshot) {
                     final positionData = snapshot.data;
-                    if (positionData != null &&
-                        audioHandlers.audioPlayer.duration != null) {
+                    if (positionData == null ||
+                        audioHandlers.audioPlayer.duration == null) {
+                    } else {
                       if (positionData.position >
                           audioHandlers.audioPlayer.duration! -
                               const Duration(milliseconds: 500)) {

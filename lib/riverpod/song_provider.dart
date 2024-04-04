@@ -71,7 +71,7 @@ final _playlist = ConcatenatingAudioSource(
             id: song.songPath!,
             artist: song.artist,
             title: song.title,
-            artUri: Uri.parse(song.imageUrl),
+            // artUri: Uri.parse(song.imageUrl),
           )))
       .toList(),
 );
@@ -83,6 +83,12 @@ class AudioHandlers extends ChangeNotifier {
   AudioHandlers() {
     audioPlayer.setAudioSource(_playlist);
     audioPlayer.setLoopMode(LoopMode.all);
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
   }
 
   Song get currentSong {
@@ -113,31 +119,47 @@ class AudioHandlers extends ChangeNotifier {
   }
 
   void clear() {
-    audioPlayer.stop();
+    audioPlayer.pause();
     audioPlayer.setAudioSource(_playlist);
     audioPlayer.setLoopMode(LoopMode.all);
   }
 
-  //Haven't used those functions yet
-  //
-  //
-  bool setShuffleMode() {
-    audioPlayer.setShuffleModeEnabled(!audioPlayer.shuffleModeEnabled);
-    notifyListeners();
+  LoopMode get loopMode {
+    return audioPlayer.loopMode;
+  }
+
+  bool get isRepeat {
+    return audioPlayer.loopMode != LoopMode.off;
+  }
+
+  bool get shuffleMode {
     return audioPlayer.shuffleModeEnabled;
   }
 
-  bool setLoopMode() {
-    //Todo: Add LoopMode.one
-    audioPlayer.setLoopMode(
-        audioPlayer.loopMode == LoopMode.all ? LoopMode.off : LoopMode.all);
+  void setShuffleMode() {
+    audioPlayer.setLoopMode(LoopMode.off);
+    audioPlayer.setShuffleModeEnabled(!audioPlayer.shuffleModeEnabled);
     notifyListeners();
-    return audioPlayer.loopMode == LoopMode.all;
   }
 
-  void setVolume() {
-    audioPlayer.setVolume(audioPlayer.volume == 1.0 ? 0.0 : 1.0);
+  void setLoopMode() {
+    audioPlayer.setShuffleModeEnabled(false);
+    switch (audioPlayer.loopMode) {
+      case LoopMode.off:
+        audioPlayer.setLoopMode(LoopMode.all);
+        break;
+      case LoopMode.all:
+        audioPlayer.setLoopMode(LoopMode.one);
+        break;
+      case LoopMode.one:
+        audioPlayer.setLoopMode(LoopMode.off);
+        break;
+    }
     notifyListeners();
+  }
+
+  void setVolume(double volume) {
+    audioPlayer.setVolume(volume);
   }
 }
 
