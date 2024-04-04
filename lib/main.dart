@@ -21,7 +21,7 @@ import 'riverpod/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await  Firebase.initializeApp(
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await JustAudioBackground.init(
@@ -73,7 +73,9 @@ class MyApp extends ConsumerWidget {
             );
           case '/app':
             return PageTransition(
-              child: MyHomePage(isFirstTime: isFirstTime,),
+              child: MyHomePage(
+                isFirstTime: isFirstTime,
+              ),
               type: PageTransitionType.rightToLeft,
               settings: settings,
               reverseDuration: const Duration(milliseconds: 250),
@@ -94,7 +96,9 @@ class MyApp extends ConsumerWidget {
             );
           case '/result':
             return PageTransition(
-              child: ShazamResult(resultSong: args as ResultSong,),
+              child: ShazamResult(
+                resultSong: args as ResultSong,
+              ),
               type: PageTransitionType.fade,
               settings: settings,
               reverseDuration: const Duration(milliseconds: 250),
@@ -110,7 +114,6 @@ class MyApp extends ConsumerWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.isFirstTime});
   final bool isFirstTime;
-
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
