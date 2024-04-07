@@ -2,5 +2,6 @@
     "java.configuration.updateBuildConfiguration": "interactive",
     "conventionalCommits.scopes": [
         "log in"
-    ]
+    ],
+    "cmake.sourceDirectory": "C:/Users/HP/Desktop/flutter/beginProject/Meens/windows/flutter"
 }
