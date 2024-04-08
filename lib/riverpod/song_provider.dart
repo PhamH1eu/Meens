@@ -11,7 +11,7 @@ List<Song> playlist = [
     imageUrl:
         'https://firebasestorage.googleapis.com/v0/b/webtoon-b9373.appspot.com/o/artist%2Ftara.jpg?alt=media&token=041b1471-4a1b-4c53-87f8-abc1cfb875e7',
     songPath:
-        'https://firebasestorage.googleapis.com/v0/b/webtoon-b9373.appspot.com/o/song%2FTTL.mp3?alt=media&token=c3c438fa-af4c-4a15-8045-e35bc4afa966',
+        'https://firebasestorage.googleapis.com/v0/b/webtoon-b9373.appspot.com/o/song%2Fttl.mp3?alt=media&token=c3c438fa-af4c-4a15-8045-e35bc4afa966',
   ),
   const Song(
     title: 'Vo kich cua em',

@@ -6,7 +6,7 @@ class FirebaseAuthService {
   static String errorMessage = "";
   
   User? get currentUser => _auth.currentUser;
-
+ 
   void _createNewUserInFirestore(String nickname) {
     final User? user = currentUser;
     final usersRef = FirebaseFirestore.instance.collection('Users');

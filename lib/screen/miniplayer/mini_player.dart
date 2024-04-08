@@ -36,7 +36,7 @@ class MiniPlayer extends ConsumerWidget {
                             child: ConstrainedBox(
                               constraints: BoxConstraints(
                                 maxWidth:
-                                    MediaQuery.of(context).size.width * 0.35,
+                                    MediaQuery.of(context).size.width * 0.3,
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
