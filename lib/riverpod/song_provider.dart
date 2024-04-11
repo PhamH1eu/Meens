@@ -4,8 +4,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:webtoon/model/song.dart';
 
-List<Song> playlist = [
-  const Song(
+List<Song> playmtfk = [
+  Song(
     title: 'TTL - Listen 2',
     artist: 'T-ARA',
     imageUrl:
@@ -13,7 +13,7 @@ List<Song> playlist = [
     songPath:
         'https://firebasestorage.googleapis.com/v0/b/webtoon-b9373.appspot.com/o/song%2Fttl.mp3?alt=media&token=c3c438fa-af4c-4a15-8045-e35bc4afa966',
   ),
-  const Song(
+  Song(
     title: 'Vo kich cua em',
     artist: 'Huong Ly',
     imageUrl:
@@ -21,7 +21,7 @@ List<Song> playlist = [
     songPath:
         'https://firebasestorage.googleapis.com/v0/b/webtoon-b9373.appspot.com/o/song%2Fvokichcuaem.mp3?alt=media&token=b82a3baa-5f94-4f9e-81a0-f41e4c45d7c6',
   ),
-  const Song(
+  Song(
     title: 'Atlantis',
     artist: 'Seafret',
     imageUrl:
@@ -29,7 +29,7 @@ List<Song> playlist = [
     songPath:
         'https://firebasestorage.googleapis.com/v0/b/webtoon-b9373.appspot.com/o/song%2Fatlantis.mp3?alt=media&token=40e223a9-64cf-44ec-ad73-f4bb78125323',
   ),
-  const Song(
+  Song(
     title: 'Fly a letter the wind',
     artist: 'July',
     imageUrl:
@@ -37,7 +37,7 @@ List<Song> playlist = [
     songPath:
         'https://firebasestorage.googleapis.com/v0/b/webtoon-b9373.appspot.com/o/song%2Fflyalettertothewind.mp3?alt=media&token=029d1a32-0a1b-4acd-a5de-52edd301541f',
   ),
-  const Song(
+  Song(
     title: 'GODS',
     artist: 'New Jeans',
     imageUrl:
@@ -45,7 +45,7 @@ List<Song> playlist = [
     songPath:
         'https://firebasestorage.googleapis.com/v0/b/webtoon-b9373.appspot.com/o/song%2Fgods.mp3?alt=media&token=9266df98-a655-42c9-b751-c24ef8cb9b0b',
   ),
-  const Song(
+  Song(
     title: 'Viva La Vida',
     artist: 'Coldplay',
     imageUrl:
@@ -53,7 +53,7 @@ List<Song> playlist = [
     songPath:
         'https://firebasestorage.googleapis.com/v0/b/webtoon-b9373.appspot.com/o/song%2Fvivalavida.mp3?alt=media&token=4b30c354-4086-4a67-9735-3b99ae7c9293',
   ),
-  const Song(
+  Song(
     title: 'Your lie in april',
     artist: 'Hikaru Nara',
     imageUrl:
@@ -63,25 +63,31 @@ List<Song> playlist = [
   ),
 ];
 
-final _playlist = ConcatenatingAudioSource(
-  useLazyPreparation: true,
-  children: playlist
-      .map((song) => AudioSource.uri(Uri.parse(song.songPath!),
-          tag: MediaItem(
-            id: song.songPath!,
-            artist: song.artist,
-            title: song.title,
-            // artUri: Uri.parse(song.imageUrl),
-          )))
-      .toList(),
-);
+ConcatenatingAudioSource getPlaylist(List<Song> playlist) {
+  return ConcatenatingAudioSource(
+    useLazyPreparation: true,
+    children: playlist
+        .map((song) => AudioSource.uri(Uri.parse(song.songPath!),
+            tag: MediaItem(
+              id: song.songPath!,
+              artist: song.artist,
+              title: song.title,
+              // artUri: Uri.parse(song.imageUrl),
+            )))
+        .toList(),
+  );
+}
+
+//set audio source khi user login
 
 class AudioHandlers extends ChangeNotifier {
   //data for testing purpose, will refactor later
   final AudioPlayer audioPlayer = AudioPlayer();
+  final List<Song> playlist = [];
 
   AudioHandlers() {
-    audioPlayer.setAudioSource(_playlist);
+    playlist.addAll(playmtfk);
+    audioPlayer.setAudioSource(getPlaylist(playlist));
     audioPlayer.setLoopMode(LoopMode.all);
   }
 
@@ -89,6 +95,24 @@ class AudioHandlers extends ChangeNotifier {
   void dispose() {
     audioPlayer.dispose();
     super.dispose();
+  }
+
+  Future<void> setSong(Song song) async {
+    playlist.clear();
+    playlist.add(song);
+    audioPlayer.setAudioSource(getPlaylist(playlist));
+    if (!audioPlayer.playing) {
+      audioPlayer.play();
+    }
+    notifyListeners();
+  }
+
+//haven't used yet
+  Future<void> setPlaylist(List<Song> playlist) async {
+    this.playlist.clear();
+    this.playlist.addAll(playlist);
+    audioPlayer.setAudioSource(getPlaylist(playlist));
+    notifyListeners();
   }
 
   Song get currentSong {
@@ -120,8 +144,11 @@ class AudioHandlers extends ChangeNotifier {
 
   void clear() {
     audioPlayer.pause();
-    audioPlayer.setAudioSource(_playlist);
     audioPlayer.setLoopMode(LoopMode.all);
+  }
+
+  bool get showMini {
+    return playlist.isNotEmpty;
   }
 
   LoopMode get loopMode {
@@ -160,6 +187,11 @@ class AudioHandlers extends ChangeNotifier {
 
   void setVolume(double volume) {
     audioPlayer.setVolume(volume);
+  }
+
+  void replay() {
+    audioPlayer.setAudioSource(getPlaylist(playlist));
+    audioPlayer.play();
   }
 }
 

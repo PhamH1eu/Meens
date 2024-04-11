@@ -90,7 +90,9 @@ class MiniPlayer extends ConsumerWidget {
                       if (positionData.position >
                           audioHandlers.audioPlayer.duration! -
                               const Duration(milliseconds: 500)) {
-                        audioHandlers.next();
+                        if (audioHandlers.audioPlayer.hasNext) {
+                          audioHandlers.next();
+                        }
                       }
                     }
                     return ProgressBar(

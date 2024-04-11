@@ -24,7 +24,8 @@ class Control extends ConsumerWidget {
           onPressed: () {
             audioHandler.back();
             if (size == 60) {
-              carouselController.animateToPage(audioHandler.audioPlayer.previousIndex!);
+              carouselController
+                  .animateToPage(audioHandler.audioPlayer.previousIndex!);
             }
           },
         ),
@@ -53,12 +54,16 @@ class Control extends ConsumerWidget {
               );
             } else {
               return IconButton(
-                color: Theme.of(context).primaryColor,
-                icon: const Icon(Icons.replay_outlined),
-                iconSize: size,
-                onPressed: () =>
-                    audioHandler.audioPlayer.seek(Duration.zero, index: 0),
-              );
+                  color: Theme.of(context).primaryColor,
+                  icon: const Icon(Icons.replay_outlined),
+                  iconSize: size,
+                  onPressed: () {
+                    audioHandler.replay();
+                    if (size == 60) {
+                      carouselController.animateToPage(
+                          audioHandler.audioPlayer.currentIndex!);
+                    }
+                  });
             }
           },
         ),
@@ -66,7 +71,7 @@ class Control extends ConsumerWidget {
           color: Theme.of(context).primaryColor,
           icon: const Icon(Icons.skip_next_outlined),
           iconSize: size,
-          onPressed: ()  {
+          onPressed: () {
             audioHandler.next();
             if (size == 60) {
               carouselController
