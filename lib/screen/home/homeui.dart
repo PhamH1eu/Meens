@@ -28,30 +28,16 @@ class HomeUI extends StatefulWidget {
 }
 
 class _HomeUIState extends State<HomeUI> {
-  bool isLoading = true;
   final List<Song> songs = [];
-
-  Future<void> getSong() async {
-    final querySnapshot = await FirebaseFirestore.instance
-        .collection('Songs')
-        .where('genres', arrayContains: 'Pop')
-        // .get(const GetOptions(source: Source.cache));
-        .get();
-    log("Successfully completed");
-    for (var docSnapshot in querySnapshot.docs) {
-      final String songUrl = await Storage.getSongUrl(docSnapshot['title']);
-      final String imageUrl = await Storage.getSongAvatarUrl(docSnapshot['title']);
-      // final Color shadow = await CustomColors.generatePaletteColor(imageUrl);
-      songs.add(Song.fromJson(docSnapshot, imageUrl, songUrl));
-    }
-  }
+  bool isLoading = true;
+  final Stream<QuerySnapshot> songStream = FirebaseFirestore.instance
+      .collection('Songs')
+      .where('genres', arrayContains: 'Pop')
+      .snapshots();
 
   @override
   void initState() {
     super.initState();
-    getSong().then((value) => setState(() {
-          isLoading = false;
-        }));
   }
 
   @override
@@ -73,20 +59,53 @@ class _HomeUIState extends State<HomeUI> {
                   fontFamily: 'Gilroy'),
             ),
             const SizedBox(height: 20),
-            isLoading
-                ? const CircularProgressIndicator()
-                : SizedBox(
-                    height: 240,
-                    child: ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const SizedBox(width: 30);
-                      },
-                      itemCount: songs.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) =>
-                          SongInfo(song: songs.elementAt(index)),
-                    ),
-                  ),
+            SizedBox(
+              height: 240,
+              child: StreamBuilder<QuerySnapshot>(
+                stream: songStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    Future.wait(snapshot.data!.docs.map((e) async {
+                      log(e.metadata.isFromCache.toString());
+                      String name = e['title'];
+                      String imageUrl = await Storage.getSongAvatarUrl(name);
+                      String songUrl = await Storage.getSongUrl(name);
+                      return Song.fromJson(e.data(), imageUrl, songUrl);
+                    }).toList())
+                        .then((value) {
+                      if (context.mounted) {
+                        setState(() {
+                          songs.clear();
+                          songs.addAll(value);
+                          isLoading = false;
+                        });
+                      }
+                    });
+
+                    return isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          )
+                        : SizedBox(
+                            height: 240,
+                            child: ListView.separated(
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return const SizedBox(width: 30);
+                              },
+                              itemCount: songs.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) =>
+                                  SongInfo(song: songs.elementAt(index)),
+                            ),
+                          );
+                  }
+                  return const CircularProgressIndicator();
+                },
+              ),
+            ),
             const SizedBox(height: 20),
             Text(
               'My Playlist',
@@ -114,4 +133,17 @@ class _HomeUIState extends State<HomeUI> {
       ),
     );
   }
+}
+
+// TODO: Implement getSong, but haven't used yet
+Future<void> getSong(songs) async {
+  final querySnapshot = await FirebaseFirestore.instance
+      .collection('Songs')
+      .where('genres', arrayContains: 'Pop').get();
+  for (var docSnapshot in querySnapshot.docs) {
+      final String songUrl = await Storage.getSongUrl(docSnapshot['title']);
+      final String imageUrl = await Storage.getSongAvatarUrl(docSnapshot['title']);
+      // final Color shadow = await CustomColors.generatePaletteColor(imageUrl);
+      songs.add(Song.fromJson(docSnapshot, imageUrl, songUrl));
+    }
 }

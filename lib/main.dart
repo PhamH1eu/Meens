@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -128,7 +130,8 @@ class _MyHomePageState extends State<MyHomePage> {
         if (!snapshot.hasData) {
           return const LoginPage();
         } else {
-          //set it here?
+          // TODO: check this to fetch home screen, haven't used yet
+          log("maybe i can put a fetch home screen here");
           return widget.isFirstTime ? const OnboardScreen() : const Layout();
         }
       },

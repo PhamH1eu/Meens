@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:webtoon/riverpod/song_provider.dart';
 import 'package:webtoon/screen/faqs/faq_screen.dart';
 import 'package:webtoon/screen/home/homeui.dart';
 import 'package:webtoon/screen/likedsong/likedsong.dart';
@@ -78,9 +77,7 @@ class LayoutState extends ConsumerState<Layout> {
           : null,
       body: Stack(children: <Widget>[
         _pages.elementAt(tab),
-        Visibility(
-            visible: ref.read(audioHandlerProvider.notifier).showMini,
-            child: const MiniPlayer()),
+        const MiniPlayer(),
       ]),
     );
   }
