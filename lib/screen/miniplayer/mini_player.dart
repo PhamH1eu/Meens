@@ -13,7 +13,7 @@ class MiniPlayer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final audioHandlers = ref.watch(audioHandlerProvider);
-    return GestureDetector(
+    return !ref.watch(audioHandlerProvider.notifier).showMini ? const SizedBox() : GestureDetector(
       child: Align(
         alignment: const AlignmentDirectional(0, 1),
         child: SizedBox(

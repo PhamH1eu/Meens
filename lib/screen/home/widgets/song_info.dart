@@ -25,7 +25,10 @@ class _SongInfoState extends ConsumerState<SongInfo> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => ref.watch(audioHandlerProvider.notifier).setSong(widget.song),
+      onTap: () {
+        ref.watch(audioHandlerProvider.notifier).setSong(widget.song);
+        Navigator.of(context).pushNamed('/play');
+      },
       child: Column(
         children: <Widget>[
           SizedBox(
