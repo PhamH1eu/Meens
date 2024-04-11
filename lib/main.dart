@@ -128,6 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
         if (!snapshot.hasData) {
           return const LoginPage();
         } else {
+          //set it here?
           return widget.isFirstTime ? const OnboardScreen() : const Layout();
         }
       },

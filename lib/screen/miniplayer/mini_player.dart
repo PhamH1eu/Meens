@@ -36,7 +36,7 @@ class MiniPlayer extends ConsumerWidget {
                             child: ConstrainedBox(
                               constraints: BoxConstraints(
                                 maxWidth:
-                                    MediaQuery.of(context).size.width * 0.35,
+                                    MediaQuery.of(context).size.width * 0.3,
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,7 +90,9 @@ class MiniPlayer extends ConsumerWidget {
                       if (positionData.position >
                           audioHandlers.audioPlayer.duration! -
                               const Duration(milliseconds: 500)) {
-                        audioHandlers.next();
+                        if (audioHandlers.audioPlayer.hasNext) {
+                          audioHandlers.next();
+                        }
                       }
                     }
                     return ProgressBar(

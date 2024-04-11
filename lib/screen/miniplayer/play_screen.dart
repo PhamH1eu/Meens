@@ -206,8 +206,10 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                   if (positionData.position >
                       audioHandlers.audioPlayer.duration! -
                           const Duration(milliseconds: 500)) {
-                    carouselController
-                        .animateToPage(audioHandlers.audioPlayer.nextIndex!);
+                    if (audioHandlers.audioPlayer.hasNext) {
+                      carouselController
+                          .animateToPage(audioHandlers.audioPlayer.nextIndex!);
+                    }
                   }
                 }
                 return ProgressBar(

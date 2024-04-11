@@ -121,7 +121,7 @@ class ArtistProfile extends StatelessWidget {
                       scrollDirection: Axis.vertical,
                       itemCount: 9,
                       itemBuilder: (context, index) =>
-                          const SongOfArtist(song: song)),
+                          SongOfArtist(song: song)),
                 ),
               ],
             ));
