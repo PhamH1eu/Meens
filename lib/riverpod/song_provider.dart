@@ -86,6 +86,7 @@ class AudioHandlers extends ChangeNotifier {
 
   void clear() {
     audioPlayer.pause();
+    isPlaying = false;
     audioPlayer.setLoopMode(LoopMode.all);
   }
 
