@@ -1,3 +1,4 @@
+
 import 'package:diacritic/diacritic.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -12,7 +13,7 @@ class Storage {
   }
 
   static Future<String> getSongUrl(String name) {
-    final nameFile = removeDiacritics(name.toLowerCase().replaceAll(' ', ''));
+    final nameFile = validateString(name);
     final storageRef = _storage.ref();
     final songRef = storageRef.child('song/$nameFile.mp3');
     final songUrl = songRef.getDownloadURL();
@@ -20,9 +21,10 @@ class Storage {
   }
 
   static Future<String> getSongAvatarUrl(String name) {
-    final nameFile = removeDiacritics(name.toLowerCase().replaceAll(' ', ''));
+    final nameFile = validateString(name);
     final storageRef = _storage.ref();
-    final songAvatarRef = storageRef.child('song_avatar/${nameFile}_avatar.jpg');
+    final songAvatarRef =
+        storageRef.child('song_avatar/${nameFile}_avatar.jpg');
     final songAvatarUrl = songAvatarRef.getDownloadURL();
     return songAvatarUrl;
   }
@@ -31,5 +33,11 @@ class Storage {
     final newMeta =
         SettableMetadata(customMetadata: {'title': name, 'artist': artist});
     await ref.updateMetadata(newMeta);
+  }
+
+  static String validateString(String name) {
+    var nameFile = removeDiacritics(name.toLowerCase().replaceAll(' ', ''));
+    nameFile = nameFile.replaceAll("'", '');
+    return nameFile;
   }
 }

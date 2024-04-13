@@ -1,12 +1,12 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:webtoon/screen/auth/login_screen.dart';
 import 'package:webtoon/layout.dart';
@@ -31,14 +31,11 @@ Future<void> main() async {
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
   );
-  final prefs = await SharedPreferences.getInstance();
-  final isFirstTime = prefs.getBool('isFirstTime') ?? true;
-  runApp(ProviderScope(child: MyApp(isFirstTime: isFirstTime)));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
-  const MyApp({super.key, required this.isFirstTime});
-  final bool isFirstTime;
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -48,7 +45,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: darkMode ? CustomColors().darkTheme : CustomColors().lightTheme,
-      home: MyHomePage(isFirstTime: isFirstTime),
+      home: const MyHomePage(),
       onGenerateRoute: (settings) {
         final args = settings.arguments;
         switch (settings.name) {
@@ -75,9 +72,7 @@ class MyApp extends ConsumerWidget {
             );
           case '/app':
             return PageTransition(
-              child: MyHomePage(
-                isFirstTime: isFirstTime,
-              ),
+              child: const MyHomePage(),
               type: PageTransitionType.rightToLeft,
               settings: settings,
               reverseDuration: const Duration(milliseconds: 250),
@@ -114,8 +109,7 @@ class MyApp extends ConsumerWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.isFirstTime});
-  final bool isFirstTime;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -130,9 +124,20 @@ class _MyHomePageState extends State<MyHomePage> {
         if (!snapshot.hasData) {
           return const LoginPage();
         } else {
-          // TODO: check this to fetch home screen, haven't used yet
-          log("maybe i can put a fetch home screen here");
-          return widget.isFirstTime ? const OnboardScreen() : const Layout();
+          log(snapshot.data.toString(), name: 'User');
+          return FutureBuilder(
+            future: FirebaseFirestore.instance
+                .collection('Users')
+                .where('email', isEqualTo: snapshot.data!.email)
+                .get()
+                .then((value) => value.docs.first.get('firstTime')),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,));
+              }
+              return snapshot.data ? const OnboardScreen() : const Layout();
+            },
+          );
         }
       },
     );

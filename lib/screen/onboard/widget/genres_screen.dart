@@ -3,7 +3,8 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 
 class GenresPage extends StatefulWidget {
-  const GenresPage({super.key});
+  const GenresPage({super.key, required this.selectedGenres});
+  final HashSet<String> selectedGenres;
 
   @override
   State<GenresPage> createState() => _GenresPageState();
@@ -11,26 +12,24 @@ class GenresPage extends StatefulWidget {
 
 class _GenresPageState extends State<GenresPage> {
   List<String> imagePath = [
-    'assets/genres/indie.jpg',
-    'assets/genres/pop.jpg',
-    'assets/genres/edm.jpg',
-    'assets/genres/country.jpg',
-    'assets/genres/classic.jpg',
-    'assets/genres/remix.jpg',
-    'assets/genres/rap.jpg',
-    'assets/genres/jazz.jpg',
-    'assets/genres/rock.jpg',
-    'assets/genres/disco.jpg',
+    'indie',
+    'pop',
+    'edm',
+    'country',
+    'classic',
+    'remix',
+    'rap',
+    'jazz',
+    'rock',
+    'disco',
   ];
-
-  HashSet<String> selectedGenres = HashSet();
 
   void selectGenres(String genre) {
     setState(() {
-      if (selectedGenres.contains(genre)) {
-        selectedGenres.remove(genre);
+      if (widget.selectedGenres.contains(genre)) {
+        widget.selectedGenres.remove(genre);
       } else {
-        selectedGenres.add(genre);
+        widget.selectedGenres.add(genre);
       }
     });
   }
@@ -46,7 +45,7 @@ class _GenresPageState extends State<GenresPage> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.0),
               image: DecorationImage(
-                image: AssetImage(e),
+                image: AssetImage('assets/genres/$e.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -95,13 +94,13 @@ class _GenresPageState extends State<GenresPage> {
                         width: 2,
                       ),
                       shape: const CircleBorder(),
-                      backgroundColor: selectedGenres.contains(e)
+                      backgroundColor: widget.selectedGenres.contains(e)
                           ? Colors.white
                           : Colors.transparent, // <-- Button color
                       foregroundColor: Colors.blue, // <-- Splash color
                     ),
                     child: Icon(
-                      selectedGenres.contains(e) ? Icons.check : null,
+                      widget.selectedGenres.contains(e) ? Icons.check : null,
                       size: 18,
                     ),
                   ),
