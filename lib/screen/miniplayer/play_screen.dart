@@ -1,8 +1,8 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:just_audio/just_audio.dart';
 
-// import 'package:volume_controller/volume_controller.dart';
 import '../../riverpod/song_provider.dart';
 import 'widgets/control_button.dart';
 import 'widgets/progress_bar.dart';
@@ -18,8 +18,6 @@ class PlayingScreen extends ConsumerStatefulWidget {
 
 class PlayingScreenState extends ConsumerState<PlayingScreen> {
   bool isFavorite = false;
-  bool isRepeat = false;
-  bool isShuffle = false;
   bool showVolumeControl = false;
   double volumeLevel = 0.5;
 
@@ -28,23 +26,17 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
   @override
   void initState() {
     super.initState();
-    // Listen to system volume change
-    // VolumeController().listener((volume) {
-    //   setState(() => volumeLevel = volume);
-    // });
-
-    // VolumeController().getVolume().then((volume) => volumeLevel = volume);
   }
 
   @override
   void dispose() {
-    // VolumeController().removeListener();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final audioHandlers = ref.watch(audioHandlerProvider);
+    
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -146,7 +138,9 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                 IconButton(
                   icon: volumeLevel > 0.5
                       ? const Icon(Icons.volume_up)
-                      : const Icon(Icons.volume_down),
+                      : volumeLevel == 0
+                          ? const Icon(Icons.volume_off)
+                          : const Icon(Icons.volume_down),
                   color: const Color.fromRGBO(137, 150, 184, 1),
                   iconSize: 30,
                   onPressed: () {
@@ -164,39 +158,37 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                     onChanged: (double value) {
                       setState(() {
                         volumeLevel = value;
-                        // VolumeController().setVolume(volumeLevel);
+                        audioHandlers.setVolume(value);
                       });
-                      value = volumeLevel;
                     },
                   ),
                 const Spacer(),
                 IconButton(
                   icon: Icon(
-                    Icons.repeat,
-                    color: isRepeat
+                    switch (audioHandlers.loopMode) {
+                      LoopMode.off => Icons.repeat,
+                      LoopMode.all => Icons.repeat,
+                      LoopMode.one => Icons.repeat_one,
+                    },
+                    color: audioHandlers.isRepeat
                         ? const Color.fromARGB(255, 124, 200, 10)
                         : const Color.fromRGBO(137, 150, 184, 1),
                   ),
+                  iconSize: 30,
                   onPressed: () {
-                    setState(() {
-                      isRepeat = !isRepeat;
-                      isShuffle = false;
-                    });
+                    audioHandlers.setLoopMode();
                   },
                 ),
                 IconButton(
                   icon: Icon(
                     Icons.shuffle,
                     size: 30,
-                    color: isShuffle
+                    color: audioHandlers.shuffleMode
                         ? const Color.fromARGB(255, 124, 200, 10)
                         : const Color.fromRGBO(137, 150, 184, 1),
                   ),
                   onPressed: () {
-                    setState(() {
-                      isShuffle = !isShuffle;
-                      isRepeat = false;
-                    });
+                    audioHandlers.setShuffleMode();
                   },
                 ),
               ],
@@ -210,12 +202,16 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                   PositionData.positionDataStream(audioHandlers.audioPlayer),
               builder: (context, snapshot) {
                 final positionData = snapshot.data;
-                if (positionData != null &&
-                    audioHandlers.audioPlayer.duration != null) {
+                if (positionData == null ||
+                    audioHandlers.audioPlayer.duration == null) {
+                } else {
                   if (positionData.position >
                       audioHandlers.audioPlayer.duration! -
                           const Duration(milliseconds: 500)) {
-                    carouselController.nextPage();
+                    if (audioHandlers.audioPlayer.hasNext) {
+                      carouselController
+                          .animateToPage(audioHandlers.audioPlayer.nextIndex!);
+                    }
                   }
                 }
                 return ProgressBar(

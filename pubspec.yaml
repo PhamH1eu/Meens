@@ -55,8 +55,6 @@ dependencies:
   riverpod_lint: ^2.3.10
   riverpod_annotation: ^2.3.5
   smooth_page_indicator: ^1.1.0
-  shared_preferences: ^2.2.2
-  volume_controller: ^2.0.7
   on_audio_query: ^2.9.0
   avatar_glow: ^3.0.1
   flutter_animate: ^4.5.0
@@ -71,6 +69,8 @@ dependencies:
   just_audio_web: ^0.4.9
   freezed_annotation: ^2.4.1
   firebase_storage: ^11.7.0
+  cloud_firestore: ^4.16.0
+  diacritic: ^0.1.5
 
 dev_dependencies:
   flutter_test:

@@ -39,7 +39,7 @@ class CustomColors {
   static Future<Color> generatePaletteColor(url) async {
     final PaletteGenerator paletteGenerator =
         await PaletteGenerator.fromImageProvider(
-      AssetImage(url),
+      NetworkImage(url, headers: const {'accept': '*/*'}),
     );
     return paletteGenerator.paletteColors[0].color;
   }

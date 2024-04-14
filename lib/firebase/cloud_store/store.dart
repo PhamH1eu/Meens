@@ -1,11 +1,43 @@
+
+import 'package:diacritic/diacritic.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-final storage = FirebaseStorage.instance;
+class Storage {
+  static final _storage = FirebaseStorage.instance;
 
-final storageRef = FirebaseStorage.instance.ref();
+  static Future<String> getArtistUrl(String name) {
+    final storageRef = _storage.ref();
+    final artistRef = storageRef.child('artist/$name.jpg');
+    final artistUrl = artistRef.getDownloadURL();
+    return artistUrl;
+  }
 
-final coldPlayRef = storageRef.child('artists/coldplay.jpg');
+  static Future<String> getSongUrl(String name) {
+    final nameFile = validateString(name);
+    final storageRef = _storage.ref();
+    final songRef = storageRef.child('song/$nameFile.mp3');
+    final songUrl = songRef.getDownloadURL();
+    return songUrl;
+  }
 
-final coldPlayUrl = coldPlayRef.getDownloadURL();
+  static Future<String> getSongAvatarUrl(String name) {
+    final nameFile = validateString(name);
+    final storageRef = _storage.ref();
+    final songAvatarRef =
+        storageRef.child('song_avatar/${nameFile}_avatar.jpg');
+    final songAvatarUrl = songAvatarRef.getDownloadURL();
+    return songAvatarUrl;
+  }
 
-//testing
+  void uploadMetadata(String name, String artist, ref) async {
+    final newMeta =
+        SettableMetadata(customMetadata: {'title': name, 'artist': artist});
+    await ref.updateMetadata(newMeta);
+  }
+
+  static String validateString(String name) {
+    var nameFile = removeDiacritics(name.toLowerCase().replaceAll(' ', ''));
+    nameFile = nameFile.replaceAll("'", '');
+    return nameFile;
+  }
+}

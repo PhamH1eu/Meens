@@ -188,7 +188,7 @@ class _SignUpPageState extends State<SignUpPage> {
     } else if (password.isEmpty) {
       error = "Password is required";
     } else {
-      await _auth.signUpWithEmailAndPassword(email, password);
+      await _auth.signUpWithEmailAndPassword(email, password, _nicknameController.text.trim());
       error = FirebaseAuthService.errorMessage;
     }
 

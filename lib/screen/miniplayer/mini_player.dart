@@ -1,7 +1,6 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webtoon/screen/miniplayer/widgets/progress_bar.dart';
 
@@ -14,7 +13,7 @@ class MiniPlayer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final audioHandlers = ref.watch(audioHandlerProvider);
-    return GestureDetector(
+    return !ref.watch(audioHandlerProvider.notifier).showMini ? const SizedBox() : GestureDetector(
       child: Align(
         alignment: const AlignmentDirectional(0, 1),
         child: SizedBox(
@@ -36,7 +35,8 @@ class MiniPlayer extends ConsumerWidget {
                                 const EdgeInsets.symmetric(horizontal: 15.0),
                             child: ConstrainedBox(
                               constraints: BoxConstraints(
-                                maxWidth: MediaQuery.of(context).size.width * 0.35,
+                                maxWidth:
+                                    MediaQuery.of(context).size.width * 0.3,
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +51,7 @@ class MiniPlayer extends ConsumerWidget {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Theme.of(context).primaryColor,
-                                        fontSize: 18),
+                                        fontSize: 16),
                                   ),
                                   Text(
                                     ref
@@ -62,7 +62,7 @@ class MiniPlayer extends ConsumerWidget {
                                         fontWeight: FontWeight.normal,
                                         color: Theme.of(context)
                                             .secondaryHeaderColor,
-                                        fontSize: 13),
+                                        fontSize: 12),
                                   ),
                                 ],
                               ),
@@ -84,12 +84,15 @@ class MiniPlayer extends ConsumerWidget {
                       audioHandlers.audioPlayer),
                   builder: (context, snapshot) {
                     final positionData = snapshot.data;
-                    if (positionData != null &&
-                        audioHandlers.audioPlayer.duration != null) {
+                    if (positionData == null ||
+                        audioHandlers.audioPlayer.duration == null) {
+                    } else {
                       if (positionData.position >
                           audioHandlers.audioPlayer.duration! -
                               const Duration(milliseconds: 500)) {
-                        audioHandlers.next();
+                        if (audioHandlers.audioPlayer.hasNext) {
+                          audioHandlers.next();
+                        }
                       }
                     }
                     return ProgressBar(

@@ -22,15 +22,11 @@ class Control extends ConsumerWidget {
           icon: const Icon(Icons.skip_previous_outlined),
           iconSize: size,
           onPressed: () {
-            if (size == 60) {
-              if (audioHandler.audioPlayer.currentIndex == 0) {
-                carouselController
-                    .jumpToPage(audioHandler.audioPlayer.sequence!.length - 1);
-              } else {
-                carouselController.previousPage();
-              }
-            }
             audioHandler.back();
+            if (size == 60) {
+              carouselController
+                  .animateToPage(audioHandler.audioPlayer.previousIndex!);
+            }
           },
         ),
         StreamBuilder<PlayerState>(
@@ -58,12 +54,16 @@ class Control extends ConsumerWidget {
               );
             } else {
               return IconButton(
-                color: Theme.of(context).primaryColor,
-                icon: const Icon(Icons.replay_outlined),
-                iconSize: size,
-                onPressed: () =>
-                    audioHandler.audioPlayer.seek(Duration.zero, index: 0),
-              );
+                  color: Theme.of(context).primaryColor,
+                  icon: const Icon(Icons.replay_outlined),
+                  iconSize: size,
+                  onPressed: () {
+                    audioHandler.replay();
+                    if (size == 60) {
+                      carouselController.animateToPage(
+                          audioHandler.audioPlayer.currentIndex!);
+                    }
+                  });
             }
           },
         ),
@@ -72,15 +72,11 @@ class Control extends ConsumerWidget {
           icon: const Icon(Icons.skip_next_outlined),
           iconSize: size,
           onPressed: () {
-            if (size == 60) {
-              if (audioHandler.audioPlayer.currentIndex ==
-                  audioHandler.audioPlayer.sequence!.length - 1) {
-                carouselController.jumpToPage(0);
-              } else {
-                carouselController.nextPage();
-              }
-            }
             audioHandler.next();
+            if (size == 60) {
+              carouselController
+                  .animateToPage(audioHandler.audioPlayer.nextIndex!);
+            }
           },
         ),
       ],
