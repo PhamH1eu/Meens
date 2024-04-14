@@ -1,5 +1,9 @@
+import 'dart:collection';
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:webtoon/screen/onboard/widget/genres_screen.dart';
 import 'package:webtoon/screen/onboard/widget/intro.dart';
@@ -16,8 +20,17 @@ class OnboardScreen extends StatefulWidget {
 
 class _OnboardScreenState extends State<OnboardScreen> {
   final _controller = PageController();
-
+  HashSet<String> selectedGenres = HashSet();
   bool isLastPage = false;
+
+  Future<void> done() async {
+    final userRef = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.email);
+    userRef.update({'genres': selectedGenres.toList(), 'firstTime': false}).then(
+        (value) => log("DocumentSnapshot successfully updated!"),
+        onError: (e) => log("Error updating document $e"));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +41,13 @@ class _OnboardScreenState extends State<OnboardScreen> {
           onPageChanged: (value) => setState(() {
             isLastPage = value == 3;
           }),
-          children: const [
-            Intro(),
-            PlaylistIntro(),
-            PersonalizRec(),
-            GenresPage()
+          children: [
+            const Intro(),
+            const PlaylistIntro(),
+            const PersonalizRec(),
+            GenresPage(
+              selectedGenres: selectedGenres,
+            )
           ],
         ),
         Container(
@@ -60,9 +75,10 @@ class _OnboardScreenState extends State<OnboardScreen> {
                 isLastPage
                     ? ElevatedButton(
                         onPressed: () async {
-                          final prefs = await SharedPreferences.getInstance();
-                          prefs.setBool('isFirstTime', false);
-                          if (context.mounted) Navigator.pushNamed(context, '/home');
+                          done();
+                          if (context.mounted) {
+                            Navigator.pushNamed(context, '/home');
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue[500],

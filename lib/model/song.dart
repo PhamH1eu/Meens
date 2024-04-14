@@ -1,49 +1,30 @@
-import 'package:just_audio_background/just_audio_background.dart';
+import 'package:flutter/material.dart';
 
 class Song {
-  final String id;
   final String title;
   final String artist;
   final String imageUrl;
-  final String? songUrl;
   final String? songPath;
+  late Color? glowColor;
 
-  const Song({
-    this.id = "",
+  Song({
     required this.title,
     required this.artist,
     required this.imageUrl,
-    this.songUrl,
-    this.songPath,
-  }) : assert(songUrl != null || songPath != null);
+    required this.songPath,
+    this.glowColor,
+  });
 
-  factory Song.fromMediaItem(MediaItem mediaItem) {
-    String? songPath, songUrl;
-
-    if ((mediaItem.extras!['url'] as String).startsWith('asset:///')) {
-      songPath = mediaItem.extras!['url'].toString().replaceFirst('asset:///', '');
-    } else {
-      songUrl = mediaItem.extras!['url'];
-    }
-
+  factory Song.fromJson(dynamic json, String image, String song) {
     return Song(
-      id: mediaItem.id,
-      title: mediaItem.title,
-      artist: mediaItem.artist ?? "",
-      imageUrl: mediaItem.artUri?.toString() ?? "",
-      songPath: songPath,
-      songUrl: songUrl,
-    );
+        title: json['title'] as String,
+        artist: json['artist'][0] as String,
+        imageUrl: image,
+        songPath: song,);
   }
 
-  MediaItem toMediaItem() {
-    return MediaItem(
-      id: id,
-      album: "",
-      title: title,
-      artist: artist,
-      artUri: Uri.parse(imageUrl),
-      extras: <String, dynamic>{'url': songPath != null ? 'asset:///$songPath' : songUrl},
-    );
+  @override
+  String toString() {
+    return 'Song {title: $title, artist: $artist, imageUrl: $imageUrl, songPath: $songPath}';
   }
 }

@@ -4,25 +4,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   static String errorMessage = "";
-  
+
   User? get currentUser => _auth.currentUser;
 
-  void _createNewUserInFirestore(String nickname) {
+  void _createNewUserInFirestore(String nickname) async {
     final User? user = currentUser;
     final usersRef = FirebaseFirestore.instance.collection('Users');
-    usersRef.doc(user?.uid).set({
-      'id': user?.uid,
+    usersRef.doc(user?.email).set({
       'nickName': nickname,
       'email': user?.email,
-      'photoUrl': "https://firebasestorage.googleapis.com/v0/b/webtoon-b9373.appspot.com/o/avatar%2Fuser.jpg?alt=media&token=46c6a002-45d2-4003-a77b-bbdb4c966186",
-       });
+      'firstTime': true,
+      'photoUrl':
+          "https://firebasestorage.googleapis.com/v0/b/webtoon-b9373.appspot.com/o/avatar%2Fuser.jpg?alt=media&token=46c6a002-45d2-4003-a77b-bbdb4c966186",
+    });
   }
 
   Future<User?> signUpWithEmailAndPassword(
       String email, String password, String nickName) async {
     try {
       errorMessage = "";
-      UserCredential credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential credential = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       _createNewUserInFirestore(nickName);
       return credential.user;
     } on FirebaseAuthException catch (error) {
