@@ -1,14 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:webtoon/model/playlist.dart';
 import 'package:webtoon/utilities/fonts.dart';
 
 import '../../riverpod/song_provider.dart';
 import '../miniplayer/mini_player.dart';
 
 class PlaylistInfo extends StatelessWidget {
-  const PlaylistInfo({super.key});
+  const PlaylistInfo({super.key, required this.playlist});
+
+  final Playlist playlist;
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +101,10 @@ class PlaylistInfo extends StatelessWidget {
                           ),
                           PopupMenuItem(
                             value: 2,
-                            onTap: () {},
+                            onTap: () {
+                              deletePlaylist();
+                              Navigator.of(context).pop();
+                            },
                             child: ListTile(
                                 leading: Icon(
                                   Icons.playlist_remove_sharp,
@@ -121,7 +129,7 @@ class PlaylistInfo extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: 5,
+                    itemCount: playlist.songs.length,
                     itemExtent: 90,
                     itemBuilder: (context, index) {
                       return ListTile(
@@ -129,19 +137,19 @@ class PlaylistInfo extends StatelessWidget {
                         leading: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: Image.network(
-                            'https://via.placeholder.com/150',
+                            playlist.songs[index].imageUrl,
                             width: 70,
                             height: 70,
                             fit: BoxFit.cover,
                           ),
                         ),
                         title: Text(
-                          'Playlist $index',
+                          playlist.songs[index].title,
                           style: TextStyle(
                               color: Theme.of(context).primaryColor,
                               fontSize: 17),
                         ),
-                        subtitle: Text('$index Tracks',
+                        subtitle: Text(playlist.songs[index].artist,
                             style: TextStyle(
                                 color: Theme.of(context).primaryColor,
                                 fontSize: 15)),
@@ -156,5 +164,22 @@ class PlaylistInfo extends StatelessWidget {
         );
       },
     );
+  }
+
+  void deletePlaylist() async {
+    await FirebaseFirestore.instance
+        .collection(
+            "/Users/${FirebaseAuth.instance.currentUser!.email}/Playlists/${playlist.title}/Songs/")
+        .get()
+        .then((value) {
+      for (var doc in value.docs) {
+        doc.reference.delete();
+      }
+    });
+    await FirebaseFirestore.instance
+        .collection(
+            "/Users/${FirebaseAuth.instance.currentUser!.email}/Playlists/")
+        .doc(playlist.title)
+        .delete();
   }
 }

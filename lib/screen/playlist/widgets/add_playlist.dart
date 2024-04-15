@@ -46,6 +46,7 @@ class AddPlaylist extends StatelessWidget {
     await FirebaseFirestore.instance
         .collection(
             '/Users/${FirebaseAuth.instance.currentUser!.email}/Playlists/')
-        .add({'title': _controller.text.trim()});
+        .doc(_controller.text.trim())
+        .set({'title': _controller.text.trim()});
   }
 }

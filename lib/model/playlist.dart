@@ -1,9 +1,11 @@
+import 'package:webtoon/model/song.dart';
+
 class Playlist {
-  final String artwork;
   final String title;
+  final List<Song> songs;
 
   const Playlist({
     required this.title,
-    required this.artwork,
+    required this.songs,
   });
 }

@@ -6,7 +6,6 @@ import 'package:webtoon/screen/home/homeui.dart';
 import 'package:webtoon/screen/likedsong/likedsong.dart';
 import 'package:webtoon/screen/miniplayer/mini_player.dart';
 import 'package:webtoon/screen/playlist/playlist.dart';
-import 'package:webtoon/screen/playlist/playlist_info.dart';
 import 'package:webtoon/screen/profile/personal/profileOfPersonal.dart';
 import 'package:webtoon/screen/searchEngine/search.dart';
 
@@ -21,7 +20,6 @@ Set<Widget> _pages = {
   const LikedSong(),
   const PersonalProfile(),
   const Playlist(),
-  const PlaylistInfo(),
 };
 
 class Layout extends ConsumerStatefulWidget {

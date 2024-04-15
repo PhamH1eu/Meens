@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:webtoon/model/playlist.dart';
 
 import 'package:webtoon/screen/auth/login_screen.dart';
 import 'package:webtoon/layout.dart';
@@ -101,7 +102,9 @@ class MyApp extends ConsumerWidget {
             );
           case '/playlist':
             return PageTransition(
-              child: const PlaylistInfo(),
+              child: PlaylistInfo(
+                playlist: args as Playlist,
+              ),
               type: PageTransitionType.fade,
               settings: settings,
               reverseDuration: const Duration(milliseconds: 250),
