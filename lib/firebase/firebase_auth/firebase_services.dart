@@ -1,31 +1,45 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   static String errorMessage = "";
-
+  final FirebaseStorage _storage = FirebaseStorage.instance;
   User? get currentUser => _auth.currentUser;
 
-  void _createNewUserInFirestore(String nickname) async {
+  Future<String> uploadImageToStorage(String childName,Uint8List file) async {
+    Reference ref = _storage.ref().child(childName);
+    UploadTask uploadTask = ref.putData(file);
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+    print(downloadUrl+"jpgggg");
+    return downloadUrl;
+  }
+
+  void _createNewUserInFirestore(String nickname,Uint8List file) async {
     final User? user = currentUser;
     final usersRef = FirebaseFirestore.instance.collection('Users');
+    String path = "avatar/" +nickname +".jpg";
+    String imageUrl = await uploadImageToStorage(path, file);
     usersRef.doc(user?.email).set({
       'nickName': nickname,
       'email': user?.email,
       'firstTime': true,
-      'photoUrl':
-          "https://firebasestorage.googleapis.com/v0/b/webtoon-b9373.appspot.com/o/avatar%2Fuser.jpg?alt=media&token=46c6a002-45d2-4003-a77b-bbdb4c966186",
+      'photoUrl': imageUrl,
     });
+    print(imageUrl +'jggggggggggggggpggg');
   }
 
   Future<User?> signUpWithEmailAndPassword(
-      String email, String password, String nickName) async {
+      String email, String password, String nickName,Uint8List file) async {
     try {
       errorMessage = "";
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      _createNewUserInFirestore(nickName);
+      _createNewUserInFirestore(nickName,file);
       return credential.user;
     } on FirebaseAuthException catch (error) {
       switch (error.code) {
