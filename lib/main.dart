@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
@@ -13,6 +11,7 @@ import 'package:webtoon/layout.dart';
 import 'package:webtoon/screen/miniplayer/play_screen.dart';
 import 'package:webtoon/model/song_recognized.dart';
 import 'package:webtoon/screen/onboard/onboard_screen.dart';
+import 'package:webtoon/screen/playlist/playlist_info.dart';
 import 'package:webtoon/screen/recognition/shazam.dart';
 import 'package:webtoon/utilities/fonts.dart';
 
@@ -100,6 +99,13 @@ class MyApp extends ConsumerWidget {
               settings: settings,
               reverseDuration: const Duration(milliseconds: 250),
             );
+          case '/playlist':
+            return PageTransition(
+              child: const PlaylistInfo(),
+              type: PageTransitionType.fade,
+              settings: settings,
+              reverseDuration: const Duration(milliseconds: 250),
+            );
           default:
             return null;
         }
@@ -124,7 +130,6 @@ class _MyHomePageState extends State<MyHomePage> {
         if (!snapshot.hasData) {
           return const LoginPage();
         } else {
-          log(snapshot.data.toString(), name: 'User');
           return FutureBuilder(
             future: FirebaseFirestore.instance
                 .collection('Users')

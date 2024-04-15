@@ -36,7 +36,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
   @override
   Widget build(BuildContext context) {
     final audioHandlers = ref.watch(audioHandlerProvider);
-    
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

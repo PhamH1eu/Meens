@@ -6,11 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webtoon/firebase/cloud_store/store.dart';
 import 'package:webtoon/model/song.dart';
 
-final userProvider = FutureProvider.autoDispose((ref) async {
-  final user = FirebaseAuth.instance.currentUser;
-  return user;
-});
-
 final recommendedSongsProvider = FutureProvider.autoDispose((ref) async {
   List<String> genres = [];
   await FirebaseFirestore.instance

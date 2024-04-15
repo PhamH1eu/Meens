@@ -81,12 +81,12 @@ class Sidebar extends ConsumerWidget {
             ),
             ListTile(
               leading: Icon(
-                FontAwesomeIcons.earthAsia,
+                FontAwesomeIcons.radio,
                 color: Theme.of(context).secondaryHeaderColor,
               ),
               title: Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: Text('Language',
+                child: Text('Playlists',
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: CustomColors.semiBold,
@@ -94,6 +94,7 @@ class Sidebar extends ConsumerWidget {
                     )),
               ),
               onTap: () {
+                ref.read(countProvider.notifier).state = 5;
                 Navigator.pop(context);
               },
             ),

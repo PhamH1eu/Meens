@@ -112,18 +112,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/audios/
-    - assets/banner.gif
-    - assets/logo.png
-    - assets/icon.png
-    - assets/user.jpg
-    - assets/wallpaper.jpg
-    - assets/artwork.jpg
-    - assets/album.jpg
-    - assets/playlist.gif
-    - assets/intro.png
-    - assets/personal.png
-    - assets/shazam.png
-    - assets/shazam.jpg
+    - assets/
     - assets/genres/
 
   # To add assets to your application, add an assets section, like this:
