@@ -71,6 +71,7 @@ dependencies:
   firebase_storage: ^11.7.0
   cloud_firestore: ^4.16.0
   diacritic: ^0.1.5
+  flutter_slidable: ^3.1.0
 
 dev_dependencies:
   flutter_test:
@@ -111,7 +112,6 @@ flutter:
 
   uses-material-design: true
   assets:
-    - assets/audios/
     - assets/
     - assets/genres/
 

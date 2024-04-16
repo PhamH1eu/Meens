@@ -2,19 +2,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:webtoon/model/playlist.dart';
+
 import 'package:webtoon/utilities/fonts.dart';
 
 import '../../riverpod/song_provider.dart';
 import '../miniplayer/mini_player.dart';
 
-class PlaylistInfo extends StatelessWidget {
+class PlaylistInfo extends StatefulWidget {
   const PlaylistInfo({super.key, required this.playlist});
 
   final Playlist playlist;
 
+  @override
+  State<PlaylistInfo> createState() => _PlaylistInfoState();
+}
+
+class _PlaylistInfoState extends State<PlaylistInfo> {
   @override
   Widget build(BuildContext context) {
     return Consumer(
@@ -38,7 +45,7 @@ class PlaylistInfo extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
-                    'Playlist Info',
+                    widget.playlist.title,
                     style: TextStyle(
                         fontWeight: CustomColors.extraBold,
                         color: Theme.of(context).primaryColor,
@@ -80,7 +87,12 @@ class PlaylistInfo extends StatelessWidget {
                       IconButton(
                           icon: const Icon(FontAwesomeIcons.circlePlay),
                           color: Theme.of(context).primaryColor,
-                          onPressed: () {}),
+                          onPressed: () {
+                            ref
+                                .read(audioHandlerProvider.notifier)
+                                .setPlaylist(widget.playlist.songs);
+                            Navigator.of(context).pushNamed('/play');
+                          }),
                       const Spacer(),
                       PopupMenuButton(
                         itemBuilder: (context) => [
@@ -129,30 +141,59 @@ class PlaylistInfo extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: playlist.songs.length,
+                    key: UniqueKey(),
+                    itemCount: widget.playlist.songs.length,
                     itemExtent: 90,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        visualDensity: const VisualDensity(vertical: 3),
-                        leading: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            playlist.songs[index].imageUrl,
-                            width: 70,
-                            height: 70,
-                            fit: BoxFit.cover,
+                      return GestureDetector(
+                        onTap: () {
+                          ref
+                              .read(audioHandlerProvider.notifier)
+                              .setSong(widget.playlist.songs[index]);
+                          Navigator.of(context).pushNamed('/play');
+                        },
+                        child: Slidable(
+                          endActionPane: ActionPane(
+                              extentRatio: 0.3,
+                              motion: const ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  onPressed: (BuildContext context) {
+                                    deleteSongFromPlaylist(
+                                        widget.playlist.songs[index].title);
+                                        setState(() {
+                                          widget.playlist.songs.removeAt(index);
+                                        });
+                                  },
+                                  backgroundColor: Colors.red,
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete_forever_sharp,
+                                  label: 'Delete',
+                                ),
+                              ]),
+                          child: ListTile(
+                            visualDensity: const VisualDensity(vertical: 3),
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                widget.playlist.songs[index].imageUrl,
+                                width: 70,
+                                height: 70,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            title: Text(
+                              widget.playlist.songs[index].title,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 17),
+                            ),
+                            subtitle: Text(widget.playlist.songs[index].artist,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 15)),
                           ),
                         ),
-                        title: Text(
-                          playlist.songs[index].title,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 17),
-                        ),
-                        subtitle: Text(playlist.songs[index].artist,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 15)),
                       );
                     },
                   ),
@@ -169,7 +210,7 @@ class PlaylistInfo extends StatelessWidget {
   void deletePlaylist() async {
     await FirebaseFirestore.instance
         .collection(
-            "/Users/${FirebaseAuth.instance.currentUser!.email}/Playlists/${playlist.title}/Songs/")
+            "/Users/${FirebaseAuth.instance.currentUser!.email}/Playlists/${widget.playlist.title}/Songs/")
         .get()
         .then((value) {
       for (var doc in value.docs) {
@@ -179,7 +220,15 @@ class PlaylistInfo extends StatelessWidget {
     await FirebaseFirestore.instance
         .collection(
             "/Users/${FirebaseAuth.instance.currentUser!.email}/Playlists/")
-        .doc(playlist.title)
+        .doc(widget.playlist.title)
+        .delete();
+  }
+
+  void deleteSongFromPlaylist(String name) async {
+    await FirebaseFirestore.instance
+        .collection(
+            "/Users/${FirebaseAuth.instance.currentUser!.email}/Playlists/${widget.playlist.title}/Songs/")
+        .doc(name)
         .delete();
   }
 }

@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:webtoon/firebase/cloud_store/store.dart';
 import 'package:webtoon/model/playlist.dart';
 import 'package:webtoon/model/song.dart';
-import 'package:webtoon/riverpod/firebase_provider.dart';
 
 class UserPlaylist extends ConsumerWidget {
   const UserPlaylist({super.key});
@@ -24,6 +24,7 @@ class UserPlaylist extends ConsumerWidget {
           ));
         }
         return ListView.builder(
+            key: UniqueKey(),
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               DocumentSnapshot playlist = snapshot.data!.docs[index];
@@ -32,12 +33,17 @@ class UserPlaylist extends ConsumerWidget {
                 builder: (context, snapshot) {
                   List<Song> songs = [];
                   if (snapshot.hasData) {
-                    ref.watch(getSongProvider(playlist.id)).whenData((result) {
-                      songs.addAll(result);
-                    });
+                    for (var doc in snapshot.data!.docs) {
+                      Storage.getSongUrl(doc['title']).then((songPath) =>
+                          Storage.getSongAvatarUrl(doc['title']).then(
+                              (imageUrl) => songs.add(
+                                  Song.fromJson(doc, imageUrl, songPath))));
+                    }
                   }
                   return GestureDetector(
-                    onTap: () => Navigator.of(context).pushNamed('/playlist', arguments: Playlist(title: playlist['title'], songs: songs)),
+                    onTap: () => Navigator.of(context).pushNamed('/playlist',
+                        arguments:
+                            Playlist(title: playlist['title'], songs: songs)),
                     child: ListTile(
                         visualDensity: const VisualDensity(vertical: 3),
                         leading: ClipRRect(
