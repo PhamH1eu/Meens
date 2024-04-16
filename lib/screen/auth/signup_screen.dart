@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:webtoon/utils.dart';
-import 'package:image_picker/image_picker.dart';
 import '../../utilities/fonts.dart';
 import '../../firebase/firebase_auth/firebase_services.dart';
 import 'widgets/form_container_widget.dart';
@@ -65,7 +64,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     fontFamily: 'Gilroy'),
               ),
             ),
-            SizedBox(height: 5,),
+            const SizedBox(height: 5,),
             Center(
               child: Stack(
                 children: [
@@ -79,18 +78,18 @@ class _SignUpPageState extends State<SignUpPage> {
                     backgroundImage: NetworkImage("https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"),
                   ),
                   Positioned(
+                      bottom: -10,
+                    left: 40,
                       child: IconButton(
                         onPressed: selectImage,
                         icon: const Icon(Icons.add_a_photo),
                       ),
-                    bottom: -10,
-                    left: 40,
                   )
 
                 ],
               ),
             ),
-            SizedBox(height: 5,),
+            const SizedBox(height: 5,),
             Text(
               'EMAIL ADDRESS *',
               style: TextStyle(

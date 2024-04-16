@@ -28,7 +28,6 @@ class FAQ extends StatelessWidget {
             centerTitle: true,
           ),
           body: Container(
-            padding: const EdgeInsets.only(bottom: 70),
             color: Theme.of(context).focusColor,
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),

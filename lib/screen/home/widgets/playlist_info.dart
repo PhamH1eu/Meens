@@ -36,7 +36,6 @@ class _PlaylistInfoState extends State<PlaylistInfo> {
           height: 180,
           width: 180,
           child: Stack(children: [
-            CustomColors.glowEffect(glowColor),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
