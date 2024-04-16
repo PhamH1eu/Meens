@@ -1,10 +1,11 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webtoon/firebase/cloud_store/store.dart';
-import 'package:webtoon/model/playlist.dart';
 import 'package:webtoon/model/song.dart';
+import 'package:webtoon/riverpod/song_provider.dart';
 
 class PlaylistPicker extends ConsumerWidget {
   const PlaylistPicker({super.key});
@@ -41,9 +42,8 @@ class PlaylistPicker extends ConsumerWidget {
                     }
                   }
                   return GestureDetector(
-                    onTap: () => Navigator.of(context).pushNamed('/playlist',
-                        arguments:
-                            Playlist(title: playlist['title'], songs: songs)),
+                    onTap: () => addSongToPlaylist(playlist.reference,
+                        ref.watch(audioHandlerProvider).currentSong),
                     child: ListTile(
                         visualDensity: const VisualDensity(vertical: 3),
                         leading: ClipRRect(
@@ -75,6 +75,27 @@ class PlaylistPicker extends ConsumerWidget {
               );
             });
       }),
+    );
+  }
+
+  void addSongToPlaylist(DocumentReference playlist, Song song) async {
+    String message = '';
+    var doc = await playlist.collection('Songs').doc(song.title).get();
+    if(doc.exists) {
+      message = 'Song already exists in playlist';
+    } else {
+      await playlist.collection('Songs').doc(song.title).set(song.toJson());
+      message = 'Song added to playlist';
+    }
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey[400],
+        webPosition: "center",
+        textColor: Colors.white,
+        fontSize: 16.0
     );
   }
 }

@@ -133,17 +133,30 @@ class _MyHomePageState extends State<MyHomePage> {
         if (!snapshot.hasData) {
           return const LoginPage();
         } else {
-          return FutureBuilder(
-            future: FirebaseFirestore.instance
+          return StreamBuilder(
+            stream: FirebaseFirestore.instance
                 .collection('Users')
-                .where('email', isEqualTo: snapshot.data!.email)
-                .get()
-                .then((value) => value.docs.first.get('firstTime')),
+                .doc(snapshot.data!.email)
+                .snapshots(),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,));
+              if (snapshot.connectionState == ConnectionState.waiting ||
+                  !snapshot.hasData) {
+                return Center(
+                    child: CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor,
+                ));
               }
-              return snapshot.data ? const OnboardScreen() : const Layout();
+              bool isFirstTime = false;
+              try {
+                isFirstTime = snapshot.data!.get("firstTime");
+              } catch (e) {
+                //this is normal, it is laggy a bit when the user is first time
+                return Center(
+                    child: CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor,
+                ));
+              }
+              return isFirstTime ? const OnboardScreen() : const Layout();
             },
           );
         }

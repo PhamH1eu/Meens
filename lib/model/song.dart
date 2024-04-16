@@ -15,6 +15,11 @@ class Song {
     this.glowColor,
   });
 
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'artist': [artist].toList(),
+      };
+
   factory Song.fromJson(dynamic json, String image, String song) {
     return Song(
         title: json['title'] as String,
