@@ -28,6 +28,7 @@ class Setting extends StatelessWidget {
             child: IconButton(
                 onPressed: () async {
                   await signOut();
+                  //Chay o mobile thi comment lai
                   if (context.mounted) Navigator.of(context).pop();
                   ref.invalidate(countProvider);
                   ref.read(audioHandlerProvider.notifier).clear();
@@ -41,7 +42,6 @@ class Setting extends StatelessWidget {
   }
 }
 
-//fuck this shit
 Future signOut() async {
   if (GoogleSignIn().currentUser != null) {
     await GoogleSignIn().disconnect();

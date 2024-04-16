@@ -1,7 +1,10 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:webtoon/screen/miniplayer/widgets/add_song_to_playlist.dart';
 
 import '../../riverpod/song_provider.dart';
 import 'widgets/control_button.dart';
@@ -22,6 +25,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
   double volumeLevel = 0.5;
 
   CarouselController carouselController = CarouselController();
+  PanelController panelController = PanelController();
 
   @override
   void initState() {
@@ -36,7 +40,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
   @override
   Widget build(BuildContext context) {
     final audioHandlers = ref.watch(audioHandlerProvider);
-    
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -53,191 +57,224 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
         children: [
-          CarouselSlider(
-            options: CarouselOptions(
-              height: MediaQuery.of(context).size.height * 0.4,
-              viewportFraction: 0.7,
-              enlargeCenterPage: true,
-              enlargeStrategy: CenterPageEnlargeStrategy.zoom,
-              enableInfiniteScroll: false,
-              initialPage: audioHandlers.audioPlayer.currentIndex ?? 0,
-              onPageChanged: (index, reason) {
-                audioHandlers.changeTo(index);
-              },
+          Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CarouselSlider(
+              options: CarouselOptions(
+                height: MediaQuery.of(context).size.height * 0.4,
+                viewportFraction: 0.7,
+                enlargeCenterPage: true,
+                enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+                enableInfiniteScroll: false,
+                initialPage: audioHandlers.audioPlayer.currentIndex ?? 0,
+                onPageChanged: (index, reason) {
+                  audioHandlers.changeTo(index);
+                },
+              ),
+              carouselController: carouselController,
+              items: audioHandlers.imgList
+                  .map((item) => Container(
+                        margin: const EdgeInsets.all(10.0),
+                        child: ClipRRect(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10.0)),
+                            child: Stack(
+                              children: <Widget>[
+                                Image.network(
+                                  item,
+                                  fit: BoxFit.fill,
+                                ),
+                              ],
+                            )),
+                      ))
+                  .toList(),
             ),
-            carouselController: carouselController,
-            items: audioHandlers.imgList
-                .map((item) => Container(
-                      margin: const EdgeInsets.all(10.0),
-                      child: ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10.0)),
-                          child: Stack(
-                            children: <Widget>[
-                              Image.network(
-                                item,
-                                fit: BoxFit.fill,
-                              ),
-                            ],
-                          )),
-                    ))
-                .toList(),
-          ),
-          Stack(children: <Widget>[
-            Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+            Stack(children: <Widget>[
+              Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        audioHandlers.currentSong.title,
+                        style: TextStyle(
+                            fontSize: 20, color: Theme.of(context).primaryColor),
+                      ),
+                      Text(
+                        audioHandlers.currentSong.artist,
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Theme.of(context).secondaryHeaderColor),
+                      ),
+                    ]),
+              ),
+              Container(
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      audioHandlers.currentSong.title,
-                      style: TextStyle(
-                          fontSize: 20, color: Theme.of(context).primaryColor),
+                    IconButton(
+                      icon: Icon(
+                        FontAwesomeIcons.folderPlus,
+                        size: 30,
+                        color: Theme.of(context).secondaryHeaderColor,
+                      ),
+                      onPressed: () {
+                        // Add to playlist
+                        panelController.open();
+                      },
                     ),
-                    Text(
-                      audioHandlers.currentSong.artist,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context).secondaryHeaderColor),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.only(right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(
+                        Icons.favorite_outline,
+                        size: 30,
+                        color: isFavorite
+                            ? Colors.red
+                            : Theme.of(context).secondaryHeaderColor,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isFavorite = !isFavorite;
+                        });
+                      },
                     ),
-                  ]),
-            ),
-            Container(
-              alignment: Alignment.centerRight,
-              padding: const EdgeInsets.only(right: 10),
+                  ],
+                ),
+              ),
+            ]),
+            const SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(
-                      Icons.favorite_outline,
-                      size: 30,
-                      color: isFavorite
-                          ? Colors.red
-                          : Theme.of(context).secondaryHeaderColor,
-                    ),
+                    icon: volumeLevel > 0.5
+                        ? const Icon(Icons.volume_up)
+                        : volumeLevel == 0
+                            ? const Icon(Icons.volume_off)
+                            : const Icon(Icons.volume_down),
+                    color: const Color.fromRGBO(137, 150, 184, 1),
+                    iconSize: 30,
                     onPressed: () {
                       setState(() {
-                        isFavorite = !isFavorite;
+                        showVolumeControl = !showVolumeControl;
                       });
+                    },
+                  ),
+                  if (showVolumeControl)
+                    Slider(
+                      value: volumeLevel,
+                      activeColor: Theme.of(context).secondaryHeaderColor,
+                      min: 0.0,
+                      max: 1.0,
+                      onChanged: (double value) {
+                        setState(() {
+                          volumeLevel = value;
+                          audioHandlers.setVolume(value);
+                        });
+                      },
+                    ),
+                  const Spacer(),
+                  IconButton(
+                    icon: Icon(
+                      switch (audioHandlers.loopMode) {
+                        LoopMode.off => Icons.repeat,
+                        LoopMode.all => Icons.repeat,
+                        LoopMode.one => Icons.repeat_one,
+                      },
+                      color: audioHandlers.isRepeat
+                          ? const Color.fromARGB(255, 124, 200, 10)
+                          : const Color.fromRGBO(137, 150, 184, 1),
+                    ),
+                    iconSize: 30,
+                    onPressed: () {
+                      audioHandlers.setLoopMode();
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.shuffle,
+                      size: 30,
+                      color: audioHandlers.shuffleMode
+                          ? const Color.fromARGB(255, 124, 200, 10)
+                          : const Color.fromRGBO(137, 150, 184, 1),
+                    ),
+                    onPressed: () {
+                      audioHandlers.setShuffleMode();
                     },
                   ),
                 ],
               ),
             ),
-          ]),
-          const SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                IconButton(
-                  icon: volumeLevel > 0.5
-                      ? const Icon(Icons.volume_up)
-                      : volumeLevel == 0
-                          ? const Icon(Icons.volume_off)
-                          : const Icon(Icons.volume_down),
-                  color: const Color.fromRGBO(137, 150, 184, 1),
-                  iconSize: 30,
-                  onPressed: () {
-                    setState(() {
-                      showVolumeControl = !showVolumeControl;
-                    });
-                  },
-                ),
-                if (showVolumeControl)
-                  Slider(
-                    value: volumeLevel,
-                    activeColor: Theme.of(context).secondaryHeaderColor,
-                    min: 0.0,
-                    max: 1.0,
-                    onChanged: (double value) {
-                      setState(() {
-                        volumeLevel = value;
-                        audioHandlers.setVolume(value);
-                      });
-                    },
-                  ),
-                const Spacer(),
-                IconButton(
-                  icon: Icon(
-                    switch (audioHandlers.loopMode) {
-                      LoopMode.off => Icons.repeat,
-                      LoopMode.all => Icons.repeat,
-                      LoopMode.one => Icons.repeat_one,
-                    },
-                    color: audioHandlers.isRepeat
-                        ? const Color.fromARGB(255, 124, 200, 10)
-                        : const Color.fromRGBO(137, 150, 184, 1),
-                  ),
-                  iconSize: 30,
-                  onPressed: () {
-                    audioHandlers.setLoopMode();
-                  },
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.shuffle,
-                    size: 30,
-                    color: audioHandlers.shuffleMode
-                        ? const Color.fromARGB(255, 124, 200, 10)
-                        : const Color.fromRGBO(137, 150, 184, 1),
-                  ),
-                  onPressed: () {
-                    audioHandlers.setShuffleMode();
-                  },
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 40),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: StreamBuilder<PositionData>(
-              stream:
-                  PositionData.positionDataStream(audioHandlers.audioPlayer),
-              builder: (context, snapshot) {
-                final positionData = snapshot.data;
-                if (positionData == null ||
-                    audioHandlers.audioPlayer.duration == null) {
-                } else {
-                  if (positionData.position >
-                      audioHandlers.audioPlayer.duration! -
-                          const Duration(milliseconds: 500)) {
-                    if (audioHandlers.audioPlayer.hasNext) {
-                      carouselController
-                          .animateToPage(audioHandlers.audioPlayer.nextIndex!);
+            const SizedBox(height: 40),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: StreamBuilder<PositionData>(
+                stream:
+                    PositionData.positionDataStream(audioHandlers.audioPlayer),
+                builder: (context, snapshot) {
+                  final positionData = snapshot.data;
+                  if (positionData == null ||
+                      audioHandlers.audioPlayer.duration == null) {
+                  } else {
+                    if (positionData.position >
+                        audioHandlers.audioPlayer.duration! -
+                            const Duration(milliseconds: 500)) {
+                      if (audioHandlers.audioPlayer.hasNext) {
+                        carouselController
+                            .animateToPage(audioHandlers.audioPlayer.nextIndex!);
+                      }
                     }
                   }
-                }
-                return ProgressBar(
-                  barHeight: 5,
-                  baseBarColor: Theme.of(context).secondaryHeaderColor,
-                  bufferedBarColor: Theme.of(context).hintColor,
-                  progressBarColor: Theme.of(context).primaryColor,
-                  thumbColor: Theme.of(context).primaryColor,
-                  timeLabelTextStyle: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontFamily: 'Gilroy',
-                    fontSize: 16.0,
-                  ),
-                  timeLabelLocation: TimeLabelLocation.above,
-                  timeLabelPadding: 15,
-                  progress: positionData?.position ?? Duration.zero,
-                  buffered: positionData?.bufferedPosition ?? Duration.zero,
-                  total: positionData?.duration ?? Duration.zero,
-                  onSeek: audioHandlers.audioPlayer.seek,
-                );
-              },
+                  return ProgressBar(
+                    barHeight: 5,
+                    baseBarColor: Theme.of(context).secondaryHeaderColor,
+                    bufferedBarColor: Theme.of(context).hintColor,
+                    progressBarColor: Theme.of(context).primaryColor,
+                    thumbColor: Theme.of(context).primaryColor,
+                    timeLabelTextStyle: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontFamily: 'Gilroy',
+                      fontSize: 16.0,
+                    ),
+                    timeLabelLocation: TimeLabelLocation.above,
+                    timeLabelPadding: 15,
+                    progress: positionData?.position ?? Duration.zero,
+                    buffered: positionData?.bufferedPosition ?? Duration.zero,
+                    total: positionData?.duration ?? Duration.zero,
+                    onSeek: audioHandlers.audioPlayer.seek,
+                  );
+                },
+              ),
             ),
+            const SizedBox(height: 20),
+            Control(size: 60, carouselController: carouselController),
+          ],
+        ),
+        SlidingUpPanel(
+          minHeight: 0,
+          controller: panelController,
+          maxHeight: MediaQuery.of(context).size.height * 0.85,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(24.0),
+            topRight: Radius.circular(24.0),
           ),
-          const SizedBox(height: 20),
-          Control(size: 60, carouselController: carouselController),
-        ],
-      ),
+          panel: const AddSong(),
+        ),
+      ]),
     );
   }
 }

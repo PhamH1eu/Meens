@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webtoon/riverpod/firebase_provider.dart';
 
-import '../../model/playlist.dart';
 import '../../model/song.dart';
 import '../../utilities/fonts.dart';
-import 'widgets/playlist_info.dart';
 import 'widgets/song_info.dart';
 
-const Playlist playlist =
-    Playlist(title: "Evolve", artwork: "assets/album.jpg");
 Song song = Song(
     title: "Viva La Vida",
     artist: "Coldplay",
@@ -73,18 +69,19 @@ class HomeUI extends ConsumerWidget {
                   fontFamily: 'Gilroy'),
             ),
             const SizedBox(height: 15),
-            SizedBox(
-              height: 240,
-              child: ListView.separated(
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(width: 30);
-                },
-                itemCount: 4,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) =>
-                    const PlaylistInfo(playlist: playlist),
-              ),
-            ),
+            // Đổi chỗ này thành artist
+            // SizedBox(
+            //   height: 240,
+            //   child: ListView.separated(
+            //     separatorBuilder: (BuildContext context, int index) {
+            //       return const SizedBox(width: 30);
+            //     },
+            //     itemCount: 4,
+            //     scrollDirection: Axis.horizontal,
+            //     itemBuilder: (context, index) =>
+            //         const PlaylistInfo(playlist: playlist),
+            //   ),
+            // ),
           ],
         ),
       ),

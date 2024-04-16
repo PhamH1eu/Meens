@@ -40,8 +40,8 @@ class _PlaylistInfoState extends State<PlaylistInfo> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
-                  image: AssetImage(widget.playlist.artwork),
+                image: const DecorationImage(
+                  image: AssetImage('assets/album.jpg'),
                   fit: BoxFit.cover,
                 ),
               ),

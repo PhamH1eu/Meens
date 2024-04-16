@@ -49,11 +49,12 @@ class AudioHandlers extends ChangeNotifier {
     notifyListeners();
   }
 
-//haven't used yet
   Future<void> setPlaylist(List<Song> playlist) async {
+    isPlaying = true;
     this.playlist.clear();
     this.playlist.addAll(playlist);
     audioPlayer.setAudioSource(getPlaylist(playlist));
+    audioPlayer.play();
     notifyListeners();
   }
 

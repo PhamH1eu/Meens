@@ -132,10 +132,8 @@ class _MyWidgetState extends State<Shazam> {
                       padding: const EdgeInsets.all(40),
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        // color: Color.fromRGBO(99, 174, 255, 1),
                         color: Color.fromRGBO(247, 250, 255, 1),
                       ),
-                      // child: Image.asset('assets/shazam.png'),
                       child: Image.asset('assets/icon.png'),
                     ),
                   )),

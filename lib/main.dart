@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
@@ -8,12 +6,14 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:webtoon/model/playlist.dart';
 
 import 'package:webtoon/screen/auth/login_screen.dart';
 import 'package:webtoon/layout.dart';
 import 'package:webtoon/screen/miniplayer/play_screen.dart';
 import 'package:webtoon/model/song_recognized.dart';
 import 'package:webtoon/screen/onboard/onboard_screen.dart';
+import 'package:webtoon/screen/playlist/playlist_info.dart';
 import 'package:webtoon/screen/recognition/shazam.dart';
 import 'package:webtoon/utilities/fonts.dart';
 
@@ -96,6 +96,15 @@ class MyApp extends ConsumerWidget {
             return PageTransition(
               child: ShazamResult(
                 resultSong: args as ResultSong,
+              ),
+              type: PageTransitionType.fade,
+              settings: settings,
+              reverseDuration: const Duration(milliseconds: 250),
+            );
+          case '/playlist':
+            return PageTransition(
+              child: PlaylistInfo(
+                playlist: args as Playlist,
               ),
               type: PageTransitionType.fade,
               settings: settings,

@@ -6,11 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webtoon/firebase/cloud_store/store.dart';
 import 'package:webtoon/model/song.dart';
 
-final userProvider = FutureProvider.autoDispose((ref) async {
-  final user = FirebaseAuth.instance.currentUser;
-  return user;
-});
-
 final recommendedSongsProvider = FutureProvider.autoDispose((ref) async {
   List<String> genres = [];
   await FirebaseFirestore.instance
@@ -42,7 +37,23 @@ final recommendedSongsProvider = FutureProvider.autoDispose((ref) async {
     songs.add(Song.fromJson(docSnapshot, imageUrl, songUrl));
   }
   // Cache results; It will not be called again
-  ref.cacheFor(const Duration(minutes: 5));
+  ref.cacheFor(const Duration(minutes: 10));
+  return songs;
+});
+
+final getSongProvider =
+    FutureProvider.autoDispose.family<List<Song>, String>((ref, id) async {
+  final List<Song> songs = [];
+  final docSnapshot = await FirebaseFirestore.instance
+      .collection(
+          '/Users/${FirebaseAuth.instance.currentUser!.email}/Playlists/$id/Songs/')
+      .get();
+  for (var doc in docSnapshot.docs) {
+    final String songUrl = await Storage.getSongUrl(doc['title']);
+    final String imageUrl = await Storage.getSongAvatarUrl(doc['title']);
+    songs.add(Song.fromJson(doc, imageUrl, songUrl));
+  }
+  ref.cacheFor(const Duration(minutes: 2));
   return songs;
 });
 
