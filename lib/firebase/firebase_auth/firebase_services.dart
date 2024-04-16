@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,7 +16,7 @@ class FirebaseAuthService {
     UploadTask uploadTask = ref.putData(file);
     TaskSnapshot snapshot = await uploadTask;
     String downloadUrl = await snapshot.ref.getDownloadURL();
-    print(downloadUrl+"jpgggg");
+    log("${downloadUrl}jpgggg");
     return downloadUrl;
   }
 
@@ -24,8 +25,8 @@ class FirebaseAuthService {
     try{
       if(nickname.isNotEmpty || file.isNotEmpty) {
         final usersRef = FirebaseFirestore.instance.collection('Users');
-        String randomPath = Uuid().v4() as String;
-        String path = "avatar/" +randomPath +".jpg";
+        String randomPath = const Uuid().v4();
+        String path = "avatar/$randomPath.jpg";
         String imageUrl = await uploadImageToStorage(path, file);
         usersRef.doc(user?.email).set({
           'nickName': nickname,
@@ -36,7 +37,7 @@ class FirebaseAuthService {
       }
     }
     catch(err){
-      print(err.toString());
+      log(err.toString());
     }
   }
 

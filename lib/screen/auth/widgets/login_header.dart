@@ -18,7 +18,7 @@ class _LoginHeaderState extends State<LoginHeader> {
         Container(
           padding: EdgeInsets.all(20),
           width: MediaQuery.of(context).size.width / 2 - 20,
-          child: Text('Sign up or log in to enjoy free comics.',
+          child: Text('Sign up or log in to enjoy free musics.',
               style: TextStyle(
                 color: Theme.of(context).primaryColor,
                 fontSize: 16,

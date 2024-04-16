@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:palette_generator/palette_generator.dart';
-import 'package:tinycolor2/tinycolor2.dart';
 
 class CustomColors {
   ThemeData lightTheme = ThemeData(
@@ -35,33 +33,4 @@ class CustomColors {
   static const FontWeight bold = FontWeight.w700;
   static const FontWeight extraBold = FontWeight.w900;
 
-  //get dominant color
-  static Future<Color> generatePaletteColor(url) async {
-    final PaletteGenerator paletteGenerator =
-        await PaletteGenerator.fromImageProvider(
-      NetworkImage(url, headers: const {'accept': '*/*'}),
-    );
-    return paletteGenerator.paletteColors[0].color;
-  }
-
-  //glow effect under image
-  static Widget glowEffect(glowColor) {
-    final TinyColor glow = TinyColor.fromColor(glowColor).lighten(25);
-
-    return Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: glow.color,
-                blurRadius: 15,
-                spreadRadius: 5,
-                offset: const Offset(0, 1), // changes position of shadow
-              ),
-            ],
-          ),
-        ));
-  }
 }

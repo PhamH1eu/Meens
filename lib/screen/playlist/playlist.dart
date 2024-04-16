@@ -16,52 +16,55 @@ class Playlist extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
-        return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              scrolledUnderElevation: 0,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  ref.invalidate(countProvider);
-                },
-              ),
-            ),
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        'My Playlists',
-                        style: TextStyle(
-                            fontWeight: CustomColors.extraBold,
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 30),
-                      ),
-                      const Spacer(),
-                      IconButton(
-                        icon: const Icon(FontAwesomeIcons.plus),
-                        color: Theme.of(context).primaryColor,
-                        iconSize: 25,
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AddPlaylist();
-                              });
-                        },
-                      ),
-                    ],
-                  ),
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 70.0),
+          child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                scrolledUnderElevation: 0,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    ref.invalidate(countProvider);
+                  },
                 ),
-                const Expanded(
-                  child: UserPlaylist(),
-                )
-              ],
-            ));
+              ),
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          'My Playlists',
+                          style: TextStyle(
+                              fontWeight: CustomColors.extraBold,
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 30),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(FontAwesomeIcons.plus),
+                          color: Theme.of(context).primaryColor,
+                          iconSize: 25,
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AddPlaylist();
+                                });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Expanded(
+                    child: UserPlaylist(),
+                  )
+                ],
+              )),
+        );
       },
     );
   }

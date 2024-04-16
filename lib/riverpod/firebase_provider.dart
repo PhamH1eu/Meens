@@ -41,19 +41,18 @@ final recommendedSongsProvider = FutureProvider.autoDispose((ref) async {
   return songs;
 });
 
-final getSongProvider =
-    FutureProvider.autoDispose.family<List<Song>, String>((ref, id) async {
-  final List<Song> songs = [];
+final getImageProvider =
+    FutureProvider.autoDispose.family<List<String>, String>((ref, id) async {
+  final List<String> songs = [];
   final docSnapshot = await FirebaseFirestore.instance
       .collection(
           '/Users/${FirebaseAuth.instance.currentUser!.email}/Playlists/$id/Songs/')
       .get();
   for (var doc in docSnapshot.docs) {
-    final String songUrl = await Storage.getSongUrl(doc['title']);
     final String imageUrl = await Storage.getSongAvatarUrl(doc['title']);
-    songs.add(Song.fromJson(doc, imageUrl, songUrl));
+    songs.add(imageUrl);
   }
-  ref.cacheFor(const Duration(minutes: 2));
+  ref.cacheFor(const Duration(minutes: 10));
   return songs;
 });
 

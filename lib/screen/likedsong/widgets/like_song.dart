@@ -36,7 +36,6 @@ class _LikeSongInfoState extends State<LikeSongInfo> {
           height: 140,
           width: 140,
           child: Stack(children: [
-            CustomColors.glowEffect(glowColor),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),

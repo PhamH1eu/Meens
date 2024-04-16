@@ -78,7 +78,10 @@ class LayoutState extends ConsumerState<Layout> {
             )
           : null,
       body: Stack(children: <Widget>[
-        _pages.elementAt(tab),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 70),
+          child: _pages.elementAt(tab),
+        ),
         const MiniPlayer(),
       ]),
     );

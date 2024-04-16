@@ -6,6 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webtoon/firebase/cloud_store/store.dart';
 import 'package:webtoon/model/song.dart';
 import 'package:webtoon/riverpod/song_provider.dart';
+import 'package:webtoon/screen/playlist/widgets/thumbnails.dart';
+
+import '../../../riverpod/firebase_provider.dart';
 
 class PlaylistPicker extends ConsumerWidget {
   const PlaylistPicker({super.key});
@@ -41,36 +44,49 @@ class PlaylistPicker extends ConsumerWidget {
                                   Song.fromJson(doc, imageUrl, songPath))));
                     }
                   }
-                  return GestureDetector(
-                    onTap: () => addSongToPlaylist(playlist.reference,
-                        ref.watch(audioHandlerProvider).currentSong),
-                    child: ListTile(
-                        visualDensity: const VisualDensity(vertical: 3),
-                        leading: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            'https://via.placeholder.com/150',
-                            width: 70,
-                            height: 70,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        title: Text(
-                          playlist['title'],
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 17),
-                        ),
-                        subtitle: !snapshot.hasData
-                            ? Text('Loading...',
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 15))
-                            : Text('${snapshot.data!.docs.length} songs',
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 15))),
-                  );
+                  return ref.watch(getImageProvider(playlist.id)).when(
+                        data: (imageUrls) {
+                          return GestureDetector(
+                            onTap: () {
+                              addSongToPlaylist(
+                                  playlist.reference,
+                                  ref.watch(audioHandlerProvider).currentSong,
+                                  ref,
+                                  playlist.id);
+                            },
+                            child: ListTile(
+                                visualDensity: const VisualDensity(vertical: 4),
+                                leading: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: PlaylistThumbnail(
+                                      imageUrls: imageUrls, size: 70),
+                                ),
+                                title: Text(
+                                  playlist['title'],
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 17),
+                                ),
+                                subtitle: !snapshot.hasData
+                                    ? Text('Loading...',
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontSize: 15))
+                                    : Text(
+                                        '${snapshot.data!.docs.length} songs',
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontSize: 15))),
+                          );
+                        },
+                        loading: () => Center(
+                            child: CircularProgressIndicator(
+                          color: Theme.of(context).primaryColor,
+                        )),
+                        error: (error, stack) => Text('Error: $error'),
+                      );
                 },
               );
             });
@@ -78,14 +94,16 @@ class PlaylistPicker extends ConsumerWidget {
     );
   }
 
-  void addSongToPlaylist(DocumentReference playlist, Song song) async {
+  void addSongToPlaylist(
+      DocumentReference playlist, Song song, WidgetRef ref, String id) async {
     String message = '';
     var doc = await playlist.collection('Songs').doc(song.title).get();
-    if(doc.exists) {
+    if (doc.exists) {
       message = 'Song already exists in playlist';
     } else {
       await playlist.collection('Songs').doc(song.title).set(song.toJson());
       message = 'Song added to playlist';
+      ref.invalidate(getImageProvider(id));
     }
     Fluttertoast.showToast(
         msg: message,
@@ -95,7 +113,6 @@ class PlaylistPicker extends ConsumerWidget {
         backgroundColor: Colors.grey[400],
         webPosition: "center",
         textColor: Colors.white,
-        fontSize: 16.0
-    );
+        fontSize: 16.0);
   }
 }
