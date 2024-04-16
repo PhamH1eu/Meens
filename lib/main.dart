@@ -125,19 +125,19 @@ class _MyHomePageState extends State<MyHomePage> {
           return const LoginPage();
         } else {
           log(snapshot.data.toString(), name: 'User');
-          return FutureBuilder(
-            future: FirebaseFirestore.instance
-                .collection('Users')
-                .where('email', isEqualTo: snapshot.data!.email)
-                .get()
-                .then((value) => value.docs.first.get('firstTime')),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,));
-              }
-              return snapshot.data ? const OnboardScreen() : const Layout();
-            },
-          );
+            return FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection('Users')
+                  .where('email', isEqualTo: snapshot.data!.email)
+                  .get()
+                  .then((value) => value.docs.first.get('firstTime')),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,));
+                }
+                return snapshot.data != null && snapshot.data ? const OnboardScreen() : const Layout();
+              },
+            );
         }
       },
     );

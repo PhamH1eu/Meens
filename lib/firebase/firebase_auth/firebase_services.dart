@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-
+import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -21,16 +21,23 @@ class FirebaseAuthService {
 
   void _createNewUserInFirestore(String nickname,Uint8List file) async {
     final User? user = currentUser;
-    final usersRef = FirebaseFirestore.instance.collection('Users');
-    String path = "avatar/" +nickname +".jpg";
-    String imageUrl = await uploadImageToStorage(path, file);
-    usersRef.doc(user?.email).set({
-      'nickName': nickname,
-      'email': user?.email,
-      'firstTime': true,
-      'photoUrl': imageUrl,
-    });
-    print(imageUrl +'jggggggggggggggpggg');
+    try{
+      if(nickname.isNotEmpty || file.isNotEmpty) {
+        final usersRef = FirebaseFirestore.instance.collection('Users');
+        String randomPath = Uuid().v4() as String;
+        String path = "avatar/" +randomPath +".jpg";
+        String imageUrl = await uploadImageToStorage(path, file);
+        usersRef.doc(user?.email).set({
+          'nickName': nickname,
+          'email': user?.email,
+          'firstTime': true,
+          'photoUrl': imageUrl,
+        });
+      }
+    }
+    catch(err){
+      print(err.toString());
+    }
   }
 
   Future<User?> signUpWithEmailAndPassword(
