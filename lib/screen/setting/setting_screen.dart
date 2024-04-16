@@ -28,7 +28,7 @@ class Setting extends StatelessWidget {
             child: IconButton(
                 onPressed: () async {
                   await signOut();
-                  // if (context.mounted) Navigator.of(context).pop();
+                  if (context.mounted) Navigator.of(context).pop();
                   ref.invalidate(countProvider);
                   ref.read(audioHandlerProvider.notifier).clear();
                   ref.invalidate(recommendedSongsProvider);

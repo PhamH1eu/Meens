@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:page_transition/page_transition.dart';
@@ -124,20 +125,32 @@ class _MyHomePageState extends State<MyHomePage> {
         if (!snapshot.hasData) {
           return const LoginPage();
         } else {
-          log(snapshot.data.toString(), name: 'User');
-            return FutureBuilder(
-              future: FirebaseFirestore.instance
-                  .collection('Users')
-                  .where('email', isEqualTo: snapshot.data!.email)
-                  .get()
-                  .then((value) => value.docs.first.get('firstTime')),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,));
-                }
-                return snapshot.data != null && snapshot.data ? const OnboardScreen() : const Layout();
-              },
-            );
+          return StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('Users')
+                .doc(snapshot.data!.email)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting ||
+                  !snapshot.hasData) {
+                return Center(
+                    child: CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor,
+                ));
+              }
+              bool isFirstTime = false;
+              try {
+                isFirstTime = snapshot.data!.get("firstTime");
+              } catch (e) {
+                //this is normal, it is laggy a bit when the user is first time
+                return Center(
+                    child: CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor,
+                ));
+              }
+              return isFirstTime ? const OnboardScreen() : const Layout();
+            },
+          );
         }
       },
     );
