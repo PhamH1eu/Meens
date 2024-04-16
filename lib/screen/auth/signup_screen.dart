@@ -1,5 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:webtoon/utils.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../utilities/fonts.dart';
 import '../../firebase/firebase_auth/firebase_services.dart';
 import 'widgets/form_container_widget.dart';
@@ -15,11 +19,19 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  Uint8List? _image;
   final FirebaseAuthService _auth = FirebaseAuthService();
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nicknameController = TextEditingController();
+
+  void selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }
 
   String error = "";
   bool isError = false;
@@ -53,6 +65,32 @@ class _SignUpPageState extends State<SignUpPage> {
                     fontFamily: 'Gilroy'),
               ),
             ),
+            SizedBox(height: 5,),
+            Center(
+              child: Stack(
+                children: [
+                  _image !=null ?
+                      CircleAvatar(
+                        radius: 40,
+                        backgroundImage: MemoryImage(_image!),
+                      ) :
+                  const CircleAvatar(
+                    radius: 40,
+                    backgroundImage: NetworkImage("https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"),
+                  ),
+                  Positioned(
+                      child: IconButton(
+                        onPressed: selectImage,
+                        icon: const Icon(Icons.add_a_photo),
+                      ),
+                    bottom: -10,
+                    left: 40,
+                  )
+
+                ],
+              ),
+            ),
+            SizedBox(height: 5,),
             Text(
               'EMAIL ADDRESS *',
               style: TextStyle(
@@ -187,8 +225,10 @@ class _SignUpPageState extends State<SignUpPage> {
       error = "Email is required";
     } else if (password.isEmpty) {
       error = "Password is required";
+    } else if (_image == null) {
+      error = "Image is required";
     } else {
-      await _auth.signUpWithEmailAndPassword(email, password, _nicknameController.text.trim());
+      await _auth.signUpWithEmailAndPassword(email, password, _nicknameController.text.trim(),_image!);
       error = FirebaseAuthService.errorMessage;
     }
 
