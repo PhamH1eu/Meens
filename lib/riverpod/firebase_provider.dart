@@ -41,6 +41,27 @@ final recommendedSongsProvider = FutureProvider.autoDispose((ref) async {
   return songs;
 });
 
+final artistSongsProvider = FutureProvider.autoDispose.family<List<Song>, String>((ref, artistName) async {
+
+  final List<Song> artistSongs = [];
+  final QuerySnapshot<Map<String, dynamic>> querySnapshot;
+    querySnapshot = await FirebaseFirestore.instance
+        .collection('Songs')
+        .where('artist', arrayContains: artistName)
+        .limit(10)
+        .get();
+
+  for (var docSnapshot in querySnapshot.docs) {
+    final String songUrl = await Storage.getSongUrl(docSnapshot['title']);
+    final String imageUrl =
+    await Storage.getSongAvatarUrl(docSnapshot['title']);
+    artistSongs.add(Song.fromJson(docSnapshot, imageUrl, songUrl));
+  }
+  // Cache results; It will not be called again
+  ref.cacheFor(const Duration(minutes: 10));
+  return artistSongs;
+});
+
 final getImageProvider =
     FutureProvider.autoDispose.family<List<String>, String>((ref, id) async {
   final List<String> songs = [];

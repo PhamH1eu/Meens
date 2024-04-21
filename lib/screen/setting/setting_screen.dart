@@ -29,7 +29,7 @@ class Setting extends StatelessWidget {
                 onPressed: () async {
                   await signOut();
                   //Chay o mobile thi comment lai
-                  if (context.mounted) Navigator.of(context).pop();
+                  // if (context.mounted) Navigator.of(context).pop();
                   ref.invalidate(countProvider);
                   ref.read(audioHandlerProvider.notifier).clear();
                   ref.invalidate(recommendedSongsProvider);

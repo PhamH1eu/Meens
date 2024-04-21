@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webtoon/riverpod/song_provider.dart';
+import 'package:webtoon/screen/profile/artist/profileOfArtist.dart';
 import 'package:webtoon/utilities/fonts.dart';
 
 import '../../../model/song.dart';
@@ -57,12 +58,21 @@ class _SongInfoState extends ConsumerState<SongInfo> {
             ),
           ),
           const SizedBox(height: 5),
-          Text(
-            widget.song.artist,
-            style: TextStyle(
-              color: Theme.of(context).secondaryHeaderColor,
-              fontFamily: 'Gilroy',
-              fontSize: 10,
+
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ArtistProfile(artistName: widget.song.artist)),
+              );
+            },
+            child: Text(
+              widget.song.artist,
+              style: TextStyle(
+                color: Theme.of(context).secondaryHeaderColor,
+                fontFamily: 'Gilroy',
+                fontSize: 10,
+              ),
             ),
           ),
         ],

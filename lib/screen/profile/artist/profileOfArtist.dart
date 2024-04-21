@@ -1,30 +1,39 @@
 // ignore_for_file: file_names
 
+import 'dart:html';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:webtoon/riverpod/firebase_provider.dart';
 import 'package:webtoon/screen/profile/artist/songofartist/songofartist.dart';
 
 
 import 'package:webtoon/utilities/fonts.dart';
 
+import '../../../model/song.dart';
 import '../../home/homeui.dart';
 import '../../../riverpod/tab.dart';
 
-class ArtistProfile extends StatelessWidget {
-  const ArtistProfile({super.key});
+class ArtistProfile extends ConsumerWidget {
+  const ArtistProfile({super.key, required this.artistName});
+
+  final String artistName;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+    final artist = ref.watch(artistSongsProvider(artistName));
+
     return Consumer(
       builder: (context, ref, child) {
         return Scaffold(
-            backgroundColor: Colors.black87,
             extendBodyBehindAppBar: true,
             appBar: AppBar(
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
-                  ref.invalidate(countProvider);
+                  Navigator.pop(context);
                 },
               ),
               elevation: 0,
@@ -41,12 +50,12 @@ class ArtistProfile extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  child: const Padding(
+                  child:  Padding(
                     padding: EdgeInsets.only(bottom: 0, left: 10),
                     child: Align(
                       alignment: Alignment.bottomLeft,
                       child: Text(
-                        'Son Tung MTP',
+                        artistName,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 50,
@@ -67,16 +76,15 @@ class ArtistProfile extends StatelessWidget {
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.transparent,
-                          side: const BorderSide(
-                              color: Colors
-                                  .white), // Thêm border color là màu trắng
+                          side:  BorderSide(
+                              color: Theme.of(context).primaryColor), // Thêm border color là màu trắng
                         ),
-                        child: const Text(
+                        child: Text(
                           'Follow',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                       ),
@@ -92,16 +100,16 @@ class ArtistProfile extends StatelessWidget {
                           width: 40.0,
                           height: 40.0,
                         ),
-                        child: const Icon(
+                        child:  Icon(
                           Icons.play_arrow,
-                          color: Colors.black,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(left:20),
                   child: Align(
                     alignment: Alignment.bottomLeft,
@@ -109,20 +117,29 @@ class ArtistProfile extends StatelessWidget {
                       'All song',
                       style: TextStyle(
                           fontWeight: CustomColors.extraBold,
-                          color: Colors.white,
+                          color: Theme.of(context).primaryColor,
                           fontSize: 20,
                           fontFamily: 'Gilroy'),
                     ),
                   ),
                 ),
-                Flexible(
-                  child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      scrollDirection: Axis.vertical,
-                      itemCount: 9,
-                      itemBuilder: (context, index) =>
-                          SongOfArtist(song: song)),
+                artist.when(data: (artistSongs) {
+                  return Flexible(
+                    child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.vertical,
+                        itemCount: artistSongs.length,
+                        itemBuilder: (context, index) =>
+                            SongOfArtist(song: artistSongs[index])),
+                  );
+                },
+                  loading: () => Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor,
+                      )),
+                  error: (error, stack) => Text('Error: $error'),
                 ),
+
               ],
             ));
       },

@@ -40,10 +40,10 @@ class _SongOfArtistState extends State<SongOfArtist> {
               child: Text(
                 widget.song.title,
                 textAlign: TextAlign.left,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w300,
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
