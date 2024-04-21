@@ -29,7 +29,7 @@ class _SongOfArtistState extends State<SongOfArtist> {
       child: Row(
         children: [
           // Ảnh
-          Image.asset(
+          Image.network(
             widget.song.imageUrl,
             width: 40,
             height: 40,
