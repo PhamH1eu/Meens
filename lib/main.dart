@@ -141,20 +141,24 @@ class _MyHomePageState extends State<MyHomePage> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting ||
                   !snapshot.hasData) {
-                return Center(
-                    child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor,
-                ));
+                return Scaffold(
+                  body: Center(
+                      child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor,
+                  )),
+                );
               }
               bool isFirstTime = false;
               try {
                 isFirstTime = snapshot.data!.get("firstTime");
               } catch (e) {
                 //this is normal, it is laggy a bit when the user is first time
-                return Center(
-                    child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor,
-                ));
+                return Scaffold(
+                  body: Center(
+                      child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor,
+                  )),
+                );
               }
               return isFirstTime ? const OnboardScreen() : const Layout();
             },
