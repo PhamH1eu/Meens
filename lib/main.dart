@@ -141,10 +141,12 @@ class _MyHomePageState extends State<MyHomePage> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting ||
                   !snapshot.hasData) {
-                return Center(
-                    child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor,
-                ));
+                return Scaffold(
+                  body: Center(
+                      child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor,
+                  )),
+                );
               }
               bool isFirstTime = false;
               try {
