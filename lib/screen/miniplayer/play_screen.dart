@@ -1,5 +1,9 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:just_audio/just_audio.dart';
@@ -130,29 +134,86 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                   ],
                 ),
               ),
-              Container(
-                alignment: Alignment.centerRight,
-                padding: const EdgeInsets.only(right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.favorite_outline,
-                        size: 30,
-                        color: isFavorite
-                            ? Colors.red
-                            : Theme.of(context).secondaryHeaderColor,
+              StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                  .collection('Users').doc(FirebaseAuth.instance.currentUser!.email)
+                  .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting ||
+                        !snapshot.hasData) {
+                      return Scaffold(
+                        body: Center(
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).primaryColor,
+                            )),
+                      );
+                    }
+                    try {
+                      List<String> listName = [];
+                      Map<String, dynamic>? data = snapshot.data?.data();
+                      if (data != null && data.containsKey('likedSong')) {
+                        listName = List<String>.from(data['likedSong']);
+                      }
+
+                      for (String name in listName) {
+                        if (name == audioHandlers.currentSong.title) {
+                          isFavorite = true;
+                          break;
+                        }
+                      }
+                    } catch (e) {
+                      //this is normal, it is laggy a bit when the user is first time
+                      return Scaffold(
+                        body: Center(
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).primaryColor,
+                            )),
+                      );
+                    }
+                    return Container(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(
+                              Icons.favorite_outline,
+                              size: 30,
+                              color: isFavorite
+                                  ? Colors.red
+                                  : Theme.of(context).secondaryHeaderColor,
+                            ),
+                            onPressed: () {
+                              if (isFavorite) {
+                                FirebaseFirestore.instance
+                                    .collection('Users').doc(FirebaseAuth.instance.currentUser!.email)
+                                    .update({'likedSong': FieldValue.arrayRemove([audioHandlers.currentSong.title])})
+                                    .then((value) {
+                                  print('Xóa bài hát thành công');
+                                })
+                                    .catchError((error) {
+                                  print('Lỗi khi xóa bài hát: $error');
+                                });
+                              } else {
+                                FirebaseFirestore.instance
+                                    .collection('Users').doc(FirebaseAuth.instance.currentUser!.email)
+                                    .update({'likedSong': FieldValue.arrayUnion([audioHandlers.currentSong.title])})
+                                    .then((value) {
+                                  print('Thêm bài hát thành công');
+                                })
+                                    .catchError((error) {
+                                  print('Lỗi khi thêm bài hát: $error');
+                                });
+                              }
+                            },
+                          ),
+                        ],
                       ),
-                      onPressed: () {
-                        setState(() {
-                          isFavorite = !isFavorite;
-                        });
-                      },
-                    ),
-                  ],
-                ),
+                    );
+                  },
               ),
+
             ]),
             const SizedBox(height: 30),
             Padding(
