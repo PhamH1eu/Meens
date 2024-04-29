@@ -1,8 +1,11 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webtoon/screen/likedsong/widgets/like_song.dart';
 import 'package:webtoon/utilities/fonts.dart';
 
+import '../../riverpod/firebase_provider.dart';
 import '../home/homeui.dart';
 import '../../riverpod/tab.dart';
 
@@ -13,11 +16,12 @@ List<String> images = [
   "https://static.cafedev.vn/tutorial/flutter/images/flutter-logo.png"
 ];
 
-class LikedSong extends StatelessWidget {
+class LikedSong extends ConsumerWidget {
   const LikedSong({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final likedsong = ref.watch(likedSongsProvider);
     return Consumer(
       builder: (context, ref, child) {
         return Scaffold(
@@ -54,17 +58,25 @@ class LikedSong extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                  Expanded(
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: MediaQuery.of(context).size.width /
-                            (MediaQuery.of(context).size.height / 1.65),
-                      ),
-                      itemCount: 10,
-                      itemBuilder: (BuildContext context, int index){
-                        return LikeSongInfo(song: song);
-                      },
-                    ),
+                    child: likedsong.when(
+                        data: (likedSongs) {
+                          return GridView.builder(
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: MediaQuery.of(context).size.width /
+                                  (MediaQuery.of(context).size.height / 1.65),
+                            ),
+                            itemCount: likedSongs.length,
+                            itemBuilder: (context, index){
+                              return LikeSongInfo(song: likedSongs[index]);
+                            },
+                          );
+                        },
+                      loading: () => Center(
+                          child: CircularProgressIndicator(
+                            color: Theme.of(context).primaryColor,
+                          )),
+                      error: (error, stack) => Text('Error: $error'),)
                   ),
 
 

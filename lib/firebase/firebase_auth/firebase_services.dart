@@ -33,6 +33,7 @@ class FirebaseAuthService {
           'email': user?.email,
           'firstTime': true,
           'photoUrl': imageUrl,
+          'likedSong': [],
         });
       }
     }

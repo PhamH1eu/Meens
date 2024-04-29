@@ -40,7 +40,7 @@ class _LikeSongInfoState extends State<LikeSongInfo> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                  image: AssetImage(widget.song.imageUrl),
+                  image: NetworkImage(widget.song.imageUrl),
                   fit: BoxFit.cover,
                 ),
               ),
