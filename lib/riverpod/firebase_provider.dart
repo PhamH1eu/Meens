@@ -41,7 +41,7 @@ final recommendedSongsProvider = FutureProvider.autoDispose((ref) async {
   return songs;
 });
 
-final likedSongsProvider = FutureProvider.autoDispose((ref) async {
+final likedSongsProvider = StreamProvider.autoDispose<List<Song>>((ref) async* {
   List<String> listName = [];
   await FirebaseFirestore.instance
       .collection('Users')
@@ -72,7 +72,7 @@ final likedSongsProvider = FutureProvider.autoDispose((ref) async {
   }
   // Cache results; It will not be called again
   ref.cacheFor(const Duration(minutes: 10));
-  return likedsong;
+  yield likedsong;
 });
 
 final artistSongsProvider = FutureProvider.autoDispose.family<List<Song>, String>((ref, artistName) async {

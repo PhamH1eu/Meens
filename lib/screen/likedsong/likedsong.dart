@@ -9,12 +9,7 @@ import '../../riverpod/firebase_provider.dart';
 import '../home/homeui.dart';
 import '../../riverpod/tab.dart';
 
-List<String> images = [
-  "https://static.cafedev.vn/tutorial/flutter/images/flutter-logo.png",
-  "https://static.cafedev.vn/tutorial/flutter/images/flutter-logo.png",
-  "https://static.cafedev.vn/tutorial/flutter/images/flutter-logo.png",
-  "https://static.cafedev.vn/tutorial/flutter/images/flutter-logo.png"
-];
+
 
 class LikedSong extends ConsumerWidget {
   const LikedSong({super.key});

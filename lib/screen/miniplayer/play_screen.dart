@@ -160,6 +160,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                           isFavorite = true;
                           break;
                         }
+                        isFavorite = false;
                       }
                     } catch (e) {
                       //this is normal, it is laggy a bit when the user is first time
