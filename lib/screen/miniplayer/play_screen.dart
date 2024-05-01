@@ -139,15 +139,15 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                   .collection('Users').doc(FirebaseAuth.instance.currentUser!.email)
                   .snapshots(),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting ||
-                        !snapshot.hasData) {
-                      return Scaffold(
-                        body: Center(
-                            child: CircularProgressIndicator(
-                              color: Theme.of(context).primaryColor,
-                            )),
-                      );
-                    }
+                    // if (snapshot.connectionState == ConnectionState.waiting ||
+                    //     !snapshot.hasData) {
+                    //   return Scaffold(
+                    //     body: Center(
+                    //         child: CircularProgressIndicator(
+                    //           color: Theme.of(context).primaryColor,
+                    //         )),
+                    //   );
+                    // }
                     try {
                       List<String> listName = [];
                       Map<String, dynamic>? data = snapshot.data?.data();
