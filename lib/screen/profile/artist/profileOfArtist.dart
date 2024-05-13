@@ -26,7 +26,6 @@ class ArtistProfile extends ConsumerWidget {
       future: Storage.getArtistUrl(Storage.validateString(artistName)),
       builder: ((context, snapshot) {
         if (!snapshot.hasData) {
-          print ("aaaaaaaaaaaaaaa");
           return Center(
               child: CircularProgressIndicator(
                 color: Theme.of(context).primaryColor,

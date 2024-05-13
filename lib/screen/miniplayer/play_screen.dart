@@ -1,9 +1,7 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:just_audio/just_audio.dart';
@@ -191,20 +189,16 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                                     .collection('Users').doc(FirebaseAuth.instance.currentUser!.email)
                                     .update({'likedSong': FieldValue.arrayRemove([audioHandlers.currentSong.title])})
                                     .then((value) {
-                                  print('Xóa bài hát thành công');
                                 })
                                     .catchError((error) {
-                                  print('Lỗi khi xóa bài hát: $error');
                                 });
                               } else {
                                 FirebaseFirestore.instance
                                     .collection('Users').doc(FirebaseAuth.instance.currentUser!.email)
                                     .update({'likedSong': FieldValue.arrayUnion([audioHandlers.currentSong.title])})
                                     .then((value) {
-                                  print('Thêm bài hát thành công');
                                 })
                                     .catchError((error) {
-                                  print('Lỗi khi thêm bài hát: $error');
                                 });
                               }
                             },

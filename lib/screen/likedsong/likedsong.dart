@@ -9,7 +9,7 @@ import '../../model/song.dart';
 import '../../riverpod/tab.dart';
 
 class LikedSong extends ConsumerWidget {
-  const LikedSong({Key? key}) : super(key: key);
+  const LikedSong({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -10,10 +10,10 @@ class LikeSongInfo extends ConsumerStatefulWidget {
   final Song song;
 
   @override
-  _LikeSongInfoState createState() => _LikeSongInfoState();
+  LikeSongInfoState createState() => LikeSongInfoState();
 }
 
-class _LikeSongInfoState extends ConsumerState<LikeSongInfo> {
+class LikeSongInfoState extends ConsumerState<LikeSongInfo> {
   Color glowColor = Colors.black;
 
   @override
