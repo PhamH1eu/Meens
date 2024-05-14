@@ -165,10 +165,9 @@ class LyricScreenState extends ConsumerState<LyricScreen> {
                       if (positionData.position >
                           audioHandlers.audioPlayer.duration! -
                               const Duration(milliseconds: 500)) {
-                        // if (audioHandlers.audioPlayer.hasNext) {
-                        //   carouselController.animateToPage(
-                        //       audioHandlers.audioPlayer.nextIndex!);
-                        // }
+                        if (audioHandlers.audioPlayer.hasNext) {
+                          audioHandlers.next();
+                        }
                       }
                     }
                     return ProgressBar(
