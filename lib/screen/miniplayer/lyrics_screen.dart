@@ -1,6 +1,11 @@
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:webtoon/screen/miniplayer/widgets/control_button.dart';
 import '../../riverpod/position_provider.dart';
+import '../../riverpod/song_provider.dart';
 import 'widgets/progress_bar.dart';
 
 // Define a class to hold lyrics and timestamp
@@ -56,51 +61,144 @@ class LyricScreenState extends ConsumerState<LyricScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final audioHandlers = ref.watch(audioHandlerProvider);
     final positionData = ref.watch(positionDataProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lyrics'),
-      ),
-      body: StreamBuilder<PositionData>(
-        stream: positionData,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            Duration position = snapshot.data!.position;
-            int currentIndex = lyricsList.indexWhere((element) {
-              Duration timestamp = Duration(
-                  minutes: int.parse(element.timestamp.split(':')[0]),
-                  seconds:
-                      int.parse(element.timestamp.split(':')[1].split('.')[0]),
-                  milliseconds: int.parse(element.timestamp.split('.')[1]));
-              return position.inSeconds <= timestamp.inSeconds + 1;
-              // || position.inSeconds >= timestamp.inSeconds; cai nay lam cho no return 0 luon
-            });
-            return ListView.builder(
-              itemCount: 7,
-              itemBuilder: (context, index) {
-                if (currentIndex == -1) {
-                  return Text(lyricsList[lyricsList.length + (index - 7)].lyrics, style: TextStyle(fontSize: 20, color: Theme.of(context).secondaryHeaderColor));
+          title: const Text('Lyrics'),
+          leading: IconButton(
+            icon: const Icon(Icons.keyboard_arrow_down_sharp),
+            iconSize: 30,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          centerTitle: true,),
+      body: Column(
+        children: [
+          ListTile(
+            contentPadding: const EdgeInsets.only(top: 10, left: 10),
+            visualDensity: const VisualDensity(vertical: 3),
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                "https://i.scdn.co/image/ab6761610000e5eb989ed05e1f0570cc4726c2d3",
+                width: 70,
+                height: 70,
+                fit: BoxFit.cover,
+              ),
+            ),
+            title: Text(
+              "GODS",
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor, fontSize: 17),
+            ),
+            subtitle: Text("New Jeans",
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor, fontSize: 15)),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: StreamBuilder<PositionData>(
+              stream: positionData,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  Duration position = snapshot.data!.position;
+                  int currentIndex = lyricsList.indexWhere((element) {
+                    Duration timestamp = Duration(
+                        minutes: int.parse(element.timestamp.split(':')[0]),
+                        seconds: int.parse(
+                            element.timestamp.split(':')[1].split('.')[0]),
+                        milliseconds: int.parse(element.timestamp.split('.')[1]));
+                    return position.inSeconds <= timestamp.inSeconds + 1;
+                    // || position.inSeconds >= timestamp.inSeconds; cai nay lam cho no return 0 luon
+                  });
+                  return ListView.separated(
+                    separatorBuilder: (context, index) => const SizedBox(height: 20,),
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: 7,              
+                    itemBuilder: (context, index) {
+                      if (currentIndex == -1) {
+                        return Text(
+                            lyricsList[lyricsList.length + (index - 7)].lyrics,
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Theme.of(context).secondaryHeaderColor));
+                      }
+                      if (currentIndex - 3 + index < 0 ||
+                          currentIndex - 3 + index >= lyricsList.length) {
+                        return Text("...",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Theme.of(context).secondaryHeaderColor));
+                      }
+                      return Text(
+                        lyricsList[currentIndex - 3 + index].lyrics,
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: index == 2
+                                ? Theme.of(context).primaryColor
+                                : Theme.of(context).secondaryHeaderColor),
+                      );
+                    },
+                  );
+                } else {
+                  return const Center(
+                    child:
+                        Text("Music not playing", style: TextStyle(fontSize: 30)),
+                  );
                 }
-                if (currentIndex - 3 + index < 0 ||
-                    currentIndex - 3 + index >= lyricsList.length) {
-                  return Text("...", style: TextStyle(fontSize: 20, color: Theme.of(context).secondaryHeaderColor));
-                }
-                return Text(
-                  lyricsList[currentIndex - 3 + index].lyrics,
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: index == 2
-                          ? Theme.of(context).primaryColor
-                          : Theme.of(context).secondaryHeaderColor),
-                );
               },
-            );
-          } else {
-            return const Center(
-              child: Text("Music not playing", style: TextStyle(fontSize: 20)),
-            );
-          }
-        },
+            ),
+          ),
+          const Spacer(),
+          Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: StreamBuilder<PositionData>(
+                  stream: positionData,
+                  builder: (context, snapshot) {
+                    final positionData = snapshot.data;
+                    if (positionData == null ||
+                        audioHandlers.audioPlayer.duration == null) {
+                    } else {
+                      if (positionData.position >
+                          audioHandlers.audioPlayer.duration! -
+                              const Duration(milliseconds: 500)) {
+                        // if (audioHandlers.audioPlayer.hasNext) {
+                        //   carouselController.animateToPage(
+                        //       audioHandlers.audioPlayer.nextIndex!);
+                        // }
+                      }
+                    }
+                    return ProgressBar(
+                      barHeight: 5,
+                      baseBarColor: Theme.of(context).secondaryHeaderColor,
+                      bufferedBarColor: Theme.of(context).hintColor,
+                      progressBarColor: Theme.of(context).primaryColor,
+                      thumbColor: Theme.of(context).primaryColor,
+                      timeLabelTextStyle: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontFamily: 'Gilroy',
+                        fontSize: 16.0,
+                      ),
+                      timeLabelLocation: TimeLabelLocation.above,
+                      timeLabelPadding: 15,
+                      progress: positionData?.position ?? Duration.zero,
+                      buffered:
+                          positionData?.bufferedPosition ?? Duration.zero,
+                      total: positionData?.duration ?? Duration.zero,
+                      onSeek: audioHandlers.audioPlayer.seek,
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: Control(size: 59, carouselController: CarouselController()),
+              ),
+        ],
       ),
     );
   }
