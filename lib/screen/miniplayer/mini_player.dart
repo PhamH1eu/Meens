@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webtoon/screen/miniplayer/widgets/progress_bar.dart';
 
 import '../../riverpod/song_provider.dart';
+import '../../riverpod/position_provider.dart';
 import 'widgets/control_button.dart';
 
 class MiniPlayer extends ConsumerWidget {
@@ -13,6 +14,7 @@ class MiniPlayer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final audioHandlers = ref.watch(audioHandlerProvider);
+    final positionData = ref.watch(positionDataProvider);
     return !ref.watch(audioHandlerProvider.notifier).showMini ? const SizedBox() : GestureDetector(
       child: Align(
         alignment: const AlignmentDirectional(0, 1),
@@ -80,8 +82,7 @@ class MiniPlayer extends ConsumerWidget {
                 ),
               ),
               StreamBuilder<PositionData>(
-                  stream: PositionData.positionDataStream(
-                      audioHandlers.audioPlayer),
+                  stream: positionData,
                   builder: (context, snapshot) {
                     final positionData = snapshot.data;
                     if (positionData == null ||

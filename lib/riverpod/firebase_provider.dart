@@ -62,12 +62,12 @@ final likedSongsProvider = StreamProvider.autoDispose<List<Song>>((ref) async* {
         .get();
   } else {
     querySnapshot =
-    await FirebaseFirestore.instance.collection('Songs').limit(10).get();
+        await FirebaseFirestore.instance.collection('Songs').limit(10).get();
   }
   for (var docSnapshot in querySnapshot.docs) {
     final String songUrl = await Storage.getSongUrl(docSnapshot['title']);
     final String imageUrl =
-    await Storage.getSongAvatarUrl(docSnapshot['title']);
+        await Storage.getSongAvatarUrl(docSnapshot['title']);
     likedsong.add(Song.fromJson(docSnapshot, imageUrl, songUrl));
   }
   // Cache results; It will not be called again
@@ -75,20 +75,20 @@ final likedSongsProvider = StreamProvider.autoDispose<List<Song>>((ref) async* {
   yield likedsong;
 });
 
-final artistSongsProvider = FutureProvider.autoDispose.family<List<Song>, String>((ref, artistName) async {
-
+final artistSongsProvider = FutureProvider.autoDispose
+    .family<List<Song>, String>((ref, artistName) async {
   final List<Song> artistSongs = [];
   final QuerySnapshot<Map<String, dynamic>> querySnapshot;
-    querySnapshot = await FirebaseFirestore.instance
-        .collection('Songs')
-        .where('artist', arrayContains: artistName)
-        .limit(10)
-        .get();
+  querySnapshot = await FirebaseFirestore.instance
+      .collection('Songs')
+      .where('artist', arrayContains: artistName)
+      .limit(10)
+      .get();
 
   for (var docSnapshot in querySnapshot.docs) {
     final String songUrl = await Storage.getSongUrl(docSnapshot['title']);
     final String imageUrl =
-    await Storage.getSongAvatarUrl(docSnapshot['title']);
+        await Storage.getSongAvatarUrl(docSnapshot['title']);
     artistSongs.add(Song.fromJson(docSnapshot, imageUrl, songUrl));
   }
   // Cache results; It will not be called again

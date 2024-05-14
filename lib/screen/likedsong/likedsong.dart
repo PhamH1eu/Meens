@@ -41,116 +41,149 @@ class LikedSong extends ConsumerWidget {
             ),
           );
         }
-
-        return StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('Songs')
-              .where('title', whereIn: listName)
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting ||
-                !snapshot.hasData) {
-              return Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(
-                    color: Theme.of(context).primaryColor,
-                  ),
+        if (listName.isEmpty) {
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  ref.invalidate(countProvider);
+                },
+              ),
+              actions: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.filter_list),
+                  onPressed: () {
+                    // Xử lý khi nút "filter" được nhấn
+                  },
                 ),
-              );
-            }
-
-            final List<Song> likedsong = [];
-            final futures = <Future>[];
-
-            for (var docSnapshot in snapshot.data!.docs) {
-              final future = Storage.getSongUrl(docSnapshot['title'])
-                  .then((songPath) {
-                return Storage.getSongAvatarUrl(docSnapshot['title'])
-                    .then((imageUrl) {
-                  likedsong.add(Song.fromJson(docSnapshot, imageUrl, songPath));
-                });
-              });
-
-              futures.add(future);
-            }
-
-            return FutureBuilder(
-              future: Future.wait(futures),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Scaffold(
-                    body: Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor,
-                      ),
+              ],
+            ),
+            body: Center(
+              child: Text(
+                'You have not liked any songs yet',
+                style: TextStyle(
+                  fontWeight: CustomColors.medium,
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 20,
+                  fontFamily: 'Gilroy',
+                ),
+              ),
+            ),
+          );
+        } else {
+          return StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('Songs')
+                .where('title', whereIn: listName)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting ||
+                  !snapshot.hasData) {
+                return Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).primaryColor,
                     ),
-                  );
-                }
+                  ),
+                );
+              }
 
-                return Consumer(
-                  builder: (context, ref, child) {
+              final List<Song> likedsong = [];
+              final futures = <Future>[];
+
+              for (var docSnapshot in snapshot.data!.docs) {
+                final future =
+                    Storage.getSongUrl(docSnapshot['title']).then((songPath) {
+                  return Storage.getSongAvatarUrl(docSnapshot['title'])
+                      .then((imageUrl) {
+                    likedsong
+                        .add(Song.fromJson(docSnapshot, imageUrl, songPath));
+                  });
+                });
+
+                futures.add(future);
+              }
+
+              return FutureBuilder(
+                future: Future.wait(futures),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return Scaffold(
-                      appBar: AppBar(
-                        leading: IconButton(
-                          icon: const Icon(Icons.arrow_back),
-                          onPressed: () {
-                            ref.invalidate(countProvider);
-                          },
-                        ),
-                        actions: <Widget>[
-                          IconButton(
-                            icon: const Icon(Icons.filter_list),
-                            onPressed: () {
-                              // Xử lý khi nút "filter" được nhấn
-                            },
-                          ),
-                        ],
-                      ),
-                      body: Padding(
-                        padding: const EdgeInsets.only(right: 20.0, left: 20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            const SizedBox(height: 20),
-                            Text(
-                              'Liked Songs',
-                              style: TextStyle(
-                                fontWeight: CustomColors.extraBold,
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 25,
-                                fontFamily: 'Gilroy',
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Expanded(
-                              child: GridView.builder(
-                                gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: MediaQuery.of(context)
-                                      .size
-                                      .width /
-                                      (MediaQuery.of(context).size.height /
-                                          1.65),
-                                ),
-                                itemCount: likedsong.length,
-                                itemBuilder: (context, index) {
-                                  return LikeSongInfo(song: likedsong[index]);
-                                },
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                          ],
+                      body: Center(
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                     );
-                  },
-                );
-              },
-            );
-          },
-        );
+                  }
+
+                  return Consumer(
+                    builder: (context, ref, child) {
+                      return Scaffold(
+                        appBar: AppBar(
+                          leading: IconButton(
+                            icon: const Icon(Icons.arrow_back),
+                            onPressed: () {
+                              ref.invalidate(countProvider);
+                            },
+                          ),
+                          actions: <Widget>[
+                            IconButton(
+                              icon: const Icon(Icons.filter_list),
+                              onPressed: () {
+                                // Xử lý khi nút "filter" được nhấn
+                              },
+                            ),
+                          ],
+                        ),
+                        body: Padding(
+                          padding:
+                              const EdgeInsets.only(right: 20.0, left: 20.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              const SizedBox(height: 20),
+                              Text(
+                                'Liked Songs',
+                                style: TextStyle(
+                                  fontWeight: CustomColors.extraBold,
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 25,
+                                  fontFamily: 'Gilroy',
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              Expanded(
+                                child: GridView.builder(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: MediaQuery.of(context)
+                                            .size
+                                            .width /
+                                        (MediaQuery.of(context).size.height /
+                                            1.65),
+                                  ),
+                                  itemCount: likedsong.length,
+                                  itemBuilder: (context, index) {
+                                    return LikeSongInfo(song: likedsong[index]);
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              );
+            },
+          );
+        }
       },
     );
   }
