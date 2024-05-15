@@ -46,9 +46,8 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
   Widget build(BuildContext context) {
     final audioHandlers = ref.watch(audioHandlerProvider);
     final positionData = ref.watch(positionDataProvider);
-    return PageView(
-      children: [
-        Scaffold(
+    return PageView(children: [
+      Scaffold(
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -158,7 +157,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                       if (data != null && data.containsKey('likedSong')) {
                         listName = List<String>.from(data['likedSong']);
                       }
-      
+
                       for (String name in listName) {
                         if (name == audioHandlers.currentSong.title) {
                           isFavorite = true;
@@ -193,7 +192,8 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                               if (isFavorite) {
                                 FirebaseFirestore.instance
                                     .collection('Users')
-                                    .doc(FirebaseAuth.instance.currentUser!.email)
+                                    .doc(FirebaseAuth
+                                        .instance.currentUser!.email)
                                     .update({
                                       'likedSong': FieldValue.arrayRemove(
                                           [audioHandlers.currentSong.title])
@@ -203,7 +203,8 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                               } else {
                                 FirebaseFirestore.instance
                                     .collection('Users')
-                                    .doc(FirebaseAuth.instance.currentUser!.email)
+                                    .doc(FirebaseAuth
+                                        .instance.currentUser!.email)
                                     .update({
                                       'likedSong': FieldValue.arrayUnion(
                                           [audioHandlers.currentSong.title])
@@ -317,8 +318,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                       timeLabelLocation: TimeLabelLocation.above,
                       timeLabelPadding: 15,
                       progress: positionData?.position ?? Duration.zero,
-                      buffered:
-                          positionData?.bufferedPosition ?? Duration.zero,
+                      buffered: positionData?.bufferedPosition ?? Duration.zero,
                       total: positionData?.duration ?? Duration.zero,
                       onSeek: audioHandlers.audioPlayer.seek,
                     );
@@ -342,7 +342,6 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
         ]),
       ),
       const LyricScreen(),
-      ]
-    );
+    ]);
   }
 }
