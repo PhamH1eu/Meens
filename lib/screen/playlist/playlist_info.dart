@@ -50,10 +50,10 @@ class _PlaylistInfoState extends State<PlaylistInfo> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(7),
                       child: PlaylistThumbnail(
-                        imageUrls: widget.playlist.songs
-                            .map((e) => e.imageUrl)
-                            .toList(), 
-                        size: 200),
+                          imageUrls: widget.playlist.songs
+                              .map((e) => e.imageUrl)
+                              .toList(),
+                          size: 200),
                     ),
                   ),
                   Padding(
@@ -67,7 +67,7 @@ class _PlaylistInfoState extends State<PlaylistInfo> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 5.0 , left: 10.0),
+                    padding: const EdgeInsets.only(bottom: 5.0, left: 10.0),
                     child: Text(
                       "${widget.playlist.songs.length} tracks",
                       style: TextStyle(
@@ -171,9 +171,19 @@ class _PlaylistInfoState extends State<PlaylistInfo> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            ref
-                                .read(audioHandlerProvider.notifier)
-                                .setSong(widget.playlist.songs[index]);
+                            if (ref
+                                    .watch(audioHandlerProvider)
+                                    .imgList
+                                    .isEmpty ||
+                                widget.playlist.songs[index].title !=
+                                    ref
+                                        .watch(audioHandlerProvider)
+                                        .currentSong
+                                        .title) {
+                              ref
+                                  .read(audioHandlerProvider.notifier)
+                                  .setSong(widget.playlist.songs[index]);
+                            }
                             Navigator.of(context).pushNamed('/play');
                           },
                           child: Slidable(
@@ -185,10 +195,11 @@ class _PlaylistInfoState extends State<PlaylistInfo> {
                                     onPressed: (BuildContext context) {
                                       deleteSongFromPlaylist(
                                           widget.playlist.songs[index].title);
-                                          setState(() {
-                                            widget.playlist.songs.removeAt(index);
-                                          });
-                                      ref.invalidate(getImageProvider(widget.playlist.title));
+                                      setState(() {
+                                        widget.playlist.songs.removeAt(index);
+                                      });
+                                      ref.invalidate(getImageProvider(
+                                          widget.playlist.title));
                                     },
                                     backgroundColor: Colors.red,
                                     foregroundColor: Colors.white,
@@ -213,7 +224,8 @@ class _PlaylistInfoState extends State<PlaylistInfo> {
                                     color: Theme.of(context).primaryColor,
                                     fontSize: 17),
                               ),
-                              subtitle: Text(widget.playlist.songs[index].artist,
+                              subtitle: Text(
+                                  widget.playlist.songs[index].artist,
                                   style: TextStyle(
                                       color: Theme.of(context).primaryColor,
                                       fontSize: 15)),
