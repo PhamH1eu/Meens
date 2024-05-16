@@ -46,7 +46,6 @@ class LyricLoaderState extends ConsumerState<LyricLoader> {
     return futureLyric.when(
       data: (lyric) {
         lyricsList = parseApiResponse(lyric);
-        print(lyricsList.toString());
         return Padding(
           padding: const EdgeInsets.all(20.0),
           child: StreamBuilder<PositionData>(
