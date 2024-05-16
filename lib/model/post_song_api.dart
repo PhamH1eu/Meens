@@ -7,11 +7,12 @@ class SongApi {
   static Future<List<ResultSong>> getRecipe(File file) async {
     var uri = Uri.https(
         'shazam-song-recognition-api.p.rapidapi.com', '/recognize/file');
+    const apikey = String.fromEnvironment('API_KEY', defaultValue: '');
     final response = await http.post(
       uri,
       headers: {
         "content-type": "application/octet-stream",
-        "x-rapidapi-key": "Add your own api key here",
+        "x-rapidapi-key": apikey,
         "x-rapidapi-host": "shazam-song-recognition-api.p.rapidapi.com",
       },
       // body:  file.readAsBytes(),
