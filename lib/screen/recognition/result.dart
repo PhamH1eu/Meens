@@ -34,20 +34,30 @@ class ShazamResult extends ConsumerWidget {
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                onPressed: () {},
-                icon: const Icon(FontAwesomeIcons.arrowUpFromBracket),
-                color: Colors.white,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
               child: PopupMenuButton(
                 itemBuilder: (context) => [
                   PopupMenuItem(
                     value: 1,
                     onTap: () {
-                      final Uri url = Uri.parse(resultSong.appleMusic!);
+                      final Uri url = Uri.parse(resultSong.shazamUrl);
+                      launchUrl(url);
+                    },
+                    child: ListTile(
+                        leading: Icon(
+                          Icons.ios_share_sharp,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        title: Text(
+                          'Open in Shazam',
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 15),
+                        )),
+                  ),
+                  PopupMenuItem(
+                    value: 2,
+                    onTap: () {
+                      final Uri url = Uri.parse(resultSong.appleMusic);
                       launchUrl(url);
                     },
                     child: ListTile(
@@ -63,9 +73,9 @@ class ShazamResult extends ConsumerWidget {
                         )),
                   ),
                 ],
-                icon: Icon(
-                  Icons.more_horiz_sharp,
-                  color: Theme.of(context).primaryColor,
+                icon: const Icon(
+                  Icons.more_vert_sharp,
+                  color: Colors.white,
                 ),
                 color: Theme.of(context).scaffoldBackgroundColor,
               ),

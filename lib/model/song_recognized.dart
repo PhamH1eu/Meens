@@ -1,24 +1,29 @@
+import 'dart:developer';
+
 class ResultSong {
   final String name;
   final String images;
   final String artist;
   final String demo;
-  String? appleMusic = "";
+  final String shazamUrl;
+  final String appleMusic;
   ResultSong(
       {required this.name,
       required this.images,
       required this.artist,
       required this.demo,
-      this.appleMusic});
+      required this.shazamUrl,
+      required this.appleMusic});
   factory ResultSong.fromJson(dynamic json) {
-    print(json['myshazam']['apple']['actions'][0]);
-    String apple = json['myshazam']['apple']['actions'][0]['uri'];
+    log(json.toString());
     return ResultSong(
-        name: json['title'] as String,
-        images: json['images']['coverart'] as String,
-        artist: json['subtitle'] as String,
-        demo: json['hub']['actions'][1]['uri'] as String,
-        appleMusic: apple);
+      name: json['title'] as String,
+      images: json['images']['coverart'] as String,
+      artist: json['subtitle'] as String,
+      demo: json['hub']['actions'][1]['uri'] as String,
+      shazamUrl: json['url'] as String,
+      appleMusic: json['hub']['options'][0]['actions'][0]['uri'] as String,
+    );
   }
   static List<ResultSong> recipesFromSnapshot(List snapshot) {
     return snapshot.map((data) {

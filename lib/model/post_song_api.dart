@@ -15,9 +15,9 @@ class SongApi {
         "x-rapidapi-key": apikey,
         "x-rapidapi-host": "shazam-song-recognition-api.p.rapidapi.com",
       },
-      // body:  file.readAsBytes(),
       body: file.readAsBytesSync(),
     );
+    //added this to json crack (need to show full msg);
     Map data = jsonDecode(response.body);
     List temp = [];
     temp.add(data['track']);
