@@ -27,7 +27,11 @@ class _SongInfoState extends ConsumerState<SongInfo> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        ref.watch(audioHandlerProvider.notifier).setSong(widget.song);
+        if (ref.watch(audioHandlerProvider).imgList.isEmpty ||
+            widget.song.title !=
+                ref.watch(audioHandlerProvider).currentSong.title) {
+          ref.watch(audioHandlerProvider.notifier).setSong(widget.song);
+        }
         Navigator.of(context).pushNamed('/play');
       },
       child: Column(
@@ -58,12 +62,13 @@ class _SongInfoState extends ConsumerState<SongInfo> {
             ),
           ),
           const SizedBox(height: 5),
-
           GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ArtistProfile(artistName: widget.song.artist)),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ArtistProfile(artistName: widget.song.artist)),
               );
             },
             child: Text(

@@ -28,8 +28,9 @@ final lyricProvider = FutureProvider.autoDispose<String>((ref) async {
   final audio = ref.watch(audioHandlerProvider);
   var uri = Uri.https("musixmatch-lyrics-songs.p.rapidapi.com", "/songs/lyrics",
       {'t': audio.currentSong.title, 'a': audio.currentSong.artist, 'type': 'json'});
+  const apikey = String.fromEnvironment('API_KEY', defaultValue: '');
   final response = await http.get(uri, headers: {
-    'x-rapidapi-key': 'add your own api key here',
+    'x-rapidapi-key': apikey,
     'x-rapidapi-host': 'musixmatch-lyrics-songs.p.rapidapi.com',
     'Content-Type': 'application/json'
   });

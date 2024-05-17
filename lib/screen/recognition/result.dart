@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:webtoon/model/song_recognized.dart';
+import 'package:webtoon/riverpod/song_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class ShazamResult extends StatelessWidget {
+import '../../model/song.dart';
+
+class ShazamResult extends ConsumerWidget {
   const ShazamResult({super.key, required this.resultSong});
 
   final ResultSong resultSong;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final audioHandler = ref.watch(audioHandlerProvider);
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -28,18 +34,50 @@ class ShazamResult extends StatelessWidget {
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                onPressed: () {},
-                icon: const Icon(FontAwesomeIcons.arrowUpFromBracket),
-                color: Colors.white,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                icon: const Icon(FontAwesomeIcons.ellipsisVertical),
-                color: Colors.white,
-                onPressed: () {},
+              child: PopupMenuButton(
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 1,
+                    onTap: () {
+                      final Uri url = Uri.parse(resultSong.shazamUrl);
+                      launchUrl(url);
+                    },
+                    child: ListTile(
+                        leading: Icon(
+                          Icons.ios_share_sharp,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        title: Text(
+                          'Open in Shazam',
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 15),
+                        )),
+                  ),
+                  PopupMenuItem(
+                    value: 2,
+                    onTap: () {
+                      final Uri url = Uri.parse(resultSong.appleMusic);
+                      launchUrl(url);
+                    },
+                    child: ListTile(
+                        leading: Icon(
+                          Icons.ios_share_sharp,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        title: Text(
+                          'Open in Apple Music',
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 15),
+                        )),
+                  ),
+                ],
+                icon: const Icon(
+                  Icons.more_vert_sharp,
+                  color: Colors.white,
+                ),
+                color: Theme.of(context).scaffoldBackgroundColor,
               ),
             ),
           ],
@@ -103,6 +141,23 @@ class ShazamResult extends StatelessWidget {
                             color: Color.fromRGBO(234, 240, 255, 1),
                             fontSize: 20),
                       ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      if (audioHandler.isPlaying) {
+                        audioHandler.audioPlayer.pause();
+                      }
+                      audioHandler.setSong(Song(
+                        title: resultSong.name,
+                        artist: resultSong.artist,
+                        imageUrl: resultSong.images,
+                        songPath: resultSong.demo,
+                      ));
+                    },
+                    icon: const Icon(
+                      FontAwesomeIcons.play,
+                      color: Colors.white,
                     ),
                   ),
                 ],
