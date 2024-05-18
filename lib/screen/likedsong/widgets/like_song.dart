@@ -32,7 +32,11 @@ class LikeSongInfoState extends ConsumerState<LikeSongInfo> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        ref.watch(audioHandlerProvider.notifier).setSong(widget.song);
+        if (ref.watch(audioHandlerProvider).imgList.isEmpty ||
+            widget.song.title !=
+                ref.watch(audioHandlerProvider).currentSong.title) {
+          ref.watch(audioHandlerProvider.notifier).setSong(widget.song);
+        }
         Navigator.of(context).pushNamed('/play');
       },
       child: Column(

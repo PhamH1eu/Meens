@@ -149,6 +149,10 @@ class AudioHandlers extends ChangeNotifier {
     audioPlayer.setVolume(volume);
   }
 
+  void seek(Duration position) {
+    audioPlayer.seek(position);
+  }
+
   void replay() {
     audioPlayer.setAudioSource(getPlaylist(playlist));
     audioPlayer.play();
