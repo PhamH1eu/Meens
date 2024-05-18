@@ -26,6 +26,7 @@ class AudioHandlers extends ChangeNotifier {
   final AudioPlayer audioPlayer = AudioPlayer();
   final List<Song> playlist = [];
   bool isPlaying = false;
+  bool isCountdown = false;
 
   AudioHandlers() {
     playlist.clear();
@@ -56,6 +57,21 @@ class AudioHandlers extends ChangeNotifier {
     audioPlayer.setAudioSource(getPlaylist(playlist));
     audioPlayer.play();
     notifyListeners();
+  }
+
+  Future setTimeout(Duration duration) {
+    isCountdown = true;
+    notifyListeners();
+    return Future.delayed(duration, () {
+      audioPlayer.pause();
+      isPlaying = false;
+      isCountdown = false;
+      notifyListeners();
+    });
+  }
+  
+  bool get countdown {
+    return isCountdown;
   }
 
   Song get currentSong {

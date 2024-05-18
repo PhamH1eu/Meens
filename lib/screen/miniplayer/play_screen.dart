@@ -1,11 +1,13 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide DatePickerTheme;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+
 import 'package:webtoon/screen/miniplayer/lyrics_screen.dart';
 import 'package:webtoon/screen/miniplayer/widgets/add_song_to_playlist.dart';
 
@@ -142,15 +144,6 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                       .doc(FirebaseAuth.instance.currentUser!.email)
                       .snapshots(),
                   builder: (context, snapshot) {
-                    // if (snapshot.connectionState == ConnectionState.waiting ||
-                    //     !snapshot.hasData) {
-                    //   return Scaffold(
-                    //     body: Center(
-                    //         child: CircularProgressIndicator(
-                    //           color: Theme.of(context).primaryColor,
-                    //         )),
-                    //   );
-                    // }
                     try {
                       List<String> listName = [];
                       Map<String, dynamic>? data = snapshot.data?.data();
@@ -222,7 +215,7 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
               ]),
               const SizedBox(height: 30),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 7.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
@@ -253,6 +246,40 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                           });
                         },
                       ),
+                    IconButton(
+                      onPressed: () {
+                        DatePicker.showTimePicker(context,
+                            showTitleActions: true,
+                            showSecondsColumn: true,
+                            theme: DatePickerTheme(
+                              backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
+                              itemStyle: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              doneStyle: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              cancelStyle: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ), onConfirm: (date) async {
+                          //convert to duration
+                          Duration duration = Duration(
+                              hours: date.hour,
+                              minutes: date.minute,
+                              seconds: date.second);
+                          await audioHandlers.setTimeout(duration);
+                        },
+                            currentTime: DateTime(0, 0, 0, 0, 0, 0),
+                            locale: LocaleType.en);
+                      },
+                      icon: const FaIcon(FontAwesomeIcons.clock),
+                      color: audioHandlers.countdown
+                          ? Colors.blue
+                          : Theme.of(context).secondaryHeaderColor,
+                      iconSize: 30,
+                    ),
                     const Spacer(),
                     IconButton(
                       icon: Icon(
