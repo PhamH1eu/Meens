@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:webtoon/riverpod/song.dart";
+import "package:easy_debounce/easy_debounce.dart";
 
 List<Song> songs = [
   Song(
@@ -76,10 +77,17 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             style: const TextStyle(color: Colors.white),
             onChanged: (value) {
-              setState(() {
-                searchText = value;
-              });
-              performSearch(value);
+              EasyDebounce.debounce(
+                'search',
+                const Duration(
+                    milliseconds: 300), // Adjust the duration as needed
+                () {
+                  setState(() {
+                    searchText = value;
+                  });
+                  performSearch(value);
+                },
+              );
             },
           ),
         ),
@@ -130,9 +138,10 @@ class _SearchScreenState extends State<SearchScreen> {
                         ],
                       ),
                       Container(
-                      height: 60,
-                      color: const Color.fromARGB(255, 217, 18, 18), // Màu nền trắng cho khoảng cách giữa các kết quả
-                    ),
+                        height: 60,
+                        color: const Color.fromARGB(255, 217, 18,
+                            18), // Màu nền trắng cho khoảng cách giữa các kết quả
+                      ),
                     ],
                   ),
                 );

@@ -71,6 +71,7 @@ dependencies:
   firebase_storage: ^11.7.0
   cloud_firestore: ^4.16.0
   diacritic: ^0.1.5
+  easy_debounce: ^2.0.3
 
 dev_dependencies:
   flutter_test:
