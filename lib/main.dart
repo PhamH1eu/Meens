@@ -35,10 +35,10 @@ Future<void> main() async {
 }
 
 // them 
-final songProvider = FutureProvider<List<Song>>((ref) async {
-  final firestoreService = FirestoreService();
-  return await firestoreService.fetchSongs();
-});
+// final songProvider = FutureProvider<List<Song>>((ref) async {
+//   final firestoreService = FirestoreService();
+//   return await firestoreService.fetchSongs();
+// });
 
 //end 
 
@@ -176,3 +176,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+  
