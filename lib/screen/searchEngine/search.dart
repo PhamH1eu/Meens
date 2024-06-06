@@ -1,9 +1,13 @@
 // search_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../model/song.dart';
-import '../cloud_store/getSongs.dart';
+import 'package:webtoon/model/song.dart';
+import 'package:webtoon/firebase/cloud_store/getSongs.dart';
 
+final songProvider = FutureProvider<List<Song>>((ref) async {
+  final firestoreService = FirestoreService();
+  return await firestoreService.fetchSongs();
+});
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
 
@@ -30,7 +34,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final songsAsyncValue = ref.watch(songProvider);
-
+    print(songsAsyncValue);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -81,7 +85,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
                               image: DecorationImage(
-                                image: NetworkImage(song.imgUrl),
+                                image: NetworkImage(song.imageUrl),
                                 fit: BoxFit.cover,
                               ),
                             ),
