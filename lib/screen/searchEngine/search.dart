@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webtoon/model/song.dart';
 import 'package:webtoon/firebase/cloud_store/getSongs.dart';
+import 'package:webtoon/riverpod/song_provider.dart';
 
 final songProvider = FutureProvider<List<Song>>((ref) async {
   final firestoreService = FirestoreService();
   return await firestoreService.fetchSongs();
 });
+
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
 
@@ -34,7 +36,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final songsAsyncValue = ref.watch(songProvider);
-    print(songsAsyncValue);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -73,45 +74,53 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   itemCount: searchResult.length,
                   itemBuilder: (context, index) {
                     final song = searchResult[index];
-                    return Container(
-                      padding: const EdgeInsets.all(8.0),
-                      color: Colors.black,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              image: DecorationImage(
-                                image: NetworkImage(song.imageUrl),
-                                fit: BoxFit.cover,
+                    return GestureDetector(
+                      onTap: () {
+                        // Gọi hàm setSong để phát bài hát được nhấn vào
+                        ref.read(audioHandlerProvider.notifier).setSong(song);
+                        // Điều hướng đến màn hình phát nhạc
+                        Navigator.of(context).pushNamed('/play');
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        color: Colors.black,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                image: DecorationImage(
+                                  image: NetworkImage(song.imageUrl),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                song.title,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                            const SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  song.title,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                song.artist,
-                                style: const TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 14,
+                                Text(
+                                  song.artist,
+                                  style: const TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 14,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
