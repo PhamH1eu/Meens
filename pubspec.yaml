@@ -74,6 +74,8 @@ dependencies:
   fluttertoast: ^8.2.5
   url_launcher: ^6.2.6
   flutter_datetime_picker_plus: ^2.2.0
+  dio: ^5.1.0
+  flutter_cache_manager: ^3.3.0
 
 dev_dependencies:
   flutter_test:

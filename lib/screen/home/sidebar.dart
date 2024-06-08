@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../riverpod/tab.dart';
 import '../../riverpod/theme.dart';
 import '../../utilities/fonts.dart';
+import 'package:webtoon/screen/library/lib_screen.dart';
 
 class Sidebar extends ConsumerWidget {
   const Sidebar({super.key});
@@ -125,6 +126,27 @@ class Sidebar extends ConsumerWidget {
                     Navigator.pop(context);
                   },
                 ),
+                ListTile(
+                leading: Icon(
+                  FontAwesomeIcons.music,
+                  color: Theme.of(context).secondaryHeaderColor,
+                ),
+                title: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text(
+                    'Library',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: CustomColors.semiBold,
+                      fontFamily: 'Gilroy',
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => Library()));
+                }
+            ),
                 ListTile(
                   leading: Icon(
                     FontAwesomeIcons.napster,

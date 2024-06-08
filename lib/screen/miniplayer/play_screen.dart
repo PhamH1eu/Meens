@@ -14,7 +14,7 @@ import 'package:webtoon/screen/miniplayer/widgets/add_song_to_playlist.dart';
 import '../../riverpod/song_provider.dart';
 import '../../riverpod/position_provider.dart';
 import 'widgets/control_button.dart';
-
+import 'package:webtoon/model/song.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import 'widgets/progress_bar.dart';
@@ -307,6 +307,17 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
                       ),
                       onPressed: () {
                         audioHandlers.setShuffleMode();
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.download,
+                        size: 30,
+                        color: Theme.of(context).secondaryHeaderColor,
+                      ),
+                      onPressed: () async {
+                        // print("SSSSSSS");
+                        await downloadAndSaveSong(audioHandlers.currentSong);
                       },
                     ),
                   ],

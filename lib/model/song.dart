@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart'; 
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Song {
   final String title;
@@ -31,5 +35,27 @@ class Song {
   @override
   String toString() {
     return 'Song {title: $title, artist: $artist, imageUrl: $imageUrl, songPath: $songPath}';
+  }
+}
+
+Future<String?> downloadAndSaveSong(Song song) async {
+  try {
+    // Tải file nhạc từ URL
+    var file = await DefaultCacheManager().getSingleFile(song.songPath!);
+
+    // Lấy đường dẫn thư mục lưu trữ trên thiết bị
+    var dir = await getApplicationDocumentsDirectory();
+
+    // Tạo đường dẫn cho file nhạc
+    String newPath = '${dir.path}/${song.title}.mp3';
+
+    // Lưu file vào đường dẫn mới
+    await file.copy(newPath);
+    print("Saved song to: $newPath");
+    // Trả về đường dẫn của file đã lưu
+    return newPath;
+  } catch (e) {
+    print("Error saving song: $e");
+    return null;
   }
 }
