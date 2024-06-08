@@ -1,51 +1,27 @@
-import "package:flutter/material.dart";
-import "package:webtoon/riverpod/song.dart";
+// search_screen.dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:webtoon/model/song.dart';
+import 'package:webtoon/firebase/cloud_store/getSongs.dart';
+import 'package:webtoon/riverpod/song_provider.dart';
 
-List<Song> songs = [
-  Song(
-      id: "1",
-      title: "Album",
-      artist: "Artist",
-      audioUrl: "assets/audios/TTL.mp3",
-      imgUrl: "assets/icon.png"),
-  Song(
-      id: "2",
-      title: "title",
-      artist: "Artist2",
-      audioUrl: "assets/audios/vokichcuaem.mp3",
-      imgUrl: "assets/artwork.jpg"),
-  Song(
-      id: "3",
-      title: "title3",
-      artist: "Artist3",
-      audioUrl: "assets/audios/anhdaungo.mp3",
-      imgUrl: "assets/icon.png"),
-  Song(
-      id: "4",
-      title: "title4",
-      artist: "Artist4",
-      audioUrl: "assets/audios/Stay.mp3",
-      imgUrl: "assets/icon.png"),
-  Song(
-      id: "5",
-      title: "title5",
-      artist: "Artist5",
-      audioUrl: "assets/audios/HONGKONG1.mp3",
-      imgUrl: "assets/icon.png"),
-];
+final songProvider = FutureProvider<List<Song>>((ref) async {
+  final firestoreService = FirestoreService();
+  return await firestoreService.fetchSongs();
+});
 
-class SearchScreen extends StatefulWidget {
+class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  ConsumerState<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchScreenState extends ConsumerState<SearchScreen> {
   String searchText = "";
   List<Song> searchResult = [];
 
-  void performSearch(String searchText) {
+  void performSearch(String searchText, List<Song> songs) {
     searchResult.clear();
     if (searchText.isNotEmpty) {
       for (var song in songs) {
@@ -59,6 +35,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final songsAsyncValue = ref.watch(songProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -79,84 +56,83 @@ class _SearchScreenState extends State<SearchScreen> {
               setState(() {
                 searchText = value;
               });
-              performSearch(value);
+              if (songsAsyncValue is AsyncData<List<Song>>) {
+                performSearch(value, songsAsyncValue.value);
+              }
             },
           ),
         ),
         backgroundColor: const Color.fromARGB(0, 19, 18, 18),
         elevation: 0,
       ),
-      body: searchResult.isNotEmpty
-          ? ListView.builder(
-              itemCount: searchResult.length,
-              itemBuilder: (context, index) {
-                final song = searchResult[index];
-                return Container(
-                  padding: const EdgeInsets.all(8.0),
-                  color: Colors.black,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          image: DecorationImage(
-                            image: AssetImage(song.imgUrl),
-                            fit: BoxFit.cover,
-                          ),
+      body: songsAsyncValue.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(child: Text('Error: $err')),
+        data: (songs) {
+          return searchResult.isNotEmpty
+              ? ListView.builder(
+                  itemCount: searchResult.length,
+                  itemBuilder: (context, index) {
+                    final song = searchResult[index];
+                    return GestureDetector(
+                      onTap: () {
+                        // Gọi hàm setSong để phát bài hát được nhấn vào
+                        ref.read(audioHandlerProvider.notifier).setSong(song);
+                        // Điều hướng đến màn hình phát nhạc
+                        Navigator.of(context).pushNamed('/play');
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        color: Colors.black,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                image: DecorationImage(
+                                  image: NetworkImage(song.imageUrl),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  song.title,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  song.artist,
+                                  style: const TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            song.title,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            song.artist,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                      height: 60,
-                      color: const Color.fromARGB(255, 217, 18, 18), // Màu nền trắng cho khoảng cách giữa các kết quả
-                    ),
-                    ],
+                    );
+                  },
+                )
+              : const Center(
+                  child: Text(
+                    'No songs found',
+                    style: TextStyle(color: Colors.black54, fontSize: 18),
                   ),
                 );
-              },
-            )
-          : Center(
-              child: searchText.isEmpty
-                  ? const Text('Start typing to search...')
-                  : Text('No results found for "$searchText"'),
-            ),
+        },
+      ),
     );
   }
 }
-
-// class SearchScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Search'),
-//       ),
-//       body: Center(
-//         child: Text('Search Screen'),
-//       ),
-//     );
-//   }
-// }

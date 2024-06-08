@@ -34,6 +34,14 @@ Future<void> main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
+// them 
+// final songProvider = FutureProvider<List<Song>>((ref) async {
+//   final firestoreService = FirestoreService();
+//   return await firestoreService.fetchSongs();
+// });
+
+//end 
+
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
@@ -168,3 +176,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+  
