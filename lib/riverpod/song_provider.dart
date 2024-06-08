@@ -19,6 +19,20 @@ ConcatenatingAudioSource getPlaylist(List<Song> playlist) {
   );
 }
 
+ConcatenatingAudioSource getOfflinePlaylist(List<Song> playlist) {
+  return ConcatenatingAudioSource(
+      useLazyPreparation: true,
+      children: playlist
+          .map((song) => AudioSource.file(song.songPath!,
+              tag: MediaItem(
+                id: song.songPath!,
+                artist: song.artist,
+                title: song.title,
+                // artUri: Uri.parse(song.imageUrl),
+              )))
+          .toList());
+}
+
 //set audio source khi user login
 
 class AudioHandlers extends ChangeNotifier {
@@ -50,6 +64,17 @@ class AudioHandlers extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> setOfflineSong(Song song) async {
+    isPlaying = true;
+    playlist.clear();
+    playlist.add(song);
+    audioPlayer.setAudioSource(getOfflinePlaylist(playlist));
+    if (!audioPlayer.playing) {
+      audioPlayer.play();
+    }
+    notifyListeners();
+  }
+
   Future<void> setPlaylist(List<Song> playlist) async {
     isPlaying = true;
     this.playlist.clear();
@@ -69,7 +94,7 @@ class AudioHandlers extends ChangeNotifier {
       notifyListeners();
     });
   }
-  
+
   bool get countdown {
     return isCountdown;
   }
