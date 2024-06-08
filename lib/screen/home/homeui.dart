@@ -21,7 +21,7 @@ class HomeUI extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recommend = ref.watch(recommendedSongsProvider);
-
+    final likedsong = ref.watch(likedSongsProvider);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.only(right: 20.0, left: 20.0),
@@ -61,7 +61,7 @@ class HomeUI extends ConsumerWidget {
                 )),
             const SizedBox(height: 20),
             Text(
-              'My Playlist',
+              'Maybe you like it :3',
               style: TextStyle(
                   fontWeight: CustomColors.extraBold,
                   color: Theme.of(context).primaryColor,
@@ -69,6 +69,26 @@ class HomeUI extends ConsumerWidget {
                   fontFamily: 'Gilroy'),
             ),
             const SizedBox(height: 15),
+            SizedBox(
+                height: 240,
+                child: likedsong.when(
+                  data: (songs) {
+                    return ListView.separated(
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const SizedBox(width: 30);
+                      },
+                      itemCount: songs.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) =>
+                          SongInfo(song: songs[index]),
+                    );
+                  },
+                  loading: () => Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor,
+                      )),
+                  error: (error, stack) => Text('Error: $error'),
+                )),
             // Đổi chỗ này thành artist
             // SizedBox(
             //   height: 240,
