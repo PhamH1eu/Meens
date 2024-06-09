@@ -64,7 +64,7 @@ class _LibraryState extends ConsumerState<Library> {
     return Song(
       title: title,
       artist: artist,
-      imageUrl: '', 
+      imageUrl: 'https://www.wmhbradio.org/wp-content/uploads/2016/07/music-placeholder.png?fbclid=IwZXh0bgNhZW0CMTAAAR3PhbPV1iqi74d7lTqODoojfj-_nzPzGHvrMD9REdMFoeMfE5U957FUFjg_aem_AQPmkhbSA5cxR4g6Ps1OxJR1eRJRfwyFWip_V0uFbYAIwH6i_4RfVCB6PUT8kC6DdTWjGfGCS6NzCW0iNy0XiJwZ', 
       songPath: songModel.data,
     );
   }
