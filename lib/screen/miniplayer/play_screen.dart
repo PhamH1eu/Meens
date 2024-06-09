@@ -18,6 +18,9 @@ import 'package:webtoon/model/song.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import 'widgets/progress_bar.dart';
+import 'package:dio/dio.dart';
+// import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 class PlayingScreen extends ConsumerStatefulWidget {
   const PlayingScreen({super.key});
@@ -33,6 +36,36 @@ class PlayingScreenState extends ConsumerState<PlayingScreen> {
 
   CarouselController carouselController = CarouselController();
   PanelController panelController = PanelController();
+
+  Future download2(Dio dio, String url, String savePath) async {
+    try {
+      Response response = await dio.get(
+        url,
+        onReceiveProgress: showDownloadProgress,
+        //Received data with List<int>
+        options: Options(
+            responseType: ResponseType.bytes,
+            followRedirects: false,
+            validateStatus: (status) {
+              return true;
+            }),
+      );
+      print(response.headers);
+      File file = File(savePath);
+      var raf = file.openSync(mode: FileMode.write);
+      // response.data is List<int> type
+      raf.writeFromSync(response.data);
+      await raf.close();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void showDownloadProgress(received, total) {
+    if (total != -1) {
+      print((received / total * 100).toStringAsFixed(0) + "%");
+    }
+  }
 
   @override
   void initState() {

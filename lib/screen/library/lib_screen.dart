@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:webtoon/riverpod/song_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:webtoon/model/song.dart';
+// import 'package:webtoon/model/song.dart';
 
 class Library extends ConsumerStatefulWidget {
   const Library({super.key});
@@ -54,10 +57,13 @@ class _LibraryState extends ConsumerState<Library> {
 
   
   Song _songModelToSong(SongModel songModel) {
-
+    List<String> parts = songModel.title.split(' - ');
+    String title = parts[0].trim();
+    String artist = parts.length > 1 ? parts[1].trim() : 'Unknown Artist';
+    // songModel.artist = artist;
     return Song(
-      title: songModel.title,
-      artist: songModel.artist ?? 'Unknown Artist',
+      title: title,
+      artist: artist,
       imageUrl: '', // Bạn có thể thêm logic để lấy ảnh bìa nếu có
       songPath: songModel.data,
     );

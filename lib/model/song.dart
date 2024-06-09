@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart'; 
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:io';
+import 'package:path/path.dart' as p;
 class Song {
   final String title;
   final String artist;
@@ -38,24 +39,65 @@ class Song {
   }
 }
 
+// Future<String?> downloadAndSaveSong(Song song) async {
+//   try {
+//     // Tải file nhạc từ URL
+//     var file = await DefaultCacheManager().getSingleFile(song.songPath!);
+
+//     // Lấy đường dẫn thư mục lưu trữ trên thiết bị
+//     var dir = await getApplicationDocumentsDirectory();
+
+//     // Tạo đường dẫn cho file nhạc
+//     String newPath = '${dir.path}/${song.title}.mp3';
+
+//     // Lưu file vào đường dẫn mới
+//     await file.copy(newPath);
+//     print("Saved song to: $newPath");
+//     // Trả về đường dẫn của file đã lưu
+//     return newPath;
+//   } catch (e) {
+//     print("Error saving song: $e");
+//     return null;
+//   }
+// }
+
 Future<String?> downloadAndSaveSong(Song song) async {
   try {
-    // Tải file nhạc từ URL
+
+    await requestPermissions();
+
+
     var file = await DefaultCacheManager().getSingleFile(song.songPath!);
 
-    // Lấy đường dẫn thư mục lưu trữ trên thiết bị
-    var dir = await getApplicationDocumentsDirectory();
 
-    // Tạo đường dẫn cho file nhạc
-    String newPath = '${dir.path}/${song.title}.mp3';
+    Directory? dir = Directory('/storage/emulated/0/Music');
+    if (!await dir.exists()) {
+      await dir.create(recursive: true);
+    }
+    // if (dir == null) {
+    //   print("Unable to get external storage directory.");
+    //   return null;
+    // }
 
-    // Lưu file vào đường dẫn mới
+
+    String newPath = p.join(dir.path, '${song.title} - ${song.artist}.mp3');
+
+
     await file.copy(newPath);
     print("Saved song to: $newPath");
-    // Trả về đường dẫn của file đã lưu
+
     return newPath;
   } catch (e) {
     print("Error saving song: $e");
     return null;
+  }
+}
+
+Future<void> requestPermissions() async {
+  if (await Permission.storage.request().isGranted) {
+    print("done");
+  } else {
+
+    print("Storage permission denied.");
   }
 }
