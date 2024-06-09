@@ -64,7 +64,7 @@ class _LibraryState extends ConsumerState<Library> {
     return Song(
       title: title,
       artist: artist,
-      imageUrl: '', // Bạn có thể thêm logic để lấy ảnh bìa nếu có
+      imageUrl: '', 
       songPath: songModel.data,
     );
   }
@@ -90,7 +90,7 @@ class _LibraryState extends ConsumerState<Library> {
                   title: Text(song.title),
                   subtitle: Text(song.artist ?? 'Unknown Artist'),
                   onTap: () {
-                    ref.read(audioHandlerProvider.notifier).setSong(_songModelToSong(song));
+                    ref.read(audioHandlerProvider.notifier).setOfflineSong(_songModelToSong(song));
                     // Điều hướng đến màn hình phát nhạc
                     Navigator.of(context).pushNamed('/play');
                   },
