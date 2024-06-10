@@ -55,7 +55,6 @@ class _LibraryState extends ConsumerState<Library> {
     }
   }
 
-  
   Song _songModelToSong(SongModel songModel) {
     List<String> parts = songModel.title.split(' - ');
     String title = parts[0].trim();
@@ -64,18 +63,23 @@ class _LibraryState extends ConsumerState<Library> {
     return Song(
       title: title,
       artist: artist,
-      imageUrl: 'https://www.wmhbradio.org/wp-content/uploads/2016/07/music-placeholder.png?fbclid=IwZXh0bgNhZW0CMTAAAR3PhbPV1iqi74d7lTqODoojfj-_nzPzGHvrMD9REdMFoeMfE5U957FUFjg_aem_AQPmkhbSA5cxR4g6Ps1OxJR1eRJRfwyFWip_V0uFbYAIwH6i_4RfVCB6PUT8kC6DdTWjGfGCS6NzCW0iNy0XiJwZ', 
+      imageUrl:
+          'https://www.wmhbradio.org/wp-content/uploads/2016/07/music-placeholder.png?fbclid=IwZXh0bgNhZW0CMTAAAR3PhbPV1iqi74d7lTqODoojfj-_nzPzGHvrMD9REdMFoeMfE5U957FUFjg_aem_AQPmkhbSA5cxR4g6Ps1OxJR1eRJRfwyFWip_V0uFbYAIwH6i_4RfVCB6PUT8kC6DdTWjGfGCS6NzCW0iNy0XiJwZ',
       songPath: songModel.data,
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('Downloaded Songs',
-            style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)))),
-        backgroundColor: const Color.fromARGB(255, 242, 242, 242), // Đặt màu nền cho AppBar
-        foregroundColor: const Color.fromARGB(255, 158, 158, 158)),
+          title: const Center(
+              child: Text('Downloaded Songs',
+                  style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)))),
+          backgroundColor: const Color.fromARGB(
+              255, 242, 242, 242), // Đặt màu nền cho AppBar
+          foregroundColor: const Color.fromARGB(255, 158, 158, 158)
+          ),
       body: songs.isNotEmpty
           ? ListView.builder(
               itemCount: songs.length,
@@ -90,7 +94,9 @@ class _LibraryState extends ConsumerState<Library> {
                   title: Text(song.title),
                   subtitle: Text(song.artist ?? 'Unknown Artist'),
                   onTap: () {
-                    ref.read(audioHandlerProvider.notifier).setOfflineSong(_songModelToSong(song));
+                    ref
+                        .read(audioHandlerProvider.notifier)
+                        .setOfflineSong(_songModelToSong(song));
                     // Điều hướng đến màn hình phát nhạc
                     Navigator.of(context).pushNamed('/play');
                   },

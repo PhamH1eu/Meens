@@ -16,13 +16,32 @@ class Setting extends StatelessWidget {
       builder: (context, ref, child) {
         return Scaffold(
           appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                ref.invalidate(countProvider);
-              },
+            title: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      'Settings',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    // Handle search action
+                  },
+                ),
+              ],
             ),
-            title: const Text('Settings'),
           ),
           body: ListView(
             padding: const EdgeInsets.all(16.0),
