@@ -7,8 +7,15 @@ import 'package:webtoon/riverpod/song_provider.dart';
 
 import '../../riverpod/tab.dart';
 
-class Setting extends StatelessWidget {
+class Setting extends StatefulWidget {
   const Setting({super.key});
+
+  @override
+  _SettingState createState() => _SettingState();
+}
+
+class _SettingState extends State<Setting> {
+  bool _notificationsEnabled = true;
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +23,32 @@ class Setting extends StatelessWidget {
       builder: (context, ref, child) {
         return Scaffold(
           appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                ref.invalidate(countProvider);
-              },
+            title: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      'Settings',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    // Handle search action
+                  },
+                ),
+              ],
             ),
-            title: const Text('Settings'),
           ),
           body: ListView(
             padding: const EdgeInsets.all(16.0),
@@ -41,13 +67,17 @@ class Setting extends StatelessWidget {
                 title: const Text('Notifications'),
                 subtitle: const Text('Email, Newsletter etc'),
                 trailing: Switch(
-                  value: true, // Set this value based on your logic
+                  value: _notificationsEnabled,
                   onChanged: (bool value) {
-                    // Handle switch state change
+                    setState(() {
+                      _notificationsEnabled = value;
+                    });
                   },
                 ),
                 onTap: () {
-                  // Handle notification settings change
+                  setState(() {
+                    _notificationsEnabled = !_notificationsEnabled;
+                  });
                 },
               ),
               const Divider(),
@@ -81,7 +111,7 @@ class Setting extends StatelessWidget {
                 child: TextButton(
                   onPressed: () async {
                     await signOut();
-                    //Chạy ở mobile thì comment lại
+                    // Chạy ở mobile thì comment lại
                     // if (context.mounted) Navigator.of(context).pop();
                     ref.invalidate(countProvider);
                     ref.read(audioHandlerProvider.notifier).clear();
