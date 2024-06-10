@@ -37,21 +37,21 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Widget build(BuildContext context) {
     final songsAsyncValue = ref.watch(songProvider);
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Container(
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 122, 120, 120),
+            color: Theme.of(context).secondaryHeaderColor.withOpacity(0.2),
             borderRadius: BorderRadius.circular(10),
           ),
           child: TextField(
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintText: 'Search for songs...',
-              hintStyle: TextStyle(color: Colors.white),
+              hintStyle: TextStyle(
+                  color: Theme.of(context).primaryColor.withOpacity(0.5)),
               border: InputBorder.none,
-              contentPadding: EdgeInsets.all(10),
+              contentPadding: const EdgeInsets.all(10),
             ),
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).primaryColor),
             onChanged: (value) {
               setState(() {
                 searchText = value;
@@ -83,7 +83,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       },
                       child: Container(
                         padding: const EdgeInsets.all(8.0),
-                        color: Colors.black,
+                        color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.1),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -104,16 +104,16 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                               children: [
                                 Text(
                                   song.title,
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 Text(
                                   song.artist,
-                                  style: const TextStyle(
-                                    color: Colors.white70,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor.withOpacity(0.5),
                                     fontSize: 14,
                                   ),
                                 ),
