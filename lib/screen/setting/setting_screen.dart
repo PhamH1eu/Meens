@@ -24,17 +24,73 @@ class Setting extends StatelessWidget {
             ),
             title: const Text('Settings'),
           ),
-          body: Center(
-            child: IconButton(
-                onPressed: () async {
-                  await signOut();
-                  //Chay o mobile thi comment lai
-                  // if (context.mounted) Navigator.of(context).pop();
-                  ref.invalidate(countProvider);
-                  ref.read(audioHandlerProvider.notifier).clear();
-                  ref.invalidate(recommendedSongsProvider);
+          body: ListView(
+            padding: const EdgeInsets.all(16.0),
+            children: [
+              ListTile(
+                leading: const Icon(Icons.language),
+                title: const Text('Language'),
+                subtitle: const Text('English (United States)'),
+                onTap: () {
+                  // Handle language change
                 },
-                icon: const Icon(Icons.logout)),
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.notifications),
+                title: const Text('Notifications'),
+                subtitle: const Text('Email, Newsletter etc'),
+                trailing: Switch(
+                  value: true, // Set this value based on your logic
+                  onChanged: (bool value) {
+                    // Handle switch state change
+                  },
+                ),
+                onTap: () {
+                  // Handle notification settings change
+                },
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.privacy_tip),
+                title: const Text('Privacy'),
+                subtitle: const Text('Terms, Privacy'),
+                onTap: () {
+                  // Handle privacy settings change
+                },
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.support_agent),
+                title: const Text('Support'),
+                subtitle: const Text('24/7 Customer'),
+                onTap: () {
+                  // Handle support settings change
+                },
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.contact_mail),
+                title: const Text('Contact Us'),
+                onTap: () {
+                  // Handle contact us action
+                },
+              ),
+              const Divider(),
+              Center(
+                child: TextButton(
+                  onPressed: () async {
+                    await signOut();
+                    //Chạy ở mobile thì comment lại
+                    // if (context.mounted) Navigator.of(context).pop();
+                    ref.invalidate(countProvider);
+                    ref.read(audioHandlerProvider.notifier).clear();
+                    ref.invalidate(recommendedSongsProvider);
+                  },
+                  child: const Text('Sign Out'),
+                ),
+              ),
+            ],
           ),
         );
       },
