@@ -34,13 +34,13 @@ Future<void> main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-// them 
+// them
 // final songProvider = FutureProvider<List<Song>>((ref) async {
 //   final firestoreService = FirestoreService();
 //   return await firestoreService.fetchSongs();
 // });
 
-//end 
+//end
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
@@ -149,6 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting ||
                   !snapshot.hasData) {
+                print(snapshot.data);
                 return Scaffold(
                   body: Center(
                       child: CircularProgressIndicator(
@@ -160,6 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
               try {
                 isFirstTime = snapshot.data!.get("firstTime");
               } catch (e) {
+                print(e);
                 //this is normal, it is laggy a bit when the user is first time
                 return Scaffold(
                   body: Center(
@@ -176,4 +178,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-  

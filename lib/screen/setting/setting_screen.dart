@@ -28,8 +28,8 @@ class _SettingState extends State<Setting> {
                 IconButton(
                   icon: const Icon(Icons.arrow_back),
                   onPressed: () {
-                    Navigator.pop(context);
-                  },
+                ref.invalidate(countProvider);
+              },
                 ),
                 Expanded(
                   child: Center(
